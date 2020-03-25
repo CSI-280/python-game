@@ -31,8 +31,13 @@ If you need help, this tutorial from the library's page is very helpful and wher
 
 https://python-tcod.readthedocs.io/en/latest/installation.html
 
+This site might help with starting the game, it is a wiki so everything may not be completely accurate.
+
+http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod 
+
 Puzzle Info File:
 https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing
+<<<<<<< HEAD
 
 ## Design Guide
 * Should follow classic Rogue style
@@ -72,3 +77,5 @@ All controls can be put here for reference
 |       D       | Move right  |
 
 ## Credits
+=======
+>>>>>>> 40922f8a36277ca575a4d4ebad539d3663c9d4f5
