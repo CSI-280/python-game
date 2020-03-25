@@ -26,3 +26,6 @@ pip install tcod
 If you need help, this tutorial from the library's page is very helpful and where I got the information on how to install it in the first place.
 
 https://python-tcod.readthedocs.io/en/latest/installation.html
+
+Puzzle Info File:
+https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing
