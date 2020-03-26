@@ -39,6 +39,13 @@ Puzzle Info File:
 https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing
 <<<<<<< HEAD
 
+## Potentially Useful Python Libraries
+* Pyglet: Cross-platform application framework designed for game development. Compatible with Windows, OS X, and Linux. Relies solely on python to create games.
+https://github.com/pyglet/pyglet/blob/master/README.md
+
+* Pygame: Cross-platform set of python modules made for writing games. Includes computer graphics and sound libraries that were designed to be used in python.
+https://www.pygame.org/
+
 ## Design Guide
 * Should follow classic Rogue style
 * Only use extended ascii characters
