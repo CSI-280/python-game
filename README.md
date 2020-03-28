@@ -31,13 +31,31 @@ If you need help, this tutorial from the library's page is very helpful and wher
 
 https://python-tcod.readthedocs.io/en/latest/installation.html
 
-This site might help with starting the game, it is a wiki so everything may not be completely accurate.
+## Planned Features
 
-http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod 
+1. Inventory management system
+
+2. Room system, randomly generated as well as scripted for puzzles. Full navigation
+
+3. Combat system
+
+4. Beautiful groundbreaking ASCII art
+
+
+## Contributors
+
+Josh Bogin
+Louis Vinton
+Wes Beard
+Kai Wilens ^_^
+Ethan Trope   ¯\_(^_^)_/¯
+Michaelangelo Leonardo Raphael Donatello 
+Noah Anderson
+Steven Pershyn
+Will Gesler
 
 Puzzle Info File:
 https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing
-<<<<<<< HEAD
 
 ## Design Guide
 * Should follow classic Rogue style
@@ -75,7 +93,3 @@ All controls can be put here for reference
 |       A       | Move left   |
 |       S       | Move down   |
 |       D       | Move right  |
-
-## Credits
-=======
->>>>>>> 40922f8a36277ca575a4d4ebad539d3663c9d4f5
