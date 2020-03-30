@@ -57,6 +57,10 @@ Will Gesler
 Puzzle Info File:
 https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing
 
+Map Generator:
+https://azgaar.github.io/Fantasy-Map-Generator/
+Load the .map file from the repo to make edits
+
 ## Potentially Useful Python Libraries
 * Pyglet: Cross-platform application framework designed for game development. Compatible with Windows, OS X, and Linux. Relies solely on python to create games.
 https://github.com/pyglet/pyglet/blob/master/README.md
