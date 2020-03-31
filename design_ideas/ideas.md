@@ -82,3 +82,9 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
      - We could decide on different colors for different characters like orange for the wall colors as seen in the online rogue game.
    * Maybe add some simple sprites?
    - We could create some sprites for the player and enemies but we probably do not need many.
+
+Notes:
+ * Potentially use map to have differently located rooms on the map. 
+  - Therefore, the rooms are located in those biomes and the themes areas. 
+  - There will be some predetermined rooms but some will be random in the areas.
+ * Have some goal: There could be an item or try to pass a certain amount of rooms or floors.
