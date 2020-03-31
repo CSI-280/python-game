@@ -1,4 +1,4 @@
-# this code is from http://rogueliketutorials.com/tutorials/tcod/part-1/
+# some of this code is from http://rogueliketutorials.com/tutorials/tcod/part-1/
 
 import tcod as libtcod
 from input_handlers import handle_keys
