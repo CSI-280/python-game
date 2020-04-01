@@ -81,6 +81,7 @@ def handle_mouse(con, mouse):
             print('Line drawing')
             draw_type = 0
 
+
     if mouse.rbutton_pressed:
         print(map_objects.objects, end='\n\n')
         
