@@ -1,5 +1,6 @@
 
 import tcod as libtcod
+import map_objects
 
 from constants import *
 
@@ -36,9 +37,9 @@ def bresenham(x0, y0, x1, y1):
         D += 2*dy
 
 
-def draw_line(con, x1, y1, x2, y2):
+def draw_line(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
     # char color
-    libtcod.console_set_default_foreground(con, libtcod.red)
+    libtcod.console_set_default_foreground(con, color)
 
     # list of points that make up a line
     point_list = list(bresenham(x1, y1, x2, y2))
@@ -46,25 +47,53 @@ def draw_line(con, x1, y1, x2, y2):
     # draw for every point in the line
     for point in point_list:
         # draw single character
-        libtcod.console_put_char(con, point[0], point[1], '\'', libtcod.BKGND_NONE)
+        libtcod.console_put_char(con, point[0], point[1], char, libtcod.BKGND_NONE)
         
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
+def draw_line_objects(x1, y1, x2, y2, name, char_number):
+    point_list = list(bresenham(x1, y1, x2, y2))
 
-def draw_box(con, x1, y1, x2, y2):
-    draw_line(con, x1, y1, x2, y1)
-    draw_line(con, x2, y1, x2, y2)
-    draw_line(con, x2, y2, x1, y2)
-    draw_line(con, x1, y2, x1, y1)
+    for point in point_list:
+        new_object = map_objects.Object(name, char_number)
+        new_object.x = point[0] - OUTLINE_SIZE
+        new_object.y = point[1] - OUTLINE_SIZE
+        map_objects.objects.append(new_object)
 
 
-def draw_borders(con, map_box_size, picker_box_size):
+def draw_box(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
+    draw_line(con, x1, y1, x2, y1, char, color)
+    draw_line(con, x2, y1, x2, y2, char, color)
+    draw_line(con, x2, y2, x1, y2, char, color)
+    draw_line(con, x1, y2, x1, y1, char, color)
+
+def draw_box_objects(x1, y1, x2, y2, name, char_number):
+    draw_line_objects(x1, y1, x2, y1, name, char_number)
+    draw_line_objects(x2, y1, x2, y2, name, char_number)
+    draw_line_objects(x2, y2, x1, y2, name, char_number)
+    draw_line_objects(x1, y2, x1, y1, name, char_number)
+
+
+def draw_borders(con):
     clear_screen(con)
-    draw_box(con, map_box_size[0][0], map_box_size[0][1],
-                  map_box_size[1][0], map_box_size[1][1])
-    draw_box(con, picker_box_size[0][0], picker_box_size[0][1],
-                  picker_box_size[1][0], picker_box_size[1][1])
+    draw_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
+                  MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1])
+    draw_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
+                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1])
     
+
+def draw_all_map_objects(con):
+    libtcod.console_set_default_foreground(con, libtcod.red)
+    for obj in map_objects.objects:
+        libtcod.console_put_char(con,
+                                 obj.x + OUTLINE_SIZE,
+                                 obj.y + OUTLINE_SIZE,
+                                 obj.get_char(),
+                                 libtcod.BKGND_NONE)
+    map_objects.remove_duplicate_objects()
+
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+
 
 def clear_screen(con):
     for y in range(SCREEN_HEIGHT):

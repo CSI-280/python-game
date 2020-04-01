@@ -1,8 +1,8 @@
 # some of this code is from http://rogueliketutorials.com/tutorials/tcod/part-1/
 
 import tcod as libtcod
-from input_handlers import handle_keys
-from draw_functions import draw_borders
+from input_handlers import handle_keys, handle_mouse
+from draw_functions import draw_all_map_objects
 
 from constants import *
 
@@ -30,32 +30,12 @@ def main():
     while not libtcod.console_is_window_closed():
         # update key and mouse variables for event
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
-
-        mouseX = int(mouse.x/CELL_SIZE)
-        mouseY = int(mouse.y/CELL_SIZE)
-
-        # define coords for map and picker boxes
-        map_box_size = ((1, 1), (MAP_WIDTH + 2, MAP_HEIGHT + 2))
-        picker_box_size = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2))
         
-        draw_borders(con, map_box_size, picker_box_size)
+        # also draws borders, handles JSON map drawing
+        handle_mouse(con, mouse)
 
-        # temporary, add to input handler or another file that manages the mouse,
-        # what's selected, etc.   ===============================================
-        if mouseX > map_box_size[0][0] and mouseX < map_box_size[1][0] and \
-           mouseY > map_box_size[0][1] and mouseY < map_box_size[1][1]:
-            libtcod.console_set_default_foreground(con, libtcod.blue)
-            libtcod.console_put_char(con, mouseX, mouseY, 218, libtcod.BKGND_NONE)
-        libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
-
-        if mouseX > picker_box_size[0][0] and mouseX < picker_box_size[1][0] and \
-           mouseY > picker_box_size[0][1] and mouseY < picker_box_size[1][1]:
-            libtcod.console_set_default_foreground(con, libtcod.green)
-            libtcod.console_put_char(con, mouseX, mouseY, 218, libtcod.BKGND_NONE)
-        libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
-        # =======================================================================
-
-        
+        # draws the JSON map that's defined already
+        draw_all_map_objects(con)
         
         libtcod.console_flush()
 
@@ -64,6 +44,7 @@ def main():
 
         exit_game = action.get('exit')
         fullscreen = action.get('fullscreen')
+
 
         if fullscreen:
             # toggle fullscreen
