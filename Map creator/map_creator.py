@@ -16,6 +16,12 @@ def main():
     # create a console
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+    # limit fps so the game doesn't take up 100% cpu
+    libtcod.sys_set_fps(60)
+
+    # don't show mouse
+    libtcod.mouse_show_cursor(False)
+
     # keyboard and mouse input variables
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -39,15 +45,17 @@ def main():
         if mouseX > map_box_size[0][0] and mouseX < map_box_size[1][0] and \
            mouseY > map_box_size[0][1] and mouseY < map_box_size[1][1]:
             libtcod.console_set_default_foreground(con, libtcod.blue)
-            libtcod.console_put_char(con, mouseX, mouseY, '#', libtcod.BKGND_NONE)
+            libtcod.console_put_char(con, mouseX, mouseY, 218, libtcod.BKGND_NONE)
         libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
         if mouseX > picker_box_size[0][0] and mouseX < picker_box_size[1][0] and \
            mouseY > picker_box_size[0][1] and mouseY < picker_box_size[1][1]:
             libtcod.console_set_default_foreground(con, libtcod.green)
-            libtcod.console_put_char(con, mouseX, mouseY, '$', libtcod.BKGND_NONE)
+            libtcod.console_put_char(con, mouseX, mouseY, 218, libtcod.BKGND_NONE)
         libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
         # =======================================================================
+
+        
         
         libtcod.console_flush()
 

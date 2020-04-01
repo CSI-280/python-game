@@ -59,7 +59,7 @@ def draw_box(con, x1, y1, x2, y2):
 
 
 def draw_borders(con, map_box_size, picker_box_size):
-    #clear_screen(con)
+    clear_screen(con)
     draw_box(con, map_box_size[0][0], map_box_size[0][1],
                   map_box_size[1][0], map_box_size[1][1])
     draw_box(con, picker_box_size[0][0], picker_box_size[0][1],
