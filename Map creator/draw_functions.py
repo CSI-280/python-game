@@ -51,11 +51,11 @@ def draw_line(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
         
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
-def draw_line_objects(x1, y1, x2, y2, name, char_number):
+def draw_line_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_grey):
     point_list = list(bresenham(x1, y1, x2, y2))
 
     for point in point_list:
-        new_object = map_objects.Object(name, char_number)
+        new_object = map_objects.Object(name, char_number, color)
         new_object.x = point[0] - OUTLINE_SIZE
         new_object.y = point[1] - OUTLINE_SIZE
         map_objects.objects.append(new_object)
@@ -67,11 +67,11 @@ def draw_box(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
     draw_line(con, x2, y2, x1, y2, char, color)
     draw_line(con, x1, y2, x1, y1, char, color)
 
-def draw_box_objects(x1, y1, x2, y2, name, char_number):
-    draw_line_objects(x1, y1, x2, y1, name, char_number)
-    draw_line_objects(x2, y1, x2, y2, name, char_number)
-    draw_line_objects(x2, y2, x1, y2, name, char_number)
-    draw_line_objects(x1, y2, x1, y1, name, char_number)
+def draw_box_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_grey):
+    draw_line_objects(x1, y1, x2, y1, name, char_number, color)
+    draw_line_objects(x2, y1, x2, y2, name, char_number, color)
+    draw_line_objects(x2, y2, x1, y2, name, char_number, color)
+    draw_line_objects(x1, y2, x1, y1, name, char_number, color)
 
 
 def draw_borders(con):
@@ -83,8 +83,8 @@ def draw_borders(con):
     
 
 def draw_all_map_objects(con):
-    libtcod.console_set_default_foreground(con, libtcod.red)
     for obj in map_objects.objects:
+        libtcod.console_set_default_foreground(con, obj.get_color())
         libtcod.console_put_char(con,
                                  obj.x + OUTLINE_SIZE,
                                  obj.y + OUTLINE_SIZE,

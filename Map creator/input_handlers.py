@@ -29,8 +29,10 @@ able_to_click = True
 drawX = 0
 drawY = 0
 
+draw_type = 0
+
 def handle_mouse(con, mouse):
-    global able_to_click, drawX, drawY
+    global able_to_click, drawX, drawY, draw_type
     
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)
@@ -56,12 +58,28 @@ def handle_mouse(con, mouse):
 
     if mouse.lbutton:
         if is_in_map_range(mouseX, mouseY):
-            draw_line(con, mouseX, mouseY, drawX, drawY, 186, libtcod.sepia)
+            if draw_type == 0:
+                draw_line(con, mouseX, mouseY, drawX, drawY, 186, libtcod.sepia)
+            elif draw_type == 1:
+                draw_box(con, mouseX, mouseY, drawX, drawY, 186, libtcod.sepia)
 
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
-            draw_line_objects(mouseX, mouseY, drawX, drawY, 'wall', 186)
+            if draw_type == 0:
+                draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 186,
+                                  libtcod.light_purple)
+            if draw_type == 1:
+                draw_box_objects(mouseX, mouseY, drawX, drawY, 'wall', 35,
+                                 libtcod.light_cyan)
+
+    if mouse.wheel_up or mouse.wheel_down:
+        if draw_type == 0:
+            print('Box drawing')
+            draw_type = 1
+        elif draw_type == 1:
+            print('Line drawing')
+            draw_type = 0
 
     if mouse.rbutton_pressed:
         print(map_objects.objects, end='\n\n')
