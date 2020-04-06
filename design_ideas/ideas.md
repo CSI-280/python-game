@@ -4,6 +4,7 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
 
 # Overview
   * This will be some type of game written in python. It will be a rogue-like game and is highly influenced from the original rogue game. It will have a main character which is controlled by the current player. They will be put in a 2d ASCII designed world were they will have to navigate through different rooms. Throughout the different rooms there will be enemies which they must defeat and puzzle that they must complete in order to win the end of the game. The goal and theme of the game is yet to be decided but this is the basic layout that will make up the game.
+  * This game could star an archeologist, who is searching for a very special treasure or relic. In order to get it, they will need to clear other dungeons with thinking puzzles to get smaller relics that will aid in getting the main goal. 
 
 ## Core Systems
 
