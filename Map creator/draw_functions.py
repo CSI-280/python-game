@@ -67,11 +67,11 @@ def draw_box(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
     draw_line(con, x2, y2, x1, y2, char, color)
     draw_line(con, x1, y2, x1, y1, char, color)
 
-def draw_box_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_grey):
-    draw_line_objects(x1, y1, x2, y1, name, char_number, color)
-    draw_line_objects(x2, y1, x2, y2, name, char_number, color)
-    draw_line_objects(x2, y2, x1, y2, name, char_number, color)
-    draw_line_objects(x1, y2, x1, y1, name, char_number, color)
+def draw_box_objects(x1, y1, x2, y2, name, color=libtcod.light_grey):
+    draw_line_objects(x1, y1, x2, y1, name, 205, color)
+    draw_line_objects(x2, y1, x2, y2, name, 186, color)
+    draw_line_objects(x2, y2, x1, y2, name, 205, color)
+    draw_line_objects(x1, y2, x1, y1, name, 186, color)
 
 
 def draw_borders(con):

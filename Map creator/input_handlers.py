@@ -59,18 +59,18 @@ def handle_mouse(con, mouse):
     if mouse.lbutton:
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
-                draw_line(con, mouseX, mouseY, drawX, drawY, 186, libtcod.sepia)
+                draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.sepia)
             elif draw_type == 1:
-                draw_box(con, mouseX, mouseY, drawX, drawY, 186, libtcod.sepia)
+                draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.sepia)
 
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
-                draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 186,
+                draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 176,
                                   libtcod.light_purple)
             if draw_type == 1:
-                draw_box_objects(mouseX, mouseY, drawX, drawY, 'wall', 35,
+                draw_box_objects(mouseX, mouseY, drawX, drawY, 'wall',
                                  libtcod.light_cyan)
 
     if mouse.wheel_up or mouse.wheel_down:
