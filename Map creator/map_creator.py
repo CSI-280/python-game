@@ -8,7 +8,7 @@ from constants import *
 
 def main():
     # set the font (arial10x10.png is in project folder, can be changed)
-    libtcod.console_set_custom_font('../arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('../font.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     # create the screen
     libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Map Creator by Michael Leonard', False)
@@ -36,7 +36,7 @@ def main():
 
         # draws the JSON map that's defined already
         draw_all_map_objects(con)
-        
+
         libtcod.console_flush()
 
         # check for keyboard input

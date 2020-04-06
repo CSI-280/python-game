@@ -37,7 +37,7 @@ def bresenham(x0, y0, x1, y1):
         D += 2*dy
 
 
-def draw_line(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
+def draw_line(con, x1, y1, x2, y2, char, color=libtcod.red):
     # char color
     libtcod.console_set_default_foreground(con, color)
 
@@ -51,6 +51,7 @@ def draw_line(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
         
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
+
 def draw_line_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_grey):
     point_list = list(bresenham(x1, y1, x2, y2))
 
@@ -61,7 +62,7 @@ def draw_line_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_gre
         map_objects.objects.append(new_object)
 
 
-def draw_box(con, x1, y1, x2, y2, char='\'', color=libtcod.red):
+def draw_box(con, x1, y1, x2, y2, char, color):
     draw_line(con, x1, y1, x2, y1, char, color)
     draw_line(con, x2, y1, x2, y2, char, color)
     draw_line(con, x2, y2, x1, y2, char, color)
@@ -74,13 +75,67 @@ def draw_box_objects(x1, y1, x2, y2, name, color=libtcod.light_grey):
     draw_line_objects(x1, y2, x1, y1, name, 186, color)
 
 
+def draw_char(con, x, y, char, color):
+    # char color
+    libtcod.console_set_default_foreground(con, color)
+
+    libtcod.console_put_char(con, x, y, char, libtcod.BKGND_NONE)
+
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+
+
+def draw_char_object(con, x, y, char, color):
+
+    new_object = map_objects.Object("point", char, color)
+    new_object.x = x - OUTLINE_SIZE
+    new_object.y = y - OUTLINE_SIZE
+    map_objects.objects.append(new_object)
+
+
+def draw_word(con, x, y, word, color):
+    # char color
+    libtcod.console_set_default_foreground(con, color)
+    for letter in word:
+        libtcod.console_put_char(con, x, y, letter, libtcod.BKGND_NONE)
+        x += 1
+
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+
+
 def draw_borders(con):
     clear_screen(con)
     draw_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
-                  MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1])
+                   MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
     draw_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
-                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1])
-    
+                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
+    draw_ui(con)
+
+
+def draw_ui(con):
+    draw_word(con, 95, 3, "TOOLS", libtcod.white)
+    draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
+
+    for x, y in ui_elements:
+        char = ui_elements[(x, y)]
+        draw_char(con, x, y, char, libtcod.white)
+
+    draw_word(con, 95, 10, "CHARS", libtcod.white)
+    draw_line(con, 86, 11, 110, 11, 205, libtcod.white)
+
+    total_chars = 14
+    char_x = 86
+    char_y = 13
+    char_num = 1
+
+    # prototype char select print
+    while char_num < total_chars:
+        draw_char(con, char_x, char_y, char_num, libtcod.white)
+        char_num += 1
+        char_x += 2
+
+
+
+
 
 def draw_all_map_objects(con):
     for obj in map_objects.objects:
@@ -99,11 +154,3 @@ def clear_screen(con):
     for y in range(SCREEN_HEIGHT):
         for x in range(SCREEN_WIDTH):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
-
-    
-
-
-
-
-
-
