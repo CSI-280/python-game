@@ -7,9 +7,12 @@ from entity import Entity
 from input_handlers import handle_keys
 from render_functions import clear_all, render_all
 from map_objects.game_map import GameMap
+from character.inventory import Inventory
 
 
 def main():
+    inventory = Inventory()
+
     screen_width = 80
     screen_height = 50
 
