@@ -37,7 +37,7 @@ def bresenham(x0, y0, x1, y1):
         D += 2*dy
 
 
-def draw_line(con, x1, y1, x2, y2, char, color=libtcod.red):
+def draw_line(con, x1, y1, x2, y2, char, color):
     # char color
     libtcod.console_set_default_foreground(con, color)
 
@@ -52,7 +52,7 @@ def draw_line(con, x1, y1, x2, y2, char, color=libtcod.red):
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
-def draw_line_objects(x1, y1, x2, y2, name, char_number, color=libtcod.light_grey):
+def draw_line_objects(x1, y1, x2, y2, name, char_number, color):
     point_list = list(bresenham(x1, y1, x2, y2))
 
     for point in point_list:
@@ -68,7 +68,7 @@ def draw_box(con, x1, y1, x2, y2, char, color):
     draw_line(con, x2, y2, x1, y2, char, color)
     draw_line(con, x1, y2, x1, y1, char, color)
 
-def draw_box_objects(x1, y1, x2, y2, name, color=libtcod.light_grey):
+def draw_box_objects(x1, y1, x2, y2, name, color):
     draw_line_objects(x1, y1, x2, y1, name, 205, color)
     draw_line_objects(x2, y1, x2, y2, name, 186, color)
     draw_line_objects(x2, y2, x1, y2, name, 205, color)
@@ -119,22 +119,21 @@ def draw_ui(con):
         char = ui_elements[(x, y)]
         draw_char(con, x, y, char, libtcod.white)
 
-    draw_word(con, 95, 10, "CHARS", libtcod.white)
-    draw_line(con, 86, 11, 110, 11, 205, libtcod.white)
+    draw_word(con, 95, 9, "CHARS", libtcod.white)
+    draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
 
-    total_chars = 14
-    char_x = 86
-    char_y = 13
+    total_chars = 254
     char_num = 1
+    char_x = CHAR_X_START
+    char_y = CHAR_Y_START
 
-    # prototype char select print
     while char_num < total_chars:
         draw_char(con, char_x, char_y, char_num, libtcod.white)
         char_num += 1
         char_x += 2
-
-
-
+        if char_x == CHAR_X_END:
+            char_y += 2
+            char_x = CHAR_X_START
 
 
 def draw_all_map_objects(con):

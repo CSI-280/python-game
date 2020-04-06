@@ -21,3 +21,9 @@ ui_elements = {
     (97, 6): 47,   # line tool
     (99, 6): 250   # single char tool
 }
+
+# dimensions of char selection
+CHAR_X_START = 86
+CHAR_X_END = 112
+CHAR_Y_START = 12
+CHAR_Y_END = 51
