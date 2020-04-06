@@ -1,5 +1,5 @@
 # from tutorial @
-# http://rogueliketutorials.com/tutorials/tcod/part-1/
+# http://rogueliketutorials.com/tutorials/tcod/part-1/ (parts 1-4)
 
 import tcod as libtcod
 
