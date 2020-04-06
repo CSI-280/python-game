@@ -17,9 +17,10 @@ PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2)
 
 # define UI elements as a dictionary
 ui_elements = {
-    (95, 6): 8,    # box tool
-    (97, 6): 47,   # line tool
-    (99, 6): 250   # single char tool
+    (95, 6): 8,     # box tool
+    (97, 6): 47,    # line tool
+    (99, 6): 250,   # single char tool
+    (101, 6): 88    # erase tool
 }
 
 # dimensions of char selection

@@ -11,7 +11,7 @@ def main():
     libtcod.console_set_custom_font('../font_edit.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     # create the screen
-    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Map Creator by Michael Leonard', False)
+    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Map Creator', False)
 
     # create a console
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
