@@ -1,7 +1,6 @@
 import tcod as libtcod
 from draw_functions import *
-import map_objects
-
+from map_objects import *
 from constants import *
 
 # Global variables
@@ -10,7 +9,7 @@ drawX = 0
 drawY = 0
 mouse_char = 218
 draw_type = 0
-current_char = 0
+current_char = 218
 
 
 def handle_keys(key):
@@ -40,15 +39,15 @@ def change_draw_type(icon_char):
 
     if icon_char == 47:
         draw_type = 0
-        mouse_char = 218
+        mouse_char = 47
         print("Draw Type: Line")
     elif icon_char == 8:
         draw_type = 1
-        mouse_char = 218
+        mouse_char = 8
         print("Draw Type: Box")
     elif icon_char == 250:
         draw_type = 2
-        mouse_char = 218
+        mouse_char = current_char
         print("Draw Type: Char")
         current_char = 250
     elif icon_char == 88:
@@ -82,7 +81,6 @@ def handle_mouse(con, mouse):
     if mouse.lbutton:
         # clear screen to update the line position and prevent leftover chars
         # when the mouse is moved
-        clear_canvas(con)
         draw_all_map_objects(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
@@ -92,34 +90,26 @@ def handle_mouse(con, mouse):
             elif draw_type == 2:
                 draw_char(con, mouseX, mouseY, current_char, libtcod.white)
             elif draw_type == 3:
-                # TODO: Change erase to remove from object list
-                draw_char_object(con, mouseX, mouseY, 0, libtcod.black)
+                erase_map_object(con, mouseX, mouseY)
 
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
-                draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 176,
+                draw_line_objects(mouseX, mouseY, drawX, drawY, 'line', 176,
                                   libtcod.light_gray)
-                clear_canvas(con)
                 draw_all_map_objects(con)
             if draw_type == 1:
-                draw_box_objects(mouseX, mouseY, drawX, drawY, 'wall',
+                draw_box_objects(mouseX, mouseY, drawX, drawY, 'box',
                                  libtcod.white)
-                clear_canvas(con)
                 draw_all_map_objects(con)
             elif draw_type == 2:
                 draw_char_object(mouseX, mouseY, current_char, libtcod.white)
-                clear_canvas(con)
+                draw_all_map_objects(con)
+            elif draw_type == 3:
+                erase_map_object(con, mouseX, mouseY)
                 draw_all_map_objects(con)
 
-    if mouse.wheel_up or mouse.wheel_down:
-        if draw_type == 0:
-            print('Draw Mode: Box')
-            draw_type = 1
-        elif draw_type == 1:
-            print('Draw Mode: Line')
-            draw_type = 0
 
     if mouse.rbutton_pressed:
         # print(map_objects.objects, end='\n\n')

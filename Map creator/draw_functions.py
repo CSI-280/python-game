@@ -169,6 +169,7 @@ def draw_ui(con):
 
 
 def draw_all_map_objects(con):
+    clear_canvas(con)
     for obj in map_objects.objects:
         libtcod.console_set_default_foreground(con, obj.get_color())
         libtcod.console_put_char(con,
@@ -177,7 +178,6 @@ def draw_all_map_objects(con):
                                  obj.get_char(),
                                  libtcod.BKGND_NONE)
     map_objects.remove_duplicate_objects()
-
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 old_mouse_pos = [None, None]

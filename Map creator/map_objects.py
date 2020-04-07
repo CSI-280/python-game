@@ -1,5 +1,7 @@
 
 import tcod as libtcod
+from constants import *
+import draw_functions
 
 class Object():
     def __init__(self, name, char_number, color=libtcod.light_grey, x = 0, y = 0):
@@ -28,9 +30,20 @@ class Object():
     def __str__(self):
         return str(self.__repr__())
 
+
 objects = []
 
-# TODO
+
+def erase_map_object(con, x, y):
+    for element in objects:
+        temp_x = element.x + OUTLINE_SIZE
+        temp_y = element.y + OUTLINE_SIZE
+        if temp_x == x and temp_y == y:
+            print("Removed ", element)
+            objects.remove(element)
+            draw_functions.draw_all_map_objects(con)
+
+
 def remove_duplicate_objects():
     global objects
     pass
