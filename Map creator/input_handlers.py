@@ -92,9 +92,9 @@ def handle_mouse(con, mouse):
         # when the mouse is moved
 
         #TODO: fix this, at the moment it's very laggy
-        clear_screen(con)
+        clear_canvas(con)
         draw_all_map_objects(con)
-        draw_borders(con)
+        # draw_borders(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
                 draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.sepia)

@@ -183,3 +183,9 @@ def clear_screen(con):
     for y in range(SCREEN_HEIGHT):
         for x in range(SCREEN_WIDTH):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
+
+
+def clear_canvas(con):
+    for y in range(OUTLINE_SIZE, MAP_HEIGHT + OUTLINE_SIZE):
+        for x in range(OUTLINE_SIZE, MAP_WIDTH+ OUTLINE_SIZE):
+            libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
