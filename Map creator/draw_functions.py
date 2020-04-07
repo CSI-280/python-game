@@ -77,11 +77,9 @@ def draw_box_objects(x1, y1, x2, y2, name, color):
 
 
 def draw_char(con, x, y, char, color):
-    # char color
+
     libtcod.console_set_default_foreground(con, color)
-
     libtcod.console_put_char(con, x, y, char, libtcod.BKGND_NONE)
-
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
