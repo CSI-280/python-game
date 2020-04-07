@@ -93,6 +93,7 @@ def handle_mouse(con, mouse):
 
         #TODO: fix this, at the moment it's very laggy
         clear_screen(con)
+        draw_all_map_objects(con)
         draw_borders(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:

@@ -151,6 +151,8 @@ def draw_all_map_objects(con):
 old_mouse_pos = [None, None]
 old_mouse_char = None
 old_mouse_char_color = None
+
+
 def draw_mouse(con, x, y):
     global old_mouse_pos, old_mouse_char, old_mouse_char_color
     # TODO, make this a global variable, fix instances of this global variable
