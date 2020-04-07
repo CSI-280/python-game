@@ -86,9 +86,9 @@ def handle_mouse(con, mouse):
         draw_all_map_objects(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
-                draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.sepia)
+                draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.dark_amber)
             elif draw_type == 1:
-                draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.sepia)
+                draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.dark_amber)
             elif draw_type == 2:
                 draw_char(con, mouseX, mouseY, current_char, libtcod.white)
             elif draw_type == 3:
@@ -100,7 +100,7 @@ def handle_mouse(con, mouse):
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
                 draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 176,
-                                  libtcod.light_sepia)
+                                  libtcod.light_gray)
                 clear_canvas(con)
                 draw_all_map_objects(con)
             if draw_type == 1:
@@ -109,7 +109,7 @@ def handle_mouse(con, mouse):
                 clear_canvas(con)
                 draw_all_map_objects(con)
             elif draw_type == 2:
-                draw_char_object(con, mouseX, mouseY, current_char, libtcod.white)
+                draw_char_object(mouseX, mouseY, current_char, libtcod.white)
                 clear_canvas(con)
                 draw_all_map_objects(con)
 

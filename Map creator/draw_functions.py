@@ -63,17 +63,52 @@ def draw_line_objects(x1, y1, x2, y2, name, char_number, color):
 
 
 def draw_box(con, x1, y1, x2, y2, char, color):
+    # top
     draw_line(con, x1, y1, x2, y1, char, color)
+    # right
     draw_line(con, x2, y1, x2, y2, char, color)
+    # bottom
     draw_line(con, x2, y2, x1, y2, char, color)
+    # left
     draw_line(con, x1, y2, x1, y1, char, color)
 
 
 def draw_box_objects(x1, y1, x2, y2, name, color):
+    # top
     draw_line_objects(x1, y1, x2, y1, name, 205, color)
+    # right
     draw_line_objects(x2, y1, x2, y2, name, 186, color)
+    # bottom
     draw_line_objects(x2, y2, x1, y2, name, 205, color)
+    # left
     draw_line_objects(x1, y2, x1, y1, name, 186, color)
+
+    # botton right to top left
+    corner_chars = [188, 200, 187, 201]
+    if x1 < x2 and y1 < y2:
+        corner_chars = [201, 187, 200, 188]
+    # bottom left to top right
+    if x1 > x2 and y1 < y2:
+        corner_chars = [187, 201, 188, 200]
+    # top right to bottom left
+    if x1 < x2 and y1 > y2:
+        corner_chars = [200, 188, 201, 187]
+    # top left to bottom right
+    if x1 >= x2 and y1 >= y2:
+        corner_chars = [188, 200, 187, 201]
+
+    # top left
+    draw_char_object(x1, y1, 15, color)
+    draw_char_object(x1, y1, corner_chars[0], color)
+    # top right
+    draw_char_object(x2, y1, 15, color)
+    draw_char_object(x2, y1, corner_chars[1], color)
+    # bottom left
+    draw_char_object(x1, y2, 15, color)
+    draw_char_object(x1, y2, corner_chars[2], color)
+    # bottom right
+    draw_char_object(x2, y2, 15, color)
+    draw_char_object(x2, y2, corner_chars[3], color)
 
 
 def draw_char(con, x, y, char, color):
@@ -85,8 +120,7 @@ def draw_char(con, x, y, char, color):
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
-def draw_char_object(con, x, y, char, color):
-
+def draw_char_object(x, y, char, color):
     new_object = map_objects.Object("point", char, color)
     new_object.x = x - OUTLINE_SIZE
     new_object.y = y - OUTLINE_SIZE
