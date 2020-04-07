@@ -31,11 +31,11 @@ def main():
         # update key and mouse variables for event
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
         
-        # also draws borders, handles JSON map drawing
-        handle_mouse(con, mouse)
-
         # draws the JSON map that's defined already
         draw_all_map_objects(con)
+
+        # also draws borders, handles JSON map drawing
+        handle_mouse(con, mouse)
 
         libtcod.console_flush()
 
@@ -49,10 +49,10 @@ def main():
         if fullscreen:
             # toggle fullscreen
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
-        
+
         if exit_game:
             return True
-        
+
 
 
 if __name__ == '__main__':

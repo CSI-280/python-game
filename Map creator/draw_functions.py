@@ -48,7 +48,7 @@ def draw_line(con, x1, y1, x2, y2, char, color):
     for point in point_list:
         # draw single character
         libtcod.console_put_char(con, point[0], point[1], char, libtcod.BKGND_NONE)
-        
+
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
@@ -104,7 +104,6 @@ def draw_word(con, x, y, word, color):
 
 
 def draw_borders(con):
-    clear_screen(con)
     draw_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
                    MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
     draw_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
@@ -146,6 +145,34 @@ def draw_all_map_objects(con):
                                  obj.get_char(),
                                  libtcod.BKGND_NONE)
     map_objects.remove_duplicate_objects()
+
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+
+old_mouse_pos = [None, None]
+old_mouse_char = None
+old_mouse_char_color = None
+def draw_mouse(con, x, y):
+    global old_mouse_pos, old_mouse_char, old_mouse_char_color
+    # TODO, make this a global variable, fix instances of this global variable
+    # in input_handlers
+    mouse_char = 218
+
+    # re draw the char that the mouse was at previously
+    if old_mouse_pos[0] != None:
+        libtcod.console_set_default_foreground(con, old_mouse_char_color)
+        libtcod.console_put_char(con, old_mouse_pos[0], old_mouse_pos[1], old_mouse_char, libtcod.BKGND_NONE)
+
+    # get old variables for next time this function is called
+    old_mouse_pos[0] = x
+    old_mouse_pos[1] = y
+
+    if libtcod.console_get_char(con, x, y) != mouse_char:
+        old_mouse_char = libtcod.console_get_char(con, x, y)
+        old_mouse_char_color = libtcod.console_get_char_foreground(con, x, y)
+
+    # draw where the mouse is now
+    libtcod.console_set_default_foreground(con, libtcod.white)
+    libtcod.console_put_char(con, x, y, mouse_char, libtcod.BKGND_NONE)
 
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
