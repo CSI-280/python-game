@@ -74,14 +74,6 @@ def handle_mouse(con, mouse):
                 change_draw_type(char)
             break
 
-    # checks if mouse is over a ui char
-    char_x = CHAR_X_START
-    char_y = CHAR_Y_START
-    if mouseX == char_x and mouseY == char_y:
-        draw_char()
-        if mouse.lbutton_pressed:
-            current_char = 1
-
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):
         able_to_click = False
         drawX = mouseX
@@ -90,19 +82,17 @@ def handle_mouse(con, mouse):
     if mouse.lbutton:
         # clear screen to update the line position and prevent leftover chars
         # when the mouse is moved
-
-        #TODO: fix this, at the moment it's very laggy
         clear_canvas(con)
         draw_all_map_objects(con)
-        # draw_borders(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 0:
                 draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.sepia)
             elif draw_type == 1:
                 draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.sepia)
             elif draw_type == 2:
-                draw_char(con, mouseX, mouseY, current_char, libtcod. white)
+                draw_char(con, mouseX, mouseY, current_char, libtcod.white)
             elif draw_type == 3:
+                # TODO: Change erase to remove from object list
                 draw_char_object(con, mouseX, mouseY, 0, libtcod.black)
 
     if mouse.lbutton_pressed:
@@ -111,11 +101,17 @@ def handle_mouse(con, mouse):
             if draw_type == 0:
                 draw_line_objects(mouseX, mouseY, drawX, drawY, 'path', 176,
                                   libtcod.light_sepia)
+                clear_canvas(con)
+                draw_all_map_objects(con)
             if draw_type == 1:
                 draw_box_objects(mouseX, mouseY, drawX, drawY, 'wall',
                                  libtcod.white)
+                clear_canvas(con)
+                draw_all_map_objects(con)
             elif draw_type == 2:
-                draw_char_object(con, mouseX, mouseY, current_char, libtcod.BKGND_NONEe)
+                draw_char_object(con, mouseX, mouseY, current_char, libtcod.white)
+                clear_canvas(con)
+                draw_all_map_objects(con)
 
     if mouse.wheel_up or mouse.wheel_down:
         if draw_type == 0:
@@ -130,4 +126,4 @@ def handle_mouse(con, mouse):
         print(mouseX, ", ", mouseY)
 
 
-    draw_mouse(con, mouseX, mouseY)
+    draw_mouse(con, mouseX, mouseY, mouse_char)

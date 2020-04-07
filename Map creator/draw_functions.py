@@ -153,11 +153,10 @@ old_mouse_char = None
 old_mouse_char_color = None
 
 
-def draw_mouse(con, x, y):
+def draw_mouse(con, x, y, mouse_char):
     global old_mouse_pos, old_mouse_char, old_mouse_char_color
     # TODO, make this a global variable, fix instances of this global variable
     # in input_handlers
-    mouse_char = 218
 
     # re draw the char that the mouse was at previously
     if old_mouse_pos[0] != None:
