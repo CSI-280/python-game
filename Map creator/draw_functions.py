@@ -86,15 +86,53 @@ def draw_box_objects(x1, y1, x2, y2, name, char, color):
             draw_line_objects(x1, y, x2, y, name, char, color)
 
 
-def draw_wall(con, x1, y1, x2, y2, char, color):
-    # top
-    draw_line(con, x1, y1, x2, y1, char, color)
-    # right
-    draw_line(con, x2, y1, x2, y2, char, color)
-    # bottom
-    draw_line(con, x2, y2, x1, y2, char, color)
-    # left
-    draw_line(con, x1, y2, x1, y1, char, color)
+def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
+    if char_num is None:
+        # top
+        draw_line(con, x1, y1, x2, y1, 205, color)
+        # right
+        draw_line(con, x2, y1, x2, y2, 186, color)
+        # bottom
+        draw_line(con, x2, y2, x1, y2, 205, color)
+        # left
+        draw_line(con, x1, y2, x1, y1, 186, color)
+
+        # bottom right to top left
+        corner_chars = [188, 200, 187, 201]
+        if x1 < x2 and y1 < y2:
+            corner_chars = [201, 187, 200, 188]
+        # bottom left to top right
+        if x1 > x2 and y1 < y2:
+            corner_chars = [187, 201, 188, 200]
+        # top right to bottom left
+        if x1 < x2 and y1 > y2:
+            corner_chars = [200, 188, 201, 187]
+        # top left to bottom right
+        if x1 >= x2 and y1 >= y2:
+            corner_chars = [188, 200, 187, 201]
+
+        # top left
+        draw_char(con, x1, y1, 15, color)
+        draw_char(con, x1, y1, corner_chars[0], color)
+        # top right
+        draw_char(con, x2, y1, 15, color)
+        draw_char(con, x2, y1, corner_chars[1], color)
+        # bottom left
+        draw_char(con, x1, y2, 15, color)
+        draw_char(con, x1, y2, corner_chars[2], color)
+        # bottom right
+        draw_char(con, x2, y2, 15, color)
+        draw_char(con, x2, y2, corner_chars[3], color)
+    else:
+        # top
+        draw_line(con, x1, y1, x2, y1, char_num, color)
+        # right
+        draw_line(con, x2, y1, x2, y2, char_num, color)
+        # bottom
+        draw_line(con, x2, y2, x1, y2, char_num, color)
+        # left
+        draw_line(con, x1, y2, x1, y1, char_num, color)
+
 
 
 def draw_wall_objects(x1, y1, x2, y2, name, color):
@@ -165,10 +203,15 @@ def draw_word(con, x, y, word, color, max_len):
 
 def draw_borders(con):
     draw_wall(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
-                   MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
+                   MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], libtcod.dark_amber, 219)
     draw_wall(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
-                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
+                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], libtcod.dark_amber, 219)
     draw_ui(con, None , None, None)
+
+
+def draw_button(con, x, y, word):
+    draw_wall(con, x, y, x+9, y+2, libtcod.white)
+    draw_word(con, x+2, y+1, word, libtcod.white, len(word))
 
 
 def draw_ui(con, hl_tool, hl_char, hl_color):
@@ -184,6 +227,9 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
 
     draw_word(con, 96, 34, "COLORS", libtcod.white, 6)
     draw_line(con, 86, 35, 110, 35, 205, libtcod.white)
+
+    draw_word(con, 96, 40, "ACTIONS", libtcod.white, 7)
+    draw_line(con, 86, 41, 110, 41, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
     for x, y in ui_elements:
@@ -204,6 +250,11 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
 
     draw_line(con, 85, 48, 111, 48, 219, libtcod.dark_amber)
     draw_char(con, 86, 50, '>', libtcod.white)
+
+    # action menu
+    for x, y in button_menu:
+        word = button_menu[x, y]
+        draw_button(con, x, y, word)
 
 
 def highlight_ui(con, x, y, char, color):

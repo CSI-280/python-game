@@ -143,7 +143,7 @@ def handle_mouse(con, mouse):
             if draw_type == 1:
                 draw_line(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
             elif draw_type == 2:
-                draw_wall(con, mouseX, mouseY, drawX, drawY, 206, libtcod.white)
+                draw_wall(con, mouseX, mouseY, drawX, drawY, libtcod.white)
             elif draw_type == 3:
                 draw_box(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
             elif draw_type == 4:

@@ -50,7 +50,6 @@ def erase_all_map_objects():
 
 
 def remove_duplicate_objects():
-    global objects
     pass
 
 
