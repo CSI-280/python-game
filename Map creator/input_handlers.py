@@ -124,7 +124,7 @@ def handle_mouse(con, mouse):
             char, color = color_menu[(x, y)]
             if mouse.lbutton_pressed:
                 current_color = color
-                if draw_type in (1, 2, 3):
+                if draw_type in (1, 2, 3, 4):
                     mouse_color = color
                 if (x, y) is not highlighted_color:
                     highlight_ui(con, x, y, 249, libtcod.white)
