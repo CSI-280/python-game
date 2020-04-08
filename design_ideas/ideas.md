@@ -84,8 +84,16 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
    * Maybe add some simple sprites?
    - We could create some sprites for the player and enemies but we probably do not need many.
 
-Notes:
+## Notes:
  * Potentially use map to have differently located rooms on the map. 
   - Therefore, the rooms are located in those biomes and the themes areas. 
   - There will be some predetermined rooms but some will be random in the areas.
  * Have some goal: There could be an item or try to pass a certain amount of rooms or floors.
+
+## Potential goals:
+ * Have some sort of fighting game where the player must simply battle enemies to get through floors and
+ get trophies or some rewards for passing a certain amount of floors. When you get a certain amount of
+ trophies you win the game. -- Josh
+ * Zombie tower where you must fight through floors in order to get to the bottom of the tower and escape. (Wes's idea)
+ 
+ - We need to keep this game simple at this point.
