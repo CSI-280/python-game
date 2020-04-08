@@ -149,12 +149,16 @@ def draw_char_object(x, y, char, color):
     map_objects.objects.append(new_object)
 
 
-def draw_word(con, x, y, word, color):
+def draw_word(con, x, y, word, color, max_len):
     # Color of letter
     libtcod.console_set_default_foreground(con, color)
+    overflow = 0
     for letter in word:
         libtcod.console_put_char(con, x, y, letter, libtcod.BKGND_NONE)
         x += 1
+        overflow += 1
+        if overflow >= max_len:
+            break
 
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
@@ -164,21 +168,21 @@ def draw_borders(con):
                    MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
     draw_wall(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
                   PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
-    draw_ui(con)
+    draw_ui(con, None , None, None)
 
 
-def draw_ui(con):
+def draw_ui(con, hl_tool, hl_char, hl_color):
     # Clear canvas button
     draw_char(con, 111, 2, 88, libtcod.red)
 
     # Headers
-    draw_word(con, 96, 3, "TOOLS", libtcod.white)
+    draw_word(con, 96, 3, "TOOLS", libtcod.white, 5)
     draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
 
-    draw_word(con, 96, 9, "CHARS", libtcod.white)
+    draw_word(con, 96, 9, "CHARS", libtcod.white, 5)
     draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
 
-    draw_word(con, 96, 34, "COLORS", libtcod.white)
+    draw_word(con, 96, 34, "COLORS", libtcod.white, 6)
     draw_line(con, 86, 35, 110, 35, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
@@ -191,9 +195,29 @@ def draw_ui(con):
         char, color = color_menu[(x, y)]
         draw_char(con, x, y, char, color)
 
+    if hl_tool:
+        highlight_ui(con, hl_tool[0], hl_tool[1], 249, libtcod.white)
+    if hl_char:
+        highlight_ui(con, hl_char[0], hl_char[1], 249, libtcod.white)
+    if hl_color:
+        highlight_ui(con, hl_color[0], hl_color[1], 249, libtcod.white)
+
+    draw_line(con, 85, 48, 111, 48, 219, libtcod.dark_amber)
+    draw_char(con, 86, 50, '>', libtcod.white)
 
 
+def highlight_ui(con, x, y, char, color):
+    # Draw a char in the 8 coords around a ui item
+    draw_char(con, x + 1, y, char, color)
+    draw_char(con, x - 1, y, char, color)
+    draw_char(con, x, y + 1, char, color)
+    draw_char(con, x, y - 1, char, color)
+    draw_char(con, x, y + 1, char, color)
 
+    draw_char(con, x + 1, y + 1, char, color)
+    draw_char(con, x - 1, y - 1, char, color)
+    draw_char(con, x + 1, y - 1, char, color)
+    draw_char(con, x - 1, y + 1, char, color)
 
 
 def draw_all_map_objects(con):
@@ -237,6 +261,11 @@ def draw_mouse(con, x, y, mouse_char, color):
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
+def display_message(con, message, color):
+    draw_word(con, 87, 50, " " * 24, libtcod.white, 24)
+    draw_word(con, 87, 50, message, color, 24)
+
+
 def clear_screen(con):
     for y in range(SCREEN_HEIGHT):
         for x in range(SCREEN_WIDTH):
@@ -247,3 +276,11 @@ def clear_canvas(con):
     for y in range(OUTLINE_SIZE, MAP_HEIGHT + OUTLINE_SIZE):
         for x in range(OUTLINE_SIZE, MAP_WIDTH+ OUTLINE_SIZE):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
+
+
+def refresh_tools(con, hl_tool, hl_char, hl_color):
+    # (85,2) to (111,47)
+    for y in range(2, 47):
+        for x in range(85, 111):
+            libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
+    draw_ui(con, hl_tool, hl_char, hl_color)

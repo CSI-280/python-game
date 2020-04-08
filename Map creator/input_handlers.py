@@ -12,6 +12,9 @@ mouse_color = libtcod.white
 draw_type = 0
 current_char = 219
 current_color = libtcod.white
+highlighted_tool = (93, 6)
+highlighted_char = None
+highlighted_color = (87, 37)
 
 
 def handle_keys(key):
@@ -36,43 +39,50 @@ def is_in_picker_range(x, y):
            PICKER_BOX_SIZE[0][1] < y < PICKER_BOX_SIZE[1][1]
 
 
-def change_draw_type(icon_char):
+def change_draw_type(con, icon_char):
     global draw_type, current_char, mouse_char, mouse_color
 
     if icon_char == 218:
         draw_type = 0
         mouse_char = 218
         mouse_color = libtcod.white
-        print("Draw Type: Pointer")
+        display_message(con, "Tool: Pointer", libtcod.white)
+        print("Tool: Pointer")
     elif icon_char == 47:
         draw_type = 1
         mouse_char = 47
         mouse_color = current_color
+        display_message(con, "Draw Type: Line", libtcod.white)
         print("Draw Type: Line")
     elif icon_char == 8:
         draw_type = 2
         mouse_char = 8
         mouse_color = current_color
+        display_message(con, "Draw Type: Wall", libtcod.white)
         print("Draw Type: Wall")
     elif icon_char == 219:
         draw_type = 3
         mouse_char = 219
         mouse_color = current_color
+        display_message(con, "Draw Type: Box", libtcod.white)
         print("Draw Type: Box")
     elif icon_char == 7:
         draw_type = 4
         mouse_char = current_char
         mouse_color = current_color
+        display_message(con, "Draw Type: Char", libtcod.white)
         print("Draw Type: Char")
     elif icon_char == 88:
         draw_type = 5
         mouse_char = 88
         mouse_color = libtcod.red
-        print("Draw Type: Erase")
+        display_message(con, "Tool: Erase", libtcod.white)
+        print("Tool: Erase")
 
 
 def handle_mouse(con, mouse):
-    global able_to_click, drawX, drawY, draw_type, current_char, mouse_char, mouse_color, current_color
+    global able_to_click, drawX, drawY, draw_type, current_char, mouse_char,\
+        mouse_color, current_color, highlighted_tool, highlighted_char, highlighted_color
 
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)
@@ -83,17 +93,24 @@ def handle_mouse(con, mouse):
     for x, y in ui_elements:
         if mouseX == x and mouseY == y:
             char = ui_elements[(x, y)]
-            draw_char(con, x, y, char, libtcod.dark_red)
+            refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
             if mouse.lbutton_pressed:
                 if y < 10:
-                    change_draw_type(char)
+                    change_draw_type(con, char)
+                    if (x, y) is not highlighted_tool:
+                        highlight_ui(con, x, y, 249, libtcod.white)
+                        highlighted_tool = (x, y)
                 elif y > 10:
                     current_char = char
+                    if (x, y) is not highlighted_char:
+                        highlight_ui(con, x, y, 249, libtcod.white)
+                        highlighted_char = (x, y)
                     if draw_type == 4:
                         mouse_char = char
             break
         # Clear canvas button
         if mouseX == 111 and mouseY == 2:
+            display_message(con, "Clear Canvas", libtcod.red)
             if mouse.lbutton_pressed:
                 erase_all_map_objects()
                 clear_canvas(con)
@@ -102,11 +119,16 @@ def handle_mouse(con, mouse):
     # checks if mouse is over a color menu choice
     for x, y in color_menu:
         if mouseX == x and mouseY == y:
+            refresh_tools(con, highlighted_tool, highlighted_char,
+                          highlighted_color)
             char, color = color_menu[(x, y)]
             if mouse.lbutton_pressed:
                 current_color = color
                 if draw_type in (1, 2, 3):
                     mouse_color = color
+                if (x, y) is not highlighted_color:
+                    highlight_ui(con, x, y, 249, libtcod.white)
+                    highlighted_color = (x, y)
 
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):
         able_to_click = False
