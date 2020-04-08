@@ -11,11 +11,12 @@ SCREEN_HEIGHT = 50 + OUTLINE_SIZE*2
 
 CELL_SIZE = 10
 
-# define coords for map and picker boxes
+# Defines coords for map and picker boxes
 MAP_BOX_SIZE = ((1, 1), (MAP_WIDTH + 2, MAP_HEIGHT + 2))
 PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2))
 
-# define UI elements as a dictionary
+# Defines UI elements as a dictionary
+# Format: (x, y): char #
 ui_elements = {
     # TOOLS
     (93, 6): 218,   # pointer tool
@@ -118,9 +119,3 @@ ui_elements = {
 
     # COLORS
 }
-
-# dimensions of char selection
-CHAR_X_START = 86
-CHAR_X_END = 112
-CHAR_Y_START = 12
-CHAR_Y_END = 51
