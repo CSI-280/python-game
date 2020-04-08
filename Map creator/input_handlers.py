@@ -9,7 +9,7 @@ drawX = 0
 drawY = 0
 mouse_char = 218
 draw_type = 0
-current_char = 218
+current_char = 219
 
 
 def handle_keys(key):
@@ -37,21 +37,24 @@ def is_in_picker_range(x, y):
 def change_draw_type(icon_char):
     global draw_type, current_char, mouse_char
 
-    if icon_char == 47:
+    if icon_char == 218:
         draw_type = 0
+        mouse_char = 218
+        print("Draw Type: Pointer")
+    elif icon_char == 47:
+        draw_type = 1
         mouse_char = 47
         print("Draw Type: Line")
     elif icon_char == 8:
-        draw_type = 1
+        draw_type = 2
         mouse_char = 8
         print("Draw Type: Box")
     elif icon_char == 250:
-        draw_type = 2
+        draw_type = 3
         mouse_char = current_char
         print("Draw Type: Char")
-        current_char = 250
     elif icon_char == 88:
-        draw_type = 3
+        draw_type = 4
         mouse_char = 88
         print("Draw Type: Erase")
 
@@ -70,8 +73,19 @@ def handle_mouse(con, mouse):
             char = ui_elements[(x, y)]
             draw_char(con, x, y, char, libtcod.dark_red)
             if mouse.lbutton_pressed:
-                change_draw_type(char)
+                if y < 10:
+                    change_draw_type(char)
+                elif y > 10:
+                    current_char = char
+                    if draw_type == 3:
+                        mouse_char = char
             break
+        # Clear canvas button
+        if mouseX == 111 and mouseY == 2:
+            if mouse.lbutton_pressed:
+                erase_all_map_objects()
+                clear_canvas(con)
+                break
 
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):
         able_to_click = False
@@ -83,33 +97,32 @@ def handle_mouse(con, mouse):
         # when the mouse is moved
         draw_all_map_objects(con)
         if is_in_map_range(mouseX, mouseY):
-            if draw_type == 0:
-                draw_line(con, mouseX, mouseY, drawX, drawY, 176, libtcod.dark_amber)
-            elif draw_type == 1:
-                draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.dark_amber)
+            if draw_type == 1:
+                draw_line(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.darkest_green)
             elif draw_type == 2:
-                draw_char(con, mouseX, mouseY, current_char, libtcod.white)
+                draw_box(con, mouseX, mouseY, drawX, drawY, 206, libtcod.darkest_green)
             elif draw_type == 3:
+                draw_char(con, mouseX, mouseY, current_char, libtcod.white)
+            elif draw_type == 4:
                 erase_map_object(con, mouseX, mouseY)
 
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
-            if draw_type == 0:
-                draw_line_objects(mouseX, mouseY, drawX, drawY, 'line', 176,
-                                  libtcod.light_gray)
-                draw_all_map_objects(con)
             if draw_type == 1:
+                draw_line_objects(mouseX, mouseY, drawX, drawY, 'line', current_char,
+                                  libtcod.white)
+                draw_all_map_objects(con)
+            if draw_type == 2:
                 draw_box_objects(mouseX, mouseY, drawX, drawY, 'box',
                                  libtcod.white)
                 draw_all_map_objects(con)
-            elif draw_type == 2:
+            elif draw_type == 3:
                 draw_char_object(mouseX, mouseY, current_char, libtcod.white)
                 draw_all_map_objects(con)
-            elif draw_type == 3:
+            elif draw_type == 4:
                 erase_map_object(con, mouseX, mouseY)
                 draw_all_map_objects(con)
-
 
     if mouse.rbutton_pressed:
         # print(map_objects.objects, end='\n\n')

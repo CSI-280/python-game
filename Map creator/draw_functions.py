@@ -112,7 +112,7 @@ def draw_box_objects(x1, y1, x2, y2, name, color):
 
 
 def draw_char(con, x, y, char, color):
-
+    # Color of printed char
     libtcod.console_set_default_foreground(con, color)
     libtcod.console_put_char(con, x, y, char, libtcod.BKGND_NONE)
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
@@ -126,7 +126,7 @@ def draw_char_object(x, y, char, color):
 
 
 def draw_word(con, x, y, word, color):
-    # char color
+    # Color of letter
     libtcod.console_set_default_foreground(con, color)
     for letter in word:
         libtcod.console_put_char(con, x, y, letter, libtcod.BKGND_NONE)
@@ -144,28 +144,18 @@ def draw_borders(con):
 
 
 def draw_ui(con):
+    draw_char(con, 111, 2, 88, libtcod.red)
+
     draw_word(con, 95, 3, "TOOLS", libtcod.white)
     draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
 
+    # Loop through and print contents of constant ui dictionary
     for x, y in ui_elements:
         char = ui_elements[(x, y)]
         draw_char(con, x, y, char, libtcod.white)
 
     draw_word(con, 95, 9, "CHARS", libtcod.white)
     draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
-
-    total_chars = 254
-    char_num = 1
-    char_x = CHAR_X_START
-    char_y = CHAR_Y_START
-
-    while char_num < total_chars:
-        draw_char(con, char_x, char_y, char_num, libtcod.white)
-        char_num += 1
-        char_x += 2
-        if char_x == CHAR_X_END:
-            char_y += 2
-            char_x = CHAR_X_START
 
 
 def draw_all_map_objects(con):
