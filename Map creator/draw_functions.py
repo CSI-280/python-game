@@ -63,6 +63,30 @@ def draw_line_objects(x1, y1, x2, y2, name, char_number, color):
 
 
 def draw_box(con, x1, y1, x2, y2, char, color):
+
+    # Drag down
+    if y2 > y1:
+        for y in range(y1, y2):
+            draw_line(con, x1, y, x2, y, char, color)
+    # Drag up
+    elif y1 > y2:
+        for y in range(y2, y1):
+            draw_line(con, x1, y, x2, y, char, color)
+
+
+def draw_box_objects(x1, y1, x2, y2, name, char, color):
+    print("object")
+    # Drag down
+    if y2 > y1:
+        for y in range(y1, y2):
+            draw_line_objects(x1, y, x2, y, name, char, color)
+    # Drag up
+    elif y1 > y2:
+        for y in range(y2, y1):
+            draw_line_objects(x1, y, x2, y, name, char, color)
+
+
+def draw_wall(con, x1, y1, x2, y2, char, color):
     # top
     draw_line(con, x1, y1, x2, y1, char, color)
     # right
@@ -73,7 +97,7 @@ def draw_box(con, x1, y1, x2, y2, char, color):
     draw_line(con, x1, y2, x1, y1, char, color)
 
 
-def draw_box_objects(x1, y1, x2, y2, name, color):
+def draw_wall_objects(x1, y1, x2, y2, name, color):
     # top
     draw_line_objects(x1, y1, x2, y1, name, 205, color)
     # right
@@ -83,7 +107,7 @@ def draw_box_objects(x1, y1, x2, y2, name, color):
     # left
     draw_line_objects(x1, y2, x1, y1, name, 186, color)
 
-    # botton right to top left
+    # bottom right to top left
     corner_chars = [188, 200, 187, 201]
     if x1 < x2 and y1 < y2:
         corner_chars = [201, 187, 200, 188]
@@ -136,9 +160,9 @@ def draw_word(con, x, y, word, color):
 
 
 def draw_borders(con):
-    draw_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
+    draw_wall(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
                    MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
-    draw_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
+    draw_wall(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
                   PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
     draw_ui(con)
 
@@ -148,13 +172,13 @@ def draw_ui(con):
     draw_char(con, 111, 2, 88, libtcod.red)
 
     # Headers
-    draw_word(con, 95, 3, "TOOLS", libtcod.white)
+    draw_word(con, 96, 3, "TOOLS", libtcod.white)
     draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
 
-    draw_word(con, 95, 9, "CHARS", libtcod.white)
+    draw_word(con, 96, 9, "CHARS", libtcod.white)
     draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
 
-    draw_word(con, 95, 34, "COLORS", libtcod.white)
+    draw_word(con, 96, 34, "COLORS", libtcod.white)
     draw_line(con, 86, 35, 110, 35, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
