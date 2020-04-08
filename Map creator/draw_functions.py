@@ -144,18 +144,32 @@ def draw_borders(con):
 
 
 def draw_ui(con):
+    # Clear canvas button
     draw_char(con, 111, 2, 88, libtcod.red)
 
+    # Headers
     draw_word(con, 95, 3, "TOOLS", libtcod.white)
     draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
+
+    draw_word(con, 95, 9, "CHARS", libtcod.white)
+    draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
+
+    draw_word(con, 95, 34, "COLORS", libtcod.white)
+    draw_line(con, 86, 35, 110, 35, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
     for x, y in ui_elements:
         char = ui_elements[(x, y)]
         draw_char(con, x, y, char, libtcod.white)
 
-    draw_word(con, 95, 9, "CHARS", libtcod.white)
-    draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
+    # Color menu
+    for x, y in color_menu:
+        char, color = color_menu[(x, y)]
+        draw_char(con, x, y, char, color)
+
+
+
+
 
 
 def draw_all_map_objects(con):
@@ -172,17 +186,16 @@ def draw_all_map_objects(con):
 
 old_mouse_pos = [None, None]
 old_mouse_char = None
-old_mouse_char_color = None
 
 
-def draw_mouse(con, x, y, mouse_char):
+def draw_mouse(con, x, y, mouse_char, color):
     global old_mouse_pos, old_mouse_char, old_mouse_char_color
     # TODO, make this a global variable, fix instances of this global variable
     # in input_handlers
 
     # re draw the char that the mouse was at previously
     if old_mouse_pos[0] != None:
-        libtcod.console_set_default_foreground(con, old_mouse_char_color)
+        libtcod.console_set_default_foreground(con, color)
         libtcod.console_put_char(con, old_mouse_pos[0], old_mouse_pos[1], old_mouse_char, libtcod.BKGND_NONE)
 
     # get old variables for next time this function is called
@@ -194,7 +207,7 @@ def draw_mouse(con, x, y, mouse_char):
         old_mouse_char_color = libtcod.console_get_char_foreground(con, x, y)
 
     # draw where the mouse is now
-    libtcod.console_set_default_foreground(con, libtcod.white)
+    libtcod.console_set_default_foreground(con, color)
     libtcod.console_put_char(con, x, y, mouse_char, libtcod.BKGND_NONE)
 
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)

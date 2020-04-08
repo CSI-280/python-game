@@ -16,13 +16,13 @@ MAP_BOX_SIZE = ((1, 1), (MAP_WIDTH + 2, MAP_HEIGHT + 2))
 PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2))
 
 # Defines UI elements as a dictionary
-# Format: (x, y): char #
+# Format: (x, y): char
 ui_elements = {
     # TOOLS
     (93, 6): 218,   # pointer tool
     (95, 6): 8,     # box tool
     (97, 6): 47,    # line tool
-    (99, 6): 250,   # single char tool
+    (99, 6): 7,   # single char tool
     (101, 6): 88,   # erase tool
     # CHARS
     # Building pieces
@@ -116,6 +116,23 @@ ui_elements = {
     (87, 32): 176,
     (89, 32): 177,
     (91, 32): 178,
+}
 
-    # COLORS
+# Colors dict
+# Format: (x, y): (char, color)
+color_menu = {
+    # Row One
+    (87, 37): (219, (255, 255, 255)),   # White
+    (89, 37): (219, (200, 50, 150)),    # Light Red
+    (91, 37): (219, (200, 0, 0)),       # Red
+    (93, 37): (219, (100, 0, 0)),       # Dark Red
+    (95, 37): (219, (50, 150, 200)),    # Light Blue
+    (97, 37): (219, (0, 0, 200)),       # Blue
+    (99, 37): (219, (0, 0, 100)),       # Dark Blue
+    (101, 37): (219, (50, 200, 150)),   # Light Green
+    (103, 37): (219, (0, 200, 0)),      # Green
+    (105, 37): (219, (0, 100, 0)),      # Dark Green
+    (107, 37): (219, (255, 255, 0)),    # Yellow
+    (109, 37): (219, (255, 150, 0)),   # Dark Yellow
+    # Row Two
 }
