@@ -210,14 +210,11 @@ def draw_borders(con):
 
 
 def draw_button(con, x, y, word):
-    draw_wall(con, x, y, x+9, y+2, libtcod.white)
+    draw_wall(con, x, y, x+button_size[0], y+button_size[1], libtcod.white)
     draw_word(con, x+2, y+1, word, libtcod.white, len(word))
 
 
 def draw_ui(con, hl_tool, hl_char, hl_color):
-    # Clear canvas button
-    draw_char(con, 111, 2, 88, libtcod.red)
-
     # Headers
     draw_word(con, 96, 3, "TOOLS", libtcod.white, 5)
     draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
@@ -225,11 +222,11 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     draw_word(con, 96, 9, "CHARS", libtcod.white, 5)
     draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
 
-    draw_word(con, 96, 34, "COLORS", libtcod.white, 6)
-    draw_line(con, 86, 35, 110, 35, 205, libtcod.white)
+    draw_word(con, 96, 27, "COLORS", libtcod.white, 6)
+    draw_line(con, 86, 28, 110, 28, 205, libtcod.white)
 
-    draw_word(con, 96, 40, "ACTIONS", libtcod.white, 7)
-    draw_line(con, 86, 41, 110, 41, 205, libtcod.white)
+    draw_word(con, 96, 33, "ACTIONS", libtcod.white, 7)
+    draw_line(con, 86, 34, 110, 34, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
     for x, y in ui_elements:
@@ -251,7 +248,7 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     draw_line(con, 85, 48, 111, 48, 219, libtcod.dark_amber)
     draw_char(con, 86, 50, '>', libtcod.white)
 
-    # action menu
+    # Action menu
     for x, y in button_menu:
         word = button_menu[x, y]
         draw_button(con, x, y, word)
