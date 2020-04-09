@@ -6,6 +6,7 @@ from draw_functions import draw_all_map_objects
 
 from constants import *
 
+
 def main():
     # set the font (arial10x10.png is in project folder, can be changed)
     libtcod.console_set_custom_font('../font_clean.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
