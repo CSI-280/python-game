@@ -10,7 +10,7 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
 
-class Object():
+class Object:
     def __init__(self, name, char_number, color=libtcod.light_grey, x=0, y=0):
         self.coords = [x, y]
         self.name = name

@@ -4,13 +4,14 @@ from map_objects import *
 from constants import *
 
 # Global variables & defaults
+init = True
 able_to_click = True
 drawX = 0
 drawY = 0
 mouse_char = 218
 mouse_color = libtcod.white
 draw_type = 0
-current_char = 219
+current_char = 176
 current_color = libtcod.white
 highlighted_tool = (list(ui_elements.keys())[0][0], list(ui_elements.keys())[0][1])
 highlighted_char = None
@@ -82,15 +83,17 @@ def change_draw_type(con, icon_char):
 
 def handle_mouse(con, mouse):
     global able_to_click, drawX, drawY, draw_type, current_char, mouse_char,\
-        mouse_color, current_color, highlighted_tool, highlighted_char, highlighted_color
+        mouse_color, current_color, highlighted_tool, highlighted_char, highlighted_color, init
 
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)
 
     draw_borders(con)
-    if highlighted_char is None:
+    # Functions to run on startup
+    if init:
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-        highlighted_char = 0
+        display_message(con, "Welcome", libtcod.white)
+        init = False
 
     # checks if mouse is over a ui element
     for x, y in ui_elements:
