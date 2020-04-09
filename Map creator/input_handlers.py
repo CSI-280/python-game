@@ -88,6 +88,9 @@ def handle_mouse(con, mouse):
     mouseY = int(mouse.y/CELL_SIZE)
 
     draw_borders(con)
+    if highlighted_char is None:
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+        highlighted_char = 0
 
     # checks if mouse is over a ui element
     for x, y in ui_elements:
@@ -122,6 +125,37 @@ def handle_mouse(con, mouse):
                 if (x, y) is not highlighted_color:
                     highlight_ui(con, x, y, 249, libtcod.white)
                     highlighted_color = (x, y)
+
+        # Big Buttons
+        for element in button_menu.items():
+            x, y = element[0]
+            change_background(con, x, y, x + button_size[0],
+                              y + button_size[1], libtcod.black)
+            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+               element[1] == 'CLEAR':
+                change_background(con, x, y, x + button_size[0],
+                                  y + button_size[1], libtcod.darker_red)
+                display_message(con, "Clear Canvas", libtcod.red)
+                if mouse.lbutton:
+                    erase_all_map_objects()
+                    clear_canvas(con)
+            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+               element[1] == 'EXPORT':
+                display_message(con, "Export map", libtcod.white)
+                change_background(con, x, y, x + button_size[0],
+                                  y + button_size[1], libtcod.dark_amber)
+                if mouse.lbutton:
+                    export_map()
+            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+               element[1] == 'IMPORT':
+                change_background(con, x, y, x + button_size[0],
+                                  y + button_size[1], libtcod.dark_amber)
+                display_message(con, "Import map", libtcod.white)
+                if mouse.lbutton:
+                    import_map()
 
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):
         able_to_click = False
@@ -165,30 +199,6 @@ def handle_mouse(con, mouse):
 
     if mouse.rbutton:
         erase_map_object(con, mouseX, mouseY)
-
-    # Buttons
-    # Clear canvas
-    for element in button_menu.items():
-        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-                element[1] == 'CLEAR':
-            display_message(con, "Clear Canvas", libtcod.red)
-            if mouse.lbutton_pressed:
-                erase_all_map_objects()
-                clear_canvas(con)
-        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-                element[1] == 'EXPORT':
-            display_message(con, "Export map", libtcod.red)
-            if mouse.lbutton_pressed:
-                export_map()
-                erase_all_map_objects()
-                clear_canvas(con)
-        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-                element[1] == 'IMPORT':
-            display_message(con, "Import map", libtcod.red)
-            if mouse.lbutton_pressed:
-                import_map()
+        print(mouseX, mouseY)
 
     draw_mouse(con, mouseX, mouseY, mouse_char, mouse_color)

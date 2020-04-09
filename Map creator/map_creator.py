@@ -2,7 +2,7 @@
 
 import tcod as libtcod
 from input_handlers import handle_keys, handle_mouse
-from draw_functions import draw_all_map_objects
+from draw_functions import *
 
 from constants import *
 

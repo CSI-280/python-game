@@ -225,8 +225,8 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     draw_word(con, 96, 27, "COLORS", libtcod.white, 6)
     draw_line(con, 86, 28, 110, 28, 205, libtcod.white)
 
-    draw_word(con, 96, 33, "ACTIONS", libtcod.white, 7)
-    draw_line(con, 86, 34, 110, 34, 205, libtcod.white)
+    draw_word(con, 95, 37, "ACTIONS", libtcod.white, 7)
+    draw_line(con, 86, 38, 110, 38, 205, libtcod.white)
 
     # Loop through and print contents of constant ui dictionary
     for x, y in ui_elements:
@@ -266,6 +266,13 @@ def highlight_ui(con, x, y, char, color):
     draw_char(con, x - 1, y - 1, char, color)
     draw_char(con, x + 1, y - 1, char, color)
     draw_char(con, x - 1, y + 1, char, color)
+
+
+def change_background(con, x1, y1, x2, y2, color):
+    # change background of square depending on coordinates
+    for y in range(y1 + 1, y2):
+        for x in range(x1 + 1, x2):
+            libtcod.console_set_char_background(con, x, y, color)
 
 
 def draw_all_map_objects(con):
@@ -331,4 +338,5 @@ def refresh_tools(con, hl_tool, hl_char, hl_color):
     for y in range(2, 47):
         for x in range(85, 111):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
+            libtcod.console_set_char_background(con, x, y, libtcod.black)
     draw_ui(con, hl_tool, hl_char, hl_color)
