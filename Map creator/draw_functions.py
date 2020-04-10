@@ -255,6 +255,7 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
 
 
 def highlight_ui(con, x, y, char, color):
+
     # Draw a char in the 8 coords around a ui item
     draw_char(con, x + 1, y, char, color)
     draw_char(con, x - 1, y, char, color)

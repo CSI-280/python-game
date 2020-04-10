@@ -18,7 +18,7 @@ def main():
     con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     # limit fps so the game doesn't take up 100% cpu
-    libtcod.sys_set_fps(30)
+    libtcod.sys_set_fps(60)
 
     # don't show mouse
     libtcod.mouse_show_cursor(False)
@@ -45,7 +45,6 @@ def main():
 
         exit_game = action.get('exit')
         fullscreen = action.get('fullscreen')
-
 
         if fullscreen:
             # toggle fullscreen

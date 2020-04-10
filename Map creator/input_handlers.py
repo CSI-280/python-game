@@ -99,18 +99,21 @@ def handle_mouse(con, mouse):
     for x, y in ui_elements:
         if mouseX == x and mouseY == y:
             char = ui_elements[(x, y)]
-            refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
             if mouse.lbutton_pressed:
                 if y < 10:
                     change_draw_type(con, char)
                     if (x, y) is not highlighted_tool:
                         highlight_ui(con, x, y, 249, libtcod.white)
                         highlighted_tool = (x, y)
+                        refresh_tools(con, highlighted_tool, highlighted_char,
+                                      highlighted_color)
                 elif y > 10:
                     current_char = char
                     if (x, y) is not highlighted_char:
                         highlight_ui(con, x, y, 249, libtcod.white)
                         highlighted_char = (x, y)
+                        refresh_tools(con, highlighted_tool, highlighted_char,
+                                      highlighted_color)
                     if draw_type == 4:
                         mouse_char = char
             break
@@ -118,8 +121,6 @@ def handle_mouse(con, mouse):
     # checks if mouse is over a color menu choice
     for x, y in color_menu:
         if mouseX == x and mouseY == y:
-            refresh_tools(con, highlighted_tool, highlighted_char,
-                          highlighted_color)
             char, color = color_menu[(x, y)]
             if mouse.lbutton_pressed:
                 current_color = color
@@ -128,6 +129,8 @@ def handle_mouse(con, mouse):
                 if (x, y) is not highlighted_color:
                     highlight_ui(con, x, y, 249, libtcod.white)
                     highlighted_color = (x, y)
+                    refresh_tools(con, highlighted_tool, highlighted_char,
+                                  highlighted_color)
 
         # Big Buttons
         for element in button_menu.items():
@@ -202,6 +205,5 @@ def handle_mouse(con, mouse):
 
     if mouse.rbutton:
         erase_map_object(con, mouseX, mouseY)
-        print(mouseX, mouseY)
 
     draw_mouse(con, mouseX, mouseY, mouse_char, mouse_color)
