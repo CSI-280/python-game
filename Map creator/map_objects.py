@@ -74,9 +74,26 @@ def erase_all_map_objects():
     print("Canvas cleared")
 
 
-# TODO
 def remove_duplicate_objects():
-    pass
+    i = 0
+    for element in objects:
+        num_duplicates = 0
+        removed = 0
+        temp_x = element.x
+        temp_y = element.y
+        # Get number of duplicates for given element
+        for other in objects[i:]:
+            if other.x == temp_x and other.y == temp_y:
+                num_duplicates += 1
+        # If duplicates exist then loop through list and delete until most recent
+        if num_duplicates > 1:
+            for duplicate in objects:
+                if (duplicate.x == temp_x and duplicate.y == temp_y) and removed < (num_duplicates - 1):
+                    removed += 1
+                    objects.remove(duplicate)
+        i += 1
+    print("Duplicates removed")
+
 
 
 def import_map():
@@ -112,6 +129,8 @@ def export_map():
     file_name = '-'.join(str(datetime.datetime.now()).split('.'))
     # filename can't contain colons
     file_name = file_name.replace(':', '-') + '.json'
+    # remove all duplicate objects in list
+    remove_duplicate_objects()
     # open file for exporting
     with open(location + file_name, 'w') as file_out:
         file_out.write(json.dumps(objects, indent=4, cls=ObjectEncoder))

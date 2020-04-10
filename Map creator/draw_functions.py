@@ -284,7 +284,6 @@ def draw_all_map_objects(con):
                                  obj.y + OUTLINE_SIZE,
                                  obj.get_char(),
                                  libtcod.BKGND_NONE)
-    map_objects.remove_duplicate_objects()
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
