@@ -7,6 +7,8 @@ from constants import *
 init = True
 able_to_click = True
 drawX = 0
+mouseX = 0
+mouseY = 0
 drawY = 0
 mouse_char = 218
 mouse_color = libtcod.white
@@ -19,15 +21,72 @@ highlighted_color = (list(color_menu.keys())[0][0], list(color_menu.keys())[0][1
 hide_mouse = False
 
 
-def handle_keys(key):
+def handle_keys(con, key):
+    global highlighted_tool, mouseX, mouseY
     """
     returns a dictionary depending on key inputted
     """
     # press alt + enter to go into fullscreen
     if (key.vk == libtcod.KEY_ENTER and key.lalt) or (key.vk == libtcod.KEY_ENTER and key.ralt):
         return {'fullscreen': True}
-    elif key.vk == libtcod.KEY_ESCAPE:
+
+    if key.vk == libtcod.KEY_ESCAPE:
         return {'exit': True}
+
+    if key.vk == libtcod.KEY_TAB:
+        print("Mouse Position: ", mouseX, mouseY)
+
+    # Binds numbers to tools
+    if key.vk == libtcod.KEY_1:
+        # Pointer tool
+        x = 93
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+    elif key.vk == libtcod.KEY_2:
+        # Wall draw
+        x = 95
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+    elif key.vk == libtcod.KEY_3:
+        # Box draw
+        x = 97
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+    elif key.vk == libtcod.KEY_4:
+        # Line draw
+        x = 99
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+    elif key.vk == libtcod.KEY_5:
+        # Char draw
+        x = 101
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+    elif key.vk == (libtcod.KEY_6 or libtcod.KEY_BACKSPACE):
+        # Erase
+        x = 103
+        y = 6
+        char = ui_elements[(x, y)]
+        change_draw_type(con, char)
+        highlighted_tool = (x, y)
+        refresh_tools(con, highlighted_tool, highlighted_char,
+                      highlighted_color)
+
     return {}
 
 
@@ -85,7 +144,7 @@ def change_draw_type(con, icon_char):
 def handle_mouse(con, mouse):
     global able_to_click, drawX, drawY, draw_type, current_char, mouse_char, \
         mouse_color, current_color, highlighted_tool, highlighted_char, \
-        highlighted_color, init, hide_mouse
+        highlighted_color, init, hide_mouse, mouseX, mouseY
 
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)

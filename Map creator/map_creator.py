@@ -41,7 +41,7 @@ def main():
         libtcod.console_flush()
 
         # check for keyboard input
-        action = handle_keys(key)
+        action = handle_keys(con, key)
 
         exit_game = action.get('exit')
         fullscreen = action.get('fullscreen')
