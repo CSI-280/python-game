@@ -59,6 +59,11 @@ class ObjectEncoder(JSONEncoder):
 objects = []
 
 
+def display_map_objects():
+    for element in objects:
+        print(element.x, element.y, element.char)
+
+
 def erase_map_object(con, x, y):
     for element in objects:
         temp_x = element.x + OUTLINE_SIZE
@@ -74,25 +79,26 @@ def erase_all_map_objects():
 
 
 def remove_duplicate_objects():
-    i = 0
     for element in objects:
+        to_remove = []
         num_duplicates = 0
         removed = 0
         temp_x = element.x
         temp_y = element.y
         # Get number of duplicates for given element
         for other in objects:
-            if other.x == temp_x and other.y == temp_y:
+            if (other.x, other.y) == (temp_x, temp_y):
                 num_duplicates += 1
         # If duplicates exist then loop through list and delete until most recent
         if num_duplicates >= 1:
             for duplicate in objects:
-                if (duplicate.x == temp_x and duplicate.y == temp_y) and (removed < (num_duplicates - 1)):
-                    print("Removed duplicate")
+                if (duplicate.x, duplicate.y) == (temp_x, temp_y) and removed < num_duplicates - 1:
                     removed += 1
-                    objects.remove(duplicate)
-        i += 1
+                    to_remove.append(duplicate)
+        for r in to_remove:
+            objects.remove(r)
     print("Duplicates removed")
+
 
 
 def import_map():
@@ -129,6 +135,7 @@ def import_map():
         print('Loaded', filename)
     except FileNotFoundError:
         print('Canceled load file')
+
 
 def export_map():
     # TODO, make this a constant

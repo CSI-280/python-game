@@ -4,7 +4,6 @@ import map_objects
 
 from constants import *
 
-
 # bresenham taken from https://github.com/encukou/bresenham/blob/master/bresenham.py
 # not my work
 def bresenham(x0, y0, x1, y1):
@@ -130,6 +129,8 @@ def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
         draw_line(con, x2, y2, x1, y2, char_num, color)
         # left
         draw_line(con, x1, y2, x1, y1, char_num, color)
+
+    # map_objects.display_map_objects()
 
 
 def draw_wall_objects(x1, y1, x2, y2, name, color):
