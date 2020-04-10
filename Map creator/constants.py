@@ -19,10 +19,10 @@ PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2)
 # Format: (x, y): char
 tools_menu = {
     (93, 6): 218,   # pointer tool
-    (95, 6): 8,     # wall tool
+    (95, 6): 241,   # wall tool
     (97, 6): 219,   # box tool
     (99, 6): 47,    # line tool
-    (101, 6): 7,     # single char tool
+    (101, 6): 240,  # single char tool
     (103, 6): 88,   # erase tool
 }
 

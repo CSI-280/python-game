@@ -116,7 +116,7 @@ def change_draw_type(con, icon_char):
         mouse_color = current_color
         display_message(con, "Draw Type: Line", libtcod.white)
         print("Draw Type: Line")
-    elif icon_char == 8:
+    elif icon_char == 241:
         draw_type = 2
         mouse_char = 8
         mouse_color = current_color
@@ -128,7 +128,7 @@ def change_draw_type(con, icon_char):
         mouse_color = current_color
         display_message(con, "Draw Type: Box", libtcod.white)
         print("Draw Type: Box")
-    elif icon_char == 7:
+    elif icon_char == 240:
         draw_type = 4
         mouse_char = current_char
         mouse_color = current_color
