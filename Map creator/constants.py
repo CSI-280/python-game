@@ -15,17 +15,20 @@ CELL_SIZE = 10
 MAP_BOX_SIZE = ((1, 1), (MAP_WIDTH + 2, MAP_HEIGHT + 2))
 PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2))
 
-# Defines UI elements as a dictionary
+# Defines tools menu as a dictionary
 # Format: (x, y): char
-ui_elements = {
-    # TOOLS
+tools_menu = {
     (93, 6): 218,   # pointer tool
     (95, 6): 8,     # wall tool
     (97, 6): 219,   # box tool
     (99, 6): 47,    # line tool
     (101, 6): 7,     # single char tool
     (103, 6): 88,   # erase tool
-    # CHARS
+}
+
+# Defines chars menu as a dictionary
+# Format: (x, y): char
+chars_menu = {
     # Building Pieces
     # Row One
     (86, 12): 201,
@@ -162,7 +165,6 @@ color_menu = {
 # Format: (width, height)
 button_size = (9, 2)
 
-# Buttons dict
 # Format: (x, y): (word)
 button_menu = {
     (87, 40): 'EXPORT',

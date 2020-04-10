@@ -15,7 +15,7 @@ mouse_color = libtcod.white
 draw_type = 0
 current_char = 219
 current_color = libtcod.white
-highlighted_tool = (list(ui_elements.keys())[0][0], list(ui_elements.keys())[0][1])
+highlighted_tool = (list(tools_menu.keys())[0][0], list(tools_menu.keys())[0][1])
 highlighted_char = (86, 18)
 highlighted_color = (list(color_menu.keys())[0][0], list(color_menu.keys())[0][1])
 hide_mouse = False
@@ -42,7 +42,7 @@ def handle_keys(con, key):
         # Pointer tool
         x = 93
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
@@ -50,7 +50,7 @@ def handle_keys(con, key):
         # Wall draw
         x = 95
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
@@ -58,7 +58,7 @@ def handle_keys(con, key):
         # Box draw
         x = 97
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
@@ -66,7 +66,7 @@ def handle_keys(con, key):
         # Line draw
         x = 99
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
@@ -74,7 +74,7 @@ def handle_keys(con, key):
         # Char draw
         x = 101
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
@@ -82,7 +82,7 @@ def handle_keys(con, key):
         # Erase
         x = 103
         y = 6
-        char = ui_elements[(x, y)]
+        char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char,
@@ -159,27 +159,35 @@ def handle_mouse(con, mouse):
 
     draw_borders(con)
 
-    # checks if mouse is over a ui element
-    for x, y in ui_elements:
-        if mouseX == x and mouseY == y:
-            char = ui_elements[(x, y)]
+    # checks if mouse is over a tool
+    for tool_x, tool_y in tools_menu:
+        if mouseX == tool_x and mouseY == tool_y:
+            char = tools_menu[(tool_x, tool_y)]
+            draw_char(con, tool_x, tool_y, char, libtcod.red)
             if mouse.lbutton_pressed:
-                if y < 10:
-                    change_draw_type(con, char)
-                    if (x, y) is not highlighted_tool:
-                        highlight_ui(con, x, y, 249, libtcod.white)
-                        highlighted_tool = (x, y)
-                        refresh_tools(con, highlighted_tool, highlighted_char,
-                                      highlighted_color)
-                elif y > 10:
-                    current_char = char
-                    if (x, y) is not highlighted_char:
-                        highlight_ui(con, x, y, 249, libtcod.white)
-                        highlighted_char = (x, y)
-                        refresh_tools(con, highlighted_tool, highlighted_char,
-                                      highlighted_color)
-                    if draw_type == 4:
-                        mouse_char = char
+                change_draw_type(con, char)
+                if (tool_x, tool_y) is not highlighted_tool:
+                    highlight_ui(con, tool_x, tool_y, 249, libtcod.white)
+                    highlighted_tool = (tool_x, tool_y)
+                    refresh_tools(con, highlighted_tool, highlighted_char,
+                                  highlighted_color)
+            break
+
+    # checks if mouse is over a char
+    for char_x, char_y in chars_menu:
+        if mouseX == char_x and mouseY == char_y:
+            char = chars_menu[(char_x, char_y)]
+            draw_char(con, char_x, char_y, char, libtcod.red)
+            if mouse.lbutton_pressed:
+                current_char = char
+                if (char_x, char_y) is not highlighted_char:
+                    highlight_ui(con, char_x, char_y, 249, libtcod.white)
+                    highlighted_char = (char_x, char_y)
+                    refresh_tools(con, highlighted_tool,
+                                  highlighted_char,
+                                  highlighted_color)
+                if draw_type == 4:
+                    mouse_char = char
             break
 
     # checks if mouse is over a color menu choice

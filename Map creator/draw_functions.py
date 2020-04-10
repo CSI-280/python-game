@@ -4,6 +4,7 @@ import map_objects
 
 from constants import *
 
+
 # bresenham taken from https://github.com/encukou/bresenham/blob/master/bresenham.py
 # not my work
 def bresenham(x0, y0, x1, y1):
@@ -197,10 +198,10 @@ def draw_word(con, x, y, word, color, max_len):
 
 def draw_borders(con):
     draw_wall(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
-                   MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], libtcod.dark_amber, 219)
+              MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], libtcod.dark_amber, 219)
     draw_wall(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
-                  PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], libtcod.dark_amber, 219)
-    draw_ui(con, None , None, None)
+              PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], libtcod.dark_amber, 219)
+    draw_ui(con, None, None, None)
 
 
 def draw_button(con, x, y, word):
@@ -222,9 +223,14 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     draw_word(con, 95, 37, "ACTIONS", libtcod.white, 7)
     draw_line(con, 86, 38, 110, 38, 205, libtcod.white)
 
-    # Loop through and print contents of constant ui dictionary
-    for x, y in ui_elements:
-        char = ui_elements[(x, y)]
+    # Tool menu
+    for x, y in tools_menu:
+        char = tools_menu[(x, y)]
+        draw_char(con, x, y, char, libtcod.white)
+
+    # Chars menu
+    for x, y in chars_menu:
+        char = chars_menu[(x, y)]
         draw_char(con, x, y, char, libtcod.white)
 
     # Color menu
@@ -323,7 +329,7 @@ def clear_screen(con):
 
 def clear_canvas(con):
     for y in range(OUTLINE_SIZE, MAP_HEIGHT + OUTLINE_SIZE):
-        for x in range(OUTLINE_SIZE, MAP_WIDTH+ OUTLINE_SIZE):
+        for x in range(OUTLINE_SIZE, MAP_WIDTH + OUTLINE_SIZE):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
 
 
