@@ -290,16 +290,15 @@ def draw_all_map_objects(con):
 
 old_mouse_pos = [None, None]
 old_mouse_char = None
+old_mouse_char_color = None
 
 
 def draw_mouse(con, x, y, mouse_char, color):
     global old_mouse_pos, old_mouse_char, old_mouse_char_color
-    # TODO, make this a global variable, fix instances of this global variable
-    # in input_handlers
 
     # re draw the char that the mouse was at previously
     if old_mouse_pos[0] is not None:
-        libtcod.console_set_default_foreground(con, color)
+        libtcod.console_set_default_foreground(con, old_mouse_char_color)
         libtcod.console_put_char(con, old_mouse_pos[0], old_mouse_pos[1], old_mouse_char, libtcod.BKGND_NONE)
 
     # get old variables for next time this function is called

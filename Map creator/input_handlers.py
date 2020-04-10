@@ -16,6 +16,7 @@ current_color = libtcod.white
 highlighted_tool = (list(ui_elements.keys())[0][0], list(ui_elements.keys())[0][1])
 highlighted_char = (86, 18)
 highlighted_color = (list(color_menu.keys())[0][0], list(color_menu.keys())[0][1])
+hide_mouse = False
 
 
 def handle_keys(key):
@@ -82,8 +83,9 @@ def change_draw_type(con, icon_char):
 
 
 def handle_mouse(con, mouse):
-    global able_to_click, drawX, drawY, draw_type, current_char, mouse_char,\
-        mouse_color, current_color, highlighted_tool, highlighted_char, highlighted_color, init
+    global able_to_click, drawX, drawY, draw_type, current_char, mouse_char, \
+        mouse_color, current_color, highlighted_tool, highlighted_char, \
+        highlighted_color, init, hide_mouse
 
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)
@@ -132,36 +134,39 @@ def handle_mouse(con, mouse):
                     refresh_tools(con, highlighted_tool, highlighted_char,
                                   highlighted_color)
 
-        # Big Buttons
-        for element in button_menu.items():
-            x, y = element[0]
+    # Big Buttons
+    for element in button_menu.items():
+        x, y = element[0]
+        change_background(con, x, y, x + button_size[0],
+                          y + button_size[1], libtcod.black)
+        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+           element[1] == 'CLEAR':
             change_background(con, x, y, x + button_size[0],
-                              y + button_size[1], libtcod.black)
-            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-               element[1] == 'CLEAR':
-                change_background(con, x, y, x + button_size[0],
-                                  y + button_size[1], libtcod.darker_red)
-                display_message(con, "Clear Canvas", libtcod.red)
-                if mouse.lbutton:
-                    erase_all_map_objects()
-                    clear_canvas(con)
-            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-               element[1] == 'EXPORT':
-                display_message(con, "Export map", libtcod.white)
-                change_background(con, x, y, x + button_size[0],
-                                  y + button_size[1], libtcod.dark_amber)
-                if mouse.lbutton:
-                    export_map()
-            if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-               element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-               element[1] == 'IMPORT':
-                change_background(con, x, y, x + button_size[0],
-                                  y + button_size[1], libtcod.dark_amber)
-                display_message(con, "Import map", libtcod.white)
-                if mouse.lbutton:
-                    import_map()
+                              y + button_size[1], libtcod.darker_red)
+            display_message(con, "Clear Canvas", libtcod.red)
+            if mouse.lbutton_pressed:
+                erase_all_map_objects()
+                clear_canvas(con)
+                break
+        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+           element[1] == 'EXPORT':
+            display_message(con, "Export map", libtcod.white)
+            change_background(con, x, y, x + button_size[0],
+                              y + button_size[1], libtcod.dark_amber)
+            if mouse.lbutton_pressed:
+                export_map()
+                break
+        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+           element[1] == 'IMPORT':
+            change_background(con, x, y, x + button_size[0],
+                              y + button_size[1], libtcod.dark_amber)
+            display_message(con, "Import map", libtcod.white)
+            if mouse.lbutton_pressed:
+                import_map()
+                break
 
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):
         able_to_click = False
@@ -174,15 +179,24 @@ def handle_mouse(con, mouse):
         draw_all_map_objects(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 1:
-                draw_line(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
+                draw_line(con, mouseX, mouseY, drawX, drawY, current_char,
+                          libtcod.white)
+                hide_mouse = True
             elif draw_type == 2:
                 draw_wall(con, mouseX, mouseY, drawX, drawY, libtcod.white)
+                hide_mouse = True
             elif draw_type == 3:
-                draw_box(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
+                draw_box(con, mouseX, mouseY, drawX, drawY, current_char,
+                         libtcod.white)
+                hide_mouse = True
             elif draw_type == 4:
                 draw_char(con, mouseX, mouseY, current_char, current_color)
+                hide_mouse = False
             elif draw_type == 5:
                 erase_map_object(con, mouseX, mouseY)
+                hide_mouse = False
+    else:
+        hide_mouse = False
 
     if mouse.lbutton_pressed:
         able_to_click = True
@@ -206,4 +220,5 @@ def handle_mouse(con, mouse):
     if mouse.rbutton:
         erase_map_object(con, mouseX, mouseY)
 
-    draw_mouse(con, mouseX, mouseY, mouse_char, mouse_color)
+    if not hide_mouse:
+        draw_mouse(con, mouseX, mouseY, mouse_char, mouse_color)

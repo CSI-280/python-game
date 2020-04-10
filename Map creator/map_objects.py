@@ -94,32 +94,40 @@ def remove_duplicate_objects():
     print("Duplicates removed")
 
 
-
 def import_map():
-    # file picker
-    Tk().withdraw()
-    filename = askopenfilename(initialdir='../Map Files',
-                               title='Import map')
-    print('Loading', filename)
+    global able_to_click
 
-    erase_all_map_objects()
-    print(objects)
+    try:
+        # file picker
+        Tk().withdraw()
+        filename = askopenfilename(initialdir='../Map Files',
+                                   title='Import map')
+        print('Loading', filename)
 
-    # get json from file
-    with open(filename, 'r') as fin:
-        json_output = json.loads(fin.read())
+        # test if the file can be opened, if not, FileNotFoundError will
+        # be raised and loop will quit before erase_all_map_objects() is called
+        with open(filename, 'r'):
+            pass
 
-    # convert each json element to an 'Object'
-    for element in json_output:
-        x, y = tuple(list(element.keys())[0].split(' '))
-        x = int(x)
-        y = int(y)
-        name, char_number, color_list = list(element.values())[0]
-        color = libtcod.Color(color_list[0], color_list[1], color_list[2])
-        objects.append(Object(name, char_number, color, x, y))
+        erase_all_map_objects()
+        print(objects)
 
-    print('Loaded', filename)
+        # get json from file
+        with open(filename, 'r') as fin:
+            json_output = json.loads(fin.read())
 
+        # convert each json element to an 'Object'
+        for element in json_output:
+            x, y = tuple(list(element.keys())[0].split(' '))
+            x = int(x)
+            y = int(y)
+            name, char_number, color_list = list(element.values())[0]
+            color = libtcod.Color(color_list[0], color_list[1], color_list[2])
+            objects.append(Object(name, char_number, color, x, y))
+
+        print('Loaded', filename)
+    except FileNotFoundError:
+        print('Canceled load file')
 
 def export_map():
     # TODO, make this a constant
