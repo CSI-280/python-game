@@ -26,15 +26,16 @@ def handle_keys(con, key):
     """
     returns a dictionary depending on key inputted
     """
-    # press alt + enter to go into fullscreen
+
+    # Press alt + enter to go into fullscreen
     if (key.vk == libtcod.KEY_ENTER and key.lalt) or (key.vk == libtcod.KEY_ENTER and key.ralt):
         return {'fullscreen': True}
-
-    if key.vk == libtcod.KEY_ESCAPE:
+    # Esc to exit
+    elif key.vk == libtcod.KEY_ESCAPE:
         return {'exit': True}
-
-    if key.vk == libtcod.KEY_TAB:
-        print("Mouse Position: ", mouseX, mouseY)
+    # Tab to print current mouse coords
+    elif key.vk == libtcod.KEY_TAB:
+        print("Mouse Position: ", "(", mouseX, ", ", mouseY, ")")
 
     # Binds numbers to tools
     if key.vk == libtcod.KEY_1:
@@ -77,7 +78,7 @@ def handle_keys(con, key):
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == (libtcod.KEY_6 or libtcod.KEY_BACKSPACE):
+    elif key.vk == libtcod.KEY_6:
         # Erase
         x = 103
         y = 6
@@ -146,15 +147,17 @@ def handle_mouse(con, mouse):
         mouse_color, current_color, highlighted_tool, highlighted_char, \
         highlighted_color, init, hide_mouse, mouseX, mouseY
 
+    # Functions to run on startup
+    if init:
+        refresh_tools(con, highlighted_tool, highlighted_char,
+                      highlighted_color)
+        display_message(con, "Welcome", libtcod.white)
+        init = False
+
     mouseX = int(mouse.x/CELL_SIZE)
     mouseY = int(mouse.y/CELL_SIZE)
 
     draw_borders(con)
-    # Functions to run on startup
-    if init:
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-        display_message(con, "Welcome", libtcod.white)
-        init = False
 
     # checks if mouse is over a ui element
     for x, y in ui_elements:
@@ -215,7 +218,9 @@ def handle_mouse(con, mouse):
             change_background(con, x, y, x + button_size[0],
                               y + button_size[1], libtcod.dark_amber)
             if mouse.lbutton_pressed:
+                display_message(con, "Exporting...", libtcod.white)
                 export_map()
+                display_message(con, "Export Complete", libtcod.dark_green)
                 break
         if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
            element[0][1] <= mouseY <= element[0][1] + button_size[1] and \

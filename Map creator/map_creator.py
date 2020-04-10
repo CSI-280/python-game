@@ -12,10 +12,10 @@ def main():
     libtcod.console_set_custom_font('../font_clean.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     # create the screen
-    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Map Creator', False)
+    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Map Creator', False, vsync=False)
 
     # create a console
-    con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
+    con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     # limit fps so the game doesn't take up 100% cpu
     libtcod.sys_set_fps(60)
@@ -31,7 +31,7 @@ def main():
     while not libtcod.console_is_window_closed():
         # update key and mouse variables for event
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
-        
+
         # draws the JSON map that's defined already
         draw_all_map_objects(con)
 
