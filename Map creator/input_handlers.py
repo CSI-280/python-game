@@ -219,6 +219,7 @@ def handle_mouse(con, mouse):
 
     if mouse.rbutton:
         erase_map_object(con, mouseX, mouseY)
+        remove_duplicate_objects()
 
     if not hide_mouse:
         draw_mouse(con, mouseX, mouseY, mouse_char, mouse_color)

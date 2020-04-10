@@ -81,13 +81,14 @@ def remove_duplicate_objects():
         temp_x = element.x
         temp_y = element.y
         # Get number of duplicates for given element
-        for other in objects[i:]:
+        for other in objects:
             if other.x == temp_x and other.y == temp_y:
                 num_duplicates += 1
         # If duplicates exist then loop through list and delete until most recent
-        if num_duplicates > 1:
+        if num_duplicates >= 1:
             for duplicate in objects:
-                if (duplicate.x == temp_x and duplicate.y == temp_y) and removed < (num_duplicates - 1):
+                if (duplicate.x == temp_x and duplicate.y == temp_y) and (removed < (num_duplicates - 1)):
+                    print("Removed duplicate")
                     removed += 1
                     objects.remove(duplicate)
         i += 1

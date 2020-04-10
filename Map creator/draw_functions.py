@@ -76,7 +76,7 @@ def draw_box(con, x1, y1, x2, y2, char, color):
 
 
 def draw_box_objects(x1, y1, x2, y2, name, char, color):
-    print("object")
+
     # Drag down
     if y2 > y1:
         for y in range(y1, y2):
@@ -113,17 +113,14 @@ def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
             corner_chars = [188, 200, 187, 201]
 
         # top left
-        draw_char(con, x1, y1, 15, color)
         draw_char(con, x1, y1, corner_chars[0], color)
         # top right
-        draw_char(con, x2, y1, 15, color)
         draw_char(con, x2, y1, corner_chars[1], color)
         # bottom left
-        draw_char(con, x1, y2, 15, color)
         draw_char(con, x1, y2, corner_chars[2], color)
         # bottom right
-        draw_char(con, x2, y2, 15, color)
         draw_char(con, x2, y2, corner_chars[3], color)
+
     else:
         # top
         draw_line(con, x1, y1, x2, y1, char_num, color)
@@ -160,16 +157,12 @@ def draw_wall_objects(x1, y1, x2, y2, name, color):
         corner_chars = [188, 200, 187, 201]
 
     # top left
-    draw_char_object(x1, y1, 15, color)
     draw_char_object(x1, y1, corner_chars[0], color)
     # top right
-    draw_char_object(x2, y1, 15, color)
     draw_char_object(x2, y1, corner_chars[1], color)
     # bottom left
-    draw_char_object(x1, y2, 15, color)
     draw_char_object(x1, y2, corner_chars[2], color)
     # bottom right
-    draw_char_object(x2, y2, 15, color)
     draw_char_object(x2, y2, corner_chars[3], color)
 
 
