@@ -11,10 +11,10 @@ drawY = 0
 mouse_char = 218
 mouse_color = libtcod.white
 draw_type = 0
-current_char = 176
+current_char = 219
 current_color = libtcod.white
 highlighted_tool = (list(ui_elements.keys())[0][0], list(ui_elements.keys())[0][1])
-highlighted_char = None
+highlighted_char = (86, 18)
 highlighted_color = (list(color_menu.keys())[0][0], list(color_menu.keys())[0][1])
 
 
