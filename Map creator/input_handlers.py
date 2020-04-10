@@ -77,7 +77,7 @@ def change_draw_type(con, icon_char):
         draw_type = 5
         mouse_char = 88
         mouse_color = libtcod.red
-        display_message(con, "Tool: Erase", libtcod.white)
+        display_message(con, "Tool: Erase", libtcod.red)
         print("Tool: Erase")
 
 

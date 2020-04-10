@@ -64,7 +64,6 @@ def erase_map_object(con, x, y):
         temp_x = element.x + OUTLINE_SIZE
         temp_y = element.y + OUTLINE_SIZE
         if temp_x == x and temp_y == y:
-            print("Removed ", element)
             objects.remove(element)
             draw_functions.draw_all_map_objects(con)
 
