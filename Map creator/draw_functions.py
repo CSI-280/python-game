@@ -53,11 +53,11 @@ def draw_line(con, x1, y1, x2, y2, char, color):
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
-def draw_line_objects(x1, y1, x2, y2, name, char_number, color):
+def draw_line_objects(x1, y1, x2, y2, attr, char_number, color):
     point_list = list(bresenham(x1, y1, x2, y2))
 
     for point in point_list:
-        new_object = map_objects.Object(name, char_number, color)
+        new_object = map_objects.Object(attr, char_number, color)
         new_object.x = point[0] - OUTLINE_SIZE
         new_object.y = point[1] - OUTLINE_SIZE
         map_objects.objects.append(new_object)
@@ -75,16 +75,16 @@ def draw_box(con, x1, y1, x2, y2, char, color):
             draw_line(con, x1, y, x2, y, char, color)
 
 
-def draw_box_objects(x1, y1, x2, y2, name, char, color):
+def draw_box_objects(x1, y1, x2, y2, attr, char, color):
 
     # Drag down
     if y2 > y1:
         for y in range(y1, y2):
-            draw_line_objects(x1, y, x2, y, name, char, color)
+            draw_line_objects(x1, y, x2, y, attr, char, color)
     # Drag up
     elif y1 > y2:
         for y in range(y2, y1):
-            draw_line_objects(x1, y, x2, y, name, char, color)
+            draw_line_objects(x1, y, x2, y, attr, char, color)
 
 
 def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
@@ -134,15 +134,15 @@ def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
     # map_objects.display_map_objects()
 
 
-def draw_wall_objects(x1, y1, x2, y2, name, color):
+def draw_wall_objects(x1, y1, x2, y2, attr, color):
     # top
-    draw_line_objects(x1, y1, x2, y1, name, 205, color)
+    draw_line_objects(x1, y1, x2, y1, attr, 205, color)
     # right
-    draw_line_objects(x2, y1, x2, y2, name, 186, color)
+    draw_line_objects(x2, y1, x2, y2, attr, 186, color)
     # bottom
-    draw_line_objects(x2, y2, x1, y2, name, 205, color)
+    draw_line_objects(x2, y2, x1, y2, attr, 205, color)
     # left
-    draw_line_objects(x1, y2, x1, y1, name, 186, color)
+    draw_line_objects(x1, y2, x1, y1, attr, 186, color)
 
     # bottom right to top left
     corner_chars = [188, 200, 187, 201]
@@ -159,13 +159,13 @@ def draw_wall_objects(x1, y1, x2, y2, name, color):
         corner_chars = [188, 200, 187, 201]
 
     # top left
-    draw_char_object(x1, y1, corner_chars[0], color)
+    draw_char_object(x1, y1, "c", corner_chars[0], color)
     # top right
-    draw_char_object(x2, y1, corner_chars[1], color)
+    draw_char_object(x2, y1, "c", corner_chars[1], color)
     # bottom left
-    draw_char_object(x1, y2, corner_chars[2], color)
+    draw_char_object(x1, y2, "c", corner_chars[2], color)
     # bottom right
-    draw_char_object(x2, y2, corner_chars[3], color)
+    draw_char_object(x2, y2, "c", corner_chars[3], color)
 
 
 def draw_char(con, x, y, char, color):
@@ -175,8 +175,8 @@ def draw_char(con, x, y, char, color):
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
-def draw_char_object(x, y, char, color):
-    new_object = map_objects.Object("point", char, color)
+def draw_char_object(x, y, attr, char, color):
+    new_object = map_objects.Object(attr, char, color)
     new_object.x = x - OUTLINE_SIZE
     new_object.y = y - OUTLINE_SIZE
     map_objects.objects.append(new_object)
@@ -230,7 +230,7 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
 
     # Chars menu
     for x, y in chars_menu:
-        char = chars_menu[(x, y)]
+        char, attr = chars_menu[(x, y)]
         draw_char(con, x, y, char, libtcod.white)
 
     # Color menu

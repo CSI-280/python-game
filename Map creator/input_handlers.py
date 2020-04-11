@@ -14,6 +14,7 @@ mouse_char = 218
 mouse_color = libtcod.white
 draw_type = 0
 current_char = 219
+current_attributes = "c"
 current_color = libtcod.white
 highlighted_tool = (list(tools_menu.keys())[0][0], list(tools_menu.keys())[0][1])
 highlighted_char = (86, 18)
@@ -118,7 +119,7 @@ def change_draw_type(con, icon_char):
         print("Draw Type: Line")
     elif icon_char == 241:
         draw_type = 2
-        mouse_char = 8
+        mouse_char = 241
         mouse_color = current_color
         display_message(con, "Draw Type: Wall", libtcod.white)
         print("Draw Type: Wall")
@@ -145,7 +146,7 @@ def change_draw_type(con, icon_char):
 def handle_mouse(con, mouse):
     global able_to_click, drawX, drawY, draw_type, current_char, mouse_char, \
         mouse_color, current_color, highlighted_tool, highlighted_char, \
-        highlighted_color, init, hide_mouse, mouseX, mouseY
+        highlighted_color, init, hide_mouse, mouseX, mouseY, current_attributes
 
     # Functions to run on startup
     if init:
@@ -176,10 +177,11 @@ def handle_mouse(con, mouse):
     # checks if mouse is over a char
     for char_x, char_y in chars_menu:
         if mouseX == char_x and mouseY == char_y:
-            char = chars_menu[(char_x, char_y)]
+            char, attr = chars_menu[(char_x, char_y)]
             draw_char(con, char_x, char_y, char, libtcod.red)
             if mouse.lbutton_pressed:
                 current_char = char
+                current_attributes = attr
                 if (char_x, char_y) is not highlighted_char:
                     highlight_ui(con, char_x, char_y, 249, libtcod.white)
                     highlighted_char = (char_x, char_y)
@@ -274,16 +276,16 @@ def handle_mouse(con, mouse):
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 1:
-                draw_line_objects(mouseX, mouseY, drawX, drawY, 'line', current_char, current_color)
+                draw_line_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
                 draw_all_map_objects(con)
             elif draw_type == 2:
-                draw_wall_objects(mouseX, mouseY, drawX, drawY, 'wall', current_color)
+                draw_wall_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_color)
                 draw_all_map_objects(con)
             elif draw_type == 3:
-                draw_box_objects(mouseX, mouseY, drawX, drawY, 'box', current_char, current_color)
+                draw_box_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
                 draw_all_map_objects(con)
             elif draw_type == 4:
-                draw_char_object(mouseX, mouseY, current_char, current_color)
+                draw_char_object(mouseX, mouseY,current_attributes, current_char, current_color)
                 draw_all_map_objects(con)
             elif draw_type == 5:
                 erase_map_object(con, mouseX, mouseY)

@@ -11,9 +11,9 @@ from tkinter.filedialog import askopenfilename
 
 
 class Object:
-    def __init__(self, name, char_number, color=libtcod.light_grey, x=0, y=0):
+    def __init__(self, attr, char_number, color=libtcod.white, x=0, y=0):
         self.coords = [x, y]
-        self.name = name
+        self.attr = attr
         self.char = char_number
         self.color = color
 
@@ -44,7 +44,7 @@ class Object:
         return {
             str(self.coords[0]) + ' ' + str(self.coords[1]):
                 [
-                    self.name,
+                    self.attr,
                     self.char,
                     self.color
                 ]
@@ -128,9 +128,9 @@ def import_map():
             x, y = tuple(list(element.keys())[0].split(' '))
             x = int(x)
             y = int(y)
-            name, char_number, color_list = list(element.values())[0]
+            attr, char_number, color_list = list(element.values())[0]
             color = libtcod.Color(color_list[0], color_list[1], color_list[2])
-            objects.append(Object(name, char_number, color, x, y))
+            objects.append(Object(attr, char_number, color, x, y))
 
         print('Loaded', filename)
     except FileNotFoundError:
