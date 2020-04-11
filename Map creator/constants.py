@@ -18,12 +18,14 @@ PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2)
 # Defines tools menu as a dictionary
 # Format: (x, y): char
 tools_menu = {
-    (93, 6): 218,   # pointer tool
-    (95, 6): 241,   # wall tool
-    (97, 6): 219,   # box tool
-    (99, 6): 47,    # line tool
-    (101, 6): 240,  # single char tool
-    (103, 6): 88,   # erase tool
+    (91, 6): 218,   # pointer tool
+    (93, 6): 241,   # single wall tool
+    (95, 6): 244,   # double wall tool
+    (97, 6): 245,   # hollow box tool
+    (99, 6): 219,   # box tool
+    (101, 6): 47,    # line tool
+    (103, 6): 240,  # single char tool
+    (105, 6): 88,   # erase tool
 }
 
 # Defines chars menu as a dictionary
@@ -179,7 +181,7 @@ color_menu = {
 # Format: (width, height)
 button_size = (9, 2)
 
-# Format: (x, y): (word)
+# Format: (x, y): (label)
 button_menu = {
     (87, 40): 'EXPORT',
     (100, 40): 'CLEAR',

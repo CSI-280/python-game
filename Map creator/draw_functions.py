@@ -87,19 +87,63 @@ def draw_box_objects(x1, y1, x2, y2, attr, char, color):
             draw_line_objects(x1, y, x2, y, attr, char, color)
 
 
-def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
-    if char_num is None:
-        # top
-        draw_line(con, x1, y1, x2, y1, 205, color)
-        # right
-        draw_line(con, x2, y1, x2, y2, 186, color)
-        # bottom
-        draw_line(con, x2, y2, x1, y2, 205, color)
-        # left
-        draw_line(con, x1, y2, x1, y1, 186, color)
+def draw_hollow_box(con, x1, y1, x2, y2, char, color):
 
+    # top
+    draw_line(con, x1, y1, x2, y1, char, color)
+    # right
+    draw_line(con, x2, y1, x2, y2, char, color)
+    # bottom
+    draw_line(con, x2, y2, x1, y2, char, color)
+    # left
+    draw_line(con, x1, y2, x1, y1, char, color)
+
+
+def draw_hollow_box_objects(x1, y1, x2, y2, attr, char, color):
+
+    # top
+    draw_line_objects(x1, y1, x2, y1, attr, char, color)
+    # right
+    draw_line_objects(x2, y1, x2, y2, attr, char, color)
+    # bottom
+    draw_line_objects(x2, y2, x1, y2, attr, char, color)
+    # left
+    draw_line_objects(x1, y2, x1, y1, attr, char, color)
+
+
+def draw_wall(con, x1, y1, x2, y2, color, char_type):
+    if char_type == "single":
+        wall_type = (196, 179)
+    elif char_type == "double":
+        wall_type = (205, 186)
+
+    # top
+    draw_line(con, x1, y1, x2, y1, wall_type[0], color)
+    # right
+    draw_line(con, x2, y1, x2, y2, wall_type[1], color)
+    # bottom
+    draw_line(con, x2, y2, x1, y2, wall_type[0], color)
+    # left
+    draw_line(con, x1, y2, x1, y1, wall_type[1], color)
+
+    if char_type == "single":
+        corner_chars = [217, 192, 191, 218]
         # bottom right to top left
+        if x1 < x2 and y1 < y2:
+            corner_chars = [218, 191, 192, 217]
+        # bottom left to top right
+        if x1 > x2 and y1 < y2:
+            corner_chars = [191, 218, 217, 200]
+        # top right to bottom left
+        if x1 < x2 and y1 > y2:
+            corner_chars = [192, 217, 218, 191]
+        # top left to bottom right
+        if x1 >= x2 and y1 >= y2:
+            corner_chars = [217, 192, 191, 218]
+
+    if char_type == "double":
         corner_chars = [188, 200, 187, 201]
+        # bottom right to top left
         if x1 < x2 and y1 < y2:
             corner_chars = [201, 187, 200, 188]
         # bottom left to top right
@@ -112,51 +156,59 @@ def draw_wall(con, x1, y1, x2, y2, color, char_num=None):
         if x1 >= x2 and y1 >= y2:
             corner_chars = [188, 200, 187, 201]
 
-        # top left
-        draw_char(con, x1, y1, corner_chars[0], color)
-        # top right
-        draw_char(con, x2, y1, corner_chars[1], color)
-        # bottom left
-        draw_char(con, x1, y2, corner_chars[2], color)
-        # bottom right
-        draw_char(con, x2, y2, corner_chars[3], color)
-
-    else:
-        # top
-        draw_line(con, x1, y1, x2, y1, char_num, color)
-        # right
-        draw_line(con, x2, y1, x2, y2, char_num, color)
-        # bottom
-        draw_line(con, x2, y2, x1, y2, char_num, color)
-        # left
-        draw_line(con, x1, y2, x1, y1, char_num, color)
-
-    # map_objects.display_map_objects()
+    # top left
+    draw_char(con, x1, y1, corner_chars[0], color)
+    # top right
+    draw_char(con, x2, y1, corner_chars[1], color)
+    # bottom left
+    draw_char(con, x1, y2, corner_chars[2], color)
+    # bottom right
+    draw_char(con, x2, y2, corner_chars[3], color)
 
 
-def draw_wall_objects(x1, y1, x2, y2, attr, color):
+def draw_wall_objects(x1, y1, x2, y2, attr, color, char_type):
+    if char_type == "single":
+        wall_type = (196, 179)
+    elif char_type == "double":
+        wall_type = (205, 186)
+
     # top
-    draw_line_objects(x1, y1, x2, y1, attr, 205, color)
+    draw_line_objects(x1, y1, x2, y1, attr, wall_type[0], color)
     # right
-    draw_line_objects(x2, y1, x2, y2, attr, 186, color)
+    draw_line_objects(x2, y1, x2, y2, attr, wall_type[1], color)
     # bottom
-    draw_line_objects(x2, y2, x1, y2, attr, 205, color)
+    draw_line_objects(x2, y2, x1, y2, attr, wall_type[0], color)
     # left
-    draw_line_objects(x1, y2, x1, y1, attr, 186, color)
+    draw_line_objects(x1, y2, x1, y1, attr, wall_type[1], color)
 
-    # bottom right to top left
-    corner_chars = [188, 200, 187, 201]
-    if x1 < x2 and y1 < y2:
-        corner_chars = [201, 187, 200, 188]
-    # bottom left to top right
-    if x1 > x2 and y1 < y2:
-        corner_chars = [187, 201, 188, 200]
-    # top right to bottom left
-    if x1 < x2 and y1 > y2:
-        corner_chars = [200, 188, 201, 187]
-    # top left to bottom right
-    if x1 >= x2 and y1 >= y2:
+    if char_type == "single":
+        corner_chars = [217, 192, 191, 218]
+        # bottom right to top left
+        if x1 < x2 and y1 < y2:
+            corner_chars = [218, 191, 192, 217]
+        # bottom left to top right
+        if x1 > x2 and y1 < y2:
+            corner_chars = [191, 218, 217, 200]
+        # top right to bottom left
+        if x1 < x2 and y1 > y2:
+            corner_chars = [192, 217, 218, 191]
+        # top left to bottom right
+        if x1 >= x2 and y1 >= y2:
+            corner_chars = [217, 192, 191, 218]
+
+    if char_type == "double":
         corner_chars = [188, 200, 187, 201]
+        if x1 < x2 and y1 < y2:
+            corner_chars = [201, 187, 200, 188]
+        # bottom left to top right
+        if x1 > x2 and y1 < y2:
+            corner_chars = [187, 201, 188, 200]
+        # top right to bottom left
+        if x1 < x2 and y1 > y2:
+            corner_chars = [200, 188, 201, 187]
+        # top left to bottom right
+        if x1 >= x2 and y1 >= y2:
+            corner_chars = [188, 200, 187, 201]
 
     # top left
     draw_char_object(x1, y1, "c", corner_chars[0], color)
@@ -197,15 +249,15 @@ def draw_word(con, x, y, word, color, max_len):
 
 
 def draw_borders(con):
-    draw_wall(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
-              MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], libtcod.dark_amber, 219)
-    draw_wall(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
-              PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], libtcod.dark_amber, 219)
+    draw_hollow_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
+              MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
+    draw_hollow_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
+              PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
     draw_ui(con, None, None, None)
 
 
 def draw_button(con, x, y, word):
-    draw_wall(con, x, y, x+button_size[0], y+button_size[1], libtcod.white)
+    draw_wall(con, x, y, x+button_size[0], y+button_size[1], libtcod.white, "double")
     draw_word(con, x+2, y+1, word, libtcod.white, len(word))
 
 

@@ -48,7 +48,7 @@ def main():
 
     libtcod.console_init_root(screen_width, screen_height, 'python game', False, vsync=False)
 
-    con = libtcod.console_new(screen_width, screen_height)
+    con = libtcod.console.Console(screen_width, screen_height)
 
     game_map = GameMap(map_width, map_height)
     game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player)

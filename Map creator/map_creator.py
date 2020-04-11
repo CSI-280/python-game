@@ -8,7 +8,7 @@ from constants import *
 
 
 def main():
-    # set the font (arial10x10.png is in project folder, can be changed)
+    # Sets font to file path, this specifies the chars we are able to use
     libtcod.console_set_custom_font('../font_custom.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     # create the screen
