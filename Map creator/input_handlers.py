@@ -38,56 +38,55 @@ def handle_keys(con, key):
     elif key.vk == libtcod.KEY_TAB:
         print("Mouse Position: ", "(", mouseX, ", ", mouseY, ")")
 
-    # Binds numbers to tools
+    tool_changed = False
+    # Binds numbers to tools based on coords in constants.py
     if key.vk == libtcod.KEY_1:
         # Pointer tool
+        x = 91
+        y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_2:
+        # Single wall draw
         x = 93
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_2:
-        # Wall draw
+        tool_changed = True
+    elif key.vk == libtcod.KEY_3:
+        # Double wall draw
         x = 95
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_3:
-        # Box draw
+        tool_changed = True
+    elif key.vk == libtcod.KEY_4:
+        # Hollow box draw
         x = 97
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_4:
-        # Line draw
+        tool_changed = True
+    elif key.vk == libtcod.KEY_5:
+        # Box draw
         x = 99
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_5:
-        # Char draw
+        tool_changed = True
+    elif key.vk == libtcod.KEY_6:
+        # Line draw
         x = 101
         y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_7:
+        # Char draw
+        x = 103
+        y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_8:
+        # Erase
+        x = 105
+        y = 6
+        tool_changed = True
+
+    # If tool was changed then switch to new tool
+    if tool_changed:
         char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_6:
-        # Erase
-        x = 103
-        y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char,
-                      highlighted_color)
 
     return {}
 
