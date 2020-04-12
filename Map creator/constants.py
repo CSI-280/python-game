@@ -18,14 +18,15 @@ PICKER_BOX_SIZE = ((MAP_WIDTH + 2 + 2, 1), (SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2)
 # Defines tools menu as a dictionary
 # Format: (x, y): char
 tools_menu = {
-    (91, 6): 218,   # pointer tool
-    (93, 6): 241,   # single wall tool
-    (95, 6): 244,   # double wall tool
-    (97, 6): 245,   # hollow box tool
-    (99, 6): 219,   # box tool
-    (101, 6): 47,    # line tool
-    (103, 6): 240,  # single char tool
-    (105, 6): 88,   # erase tool
+    (90, 6): 218,   # pointer
+    (92, 6): 241,   # single wall
+    (94, 6): 244,   # double wall
+    (96, 6): 245,   # hollow box
+    (98, 6): 219,   # box
+    (100, 6): 47,   # line
+    (102, 6): 240,  # single char
+    (104, 6): 83,   # free draw
+    (106, 6): 88,   # erase
 }
 
 # Defines chars menu as a dictionary
