@@ -37,7 +37,7 @@ def main():
     colors = {
         'dark_wall': libtcod.Color(75, 75, 75),
         'dark_ground': libtcod.Color(125, 125, 125),
-        'light_wall': libtcod.Color(180, 200, 200),
+        'light_wall': libtcod.Color(150, 175, 175),
         'light_ground': libtcod.Color(220, 240, 240)
     }
 
@@ -49,7 +49,7 @@ def main():
     entities = [player]
 
     # set max enemies per room
-    max_monsters_per_room = 3
+    max_monsters_per_room = 1
     # set max items per room
     max_items_per_room = 2
 
@@ -135,9 +135,8 @@ def main():
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
-                if entity != player:
-                    print(
-                        'The ' + entity.name + ' ponders the meaning of its existence.')
+                if entity != player and entity.name != 'Potion of good vibes':
+                    print(entity.name + ' \'s turn.')
 
             # set turn back to player's turn
             game_state = GameStates.PLAYERS_TURN
