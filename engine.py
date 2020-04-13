@@ -5,6 +5,7 @@ import tcod as libtcod
 
 from entity import Entity, get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
+from game_states import GameStates
 from input_handlers import handle_keys
 from render_functions import clear_all, render_all
 from map_objects.game_map import GameMap
@@ -36,27 +37,31 @@ def main():
     colors = {
         'dark_wall': libtcod.Color(75, 75, 75),
         'dark_ground': libtcod.Color(125, 125, 125),
-        'light_wall': libtcod.Color(180, 200, 200),
+        'light_wall': libtcod.Color(150, 175, 175),
         'light_ground': libtcod.Color(220, 240, 240)
     }
 
     # initialize inventory
     inventory = Inventory(10)
 
-    player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.dark_green, 'Player', blocks=True,
+    player = Entity(0, 0, '@', libtcod.dark_green, 'Player', blocks=True,
                     render_order=RenderOrder.ACTOR, inventory=inventory)
     entities = [player]
+
+    # set max enemies per room
+    max_monsters_per_room = 1
+    # set max items per room
     max_items_per_room = 2
 
     libtcod.console_set_custom_font('font_custom.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     libtcod.console_init_root(screen_width, screen_height, 'python game', False, vsync=False)
 
-    con = libtcod.console.Console(screen_width, screen_height)
+    con = libtcod.console_new(screen_width, screen_height)
 
     game_map = GameMap(map_width, map_height)
     game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
-                      max_items_per_room )
+                      max_monsters_per_room, max_items_per_room )
 
     fov_recompute = True
 
@@ -64,6 +69,8 @@ def main():
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+
+    game_state = GameStates.PLAYERS_TURN
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
@@ -87,10 +94,10 @@ def main():
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
-        if move:
+        if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
-            destination_x = player.x +dx
-            destination_y = player.y +dy
+            destination_x = player.x + dx
+            destination_y = player.y + dy
 
             # If some the destination is not blocked
             if not game_map.is_blocked(destination_x, destination_y):
@@ -102,8 +109,11 @@ def main():
                     print("There is a " + target.name + " here")
                 else:
                     player.move(dx, dy)
-
+                    # change fov
                     fov_recompute = True
+                    # set turn to entity's turn
+                    game_state = GameStates.ENEMY_TURN
+
             # if player tries to pick something up
         elif pickup:
             for entity in entities:
@@ -122,6 +132,14 @@ def main():
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if game_state == GameStates.ENEMY_TURN:
+            for entity in entities:
+                if entity != player and entity.name != 'Potion of good vibes':
+                    print(entity.name + ' \'s turn.')
+
+            # set turn back to player's turn
+            game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':
