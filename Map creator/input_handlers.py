@@ -38,56 +38,60 @@ def handle_keys(con, key):
     elif key.vk == libtcod.KEY_TAB:
         print("Mouse Position: ", "(", mouseX, ", ", mouseY, ")")
 
-    # Binds numbers to tools
+    tool_changed = False
+    # Binds numbers to tools based on coords in constants.py
     if key.vk == libtcod.KEY_1:
         # Pointer tool
-        x = 93
+        x = 90
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+        tool_changed = True
     elif key.vk == libtcod.KEY_2:
-        # Wall draw
-        x = 95
+        # Single wall draw
+        x = 92
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+        tool_changed = True
     elif key.vk == libtcod.KEY_3:
-        # Box draw
-        x = 97
+        # Double wall draw
+        x = 94
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+        tool_changed = True
     elif key.vk == libtcod.KEY_4:
-        # Line draw
-        x = 99
+        # Hollow box draw
+        x = 96
         y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
+        tool_changed = True
     elif key.vk == libtcod.KEY_5:
-        # Char draw
-        x = 101
+        # Box draw
+        x = 98
         y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_6:
+        # Line draw
+        x = 100
+        y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_7:
+        # Char draw
+        x = 102
+        y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_8:
+        # Free draw
+        x = 104
+        y = 6
+        tool_changed = True
+    elif key.vk == libtcod.KEY_9:
+        # Erase
+        x = 106
+        y = 6
+        tool_changed = True
+
+    # If tool was changed then switch to new tool
+    if tool_changed:
         char = tools_menu[(x, y)]
         change_draw_type(con, char)
         highlighted_tool = (x, y)
         refresh_tools(con, highlighted_tool, highlighted_char, highlighted_color)
-    elif key.vk == libtcod.KEY_6:
-        # Erase
-        x = 103
-        y = 6
-        char = tools_menu[(x, y)]
-        change_draw_type(con, char)
-        highlighted_tool = (x, y)
-        refresh_tools(con, highlighted_tool, highlighted_char,
-                      highlighted_color)
 
     return {}
 
@@ -111,32 +115,50 @@ def change_draw_type(con, icon_char):
         mouse_color = libtcod.white
         display_message(con, "Tool: Pointer", libtcod.white)
         print("Tool: Pointer")
-    elif icon_char == 47:
-        draw_type = 1
-        mouse_char = 47
-        mouse_color = current_color
-        display_message(con, "Draw Type: Line", libtcod.white)
-        print("Draw Type: Line")
     elif icon_char == 241:
-        draw_type = 2
+        draw_type = 1
         mouse_char = 241
         mouse_color = current_color
-        display_message(con, "Draw Type: Wall", libtcod.white)
-        print("Draw Type: Wall")
-    elif icon_char == 219:
+        display_message(con, "Draw Type: Single Wall", libtcod.white)
+        print("Draw Type: Single Wall")
+    elif icon_char == 244:
+        draw_type = 2
+        mouse_char = 244
+        mouse_color = current_color
+        display_message(con, "Draw Type: Double Wall", libtcod.white)
+        print("Draw Type: Double Wall")
+    elif icon_char == 245:
         draw_type = 3
+        mouse_char = 245
+        mouse_color = current_color
+        display_message(con, "Draw Type: Hollow Box", libtcod.white)
+        print("Draw Type: Hollow Box")
+    elif icon_char == 219:
+        draw_type = 4
         mouse_char = 219
         mouse_color = current_color
         display_message(con, "Draw Type: Box", libtcod.white)
         print("Draw Type: Box")
+    elif icon_char == 47:
+        draw_type = 5
+        mouse_char = 47
+        mouse_color = current_color
+        display_message(con, "Draw Type: Line", libtcod.white)
+        print("Draw Type: Line")
     elif icon_char == 240:
-        draw_type = 4
+        draw_type = 6
         mouse_char = current_char
         mouse_color = current_color
         display_message(con, "Draw Type: Char", libtcod.white)
         print("Draw Type: Char")
+    elif icon_char == 83:
+        draw_type = 7
+        mouse_char = current_char
+        mouse_color = current_color
+        display_message(con, "Draw Type: Free Draw", libtcod.white)
+        print("Draw Type: Free Draw")
     elif icon_char == 88:
-        draw_type = 5
+        draw_type = 8
         mouse_char = 88
         mouse_color = libtcod.red
         display_message(con, "Tool: Erase", libtcod.red)
@@ -188,7 +210,7 @@ def handle_mouse(con, mouse):
                     refresh_tools(con, highlighted_tool,
                                   highlighted_char,
                                   highlighted_color)
-                if draw_type == 4:
+                if draw_type == 6 or draw_type == 7:
                     mouse_char = char
             break
 
@@ -253,20 +275,27 @@ def handle_mouse(con, mouse):
         draw_all_map_objects(con)
         if is_in_map_range(mouseX, mouseY):
             if draw_type == 1:
-                draw_line(con, mouseX, mouseY, drawX, drawY, current_char,
-                          libtcod.white)
+                draw_wall(con, mouseX, mouseY, drawX, drawY, libtcod.white, "single")
                 hide_mouse = True
             elif draw_type == 2:
-                draw_wall(con, mouseX, mouseY, drawX, drawY, libtcod.white)
+                draw_wall(con, mouseX, mouseY, drawX, drawY, libtcod.white, "double")
                 hide_mouse = True
             elif draw_type == 3:
-                draw_box(con, mouseX, mouseY, drawX, drawY, current_char,
-                         libtcod.white)
+                draw_hollow_box(con, mouseX, mouseY, drawX, drawY, current_char, current_color)
                 hide_mouse = True
             elif draw_type == 4:
+                draw_box(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
+                hide_mouse = True
+            elif draw_type == 5:
+                draw_line(con, mouseX, mouseY, drawX, drawY, current_char, libtcod.white)
+                hide_mouse = True
+            elif draw_type == 6:
                 draw_char(con, mouseX, mouseY, current_char, current_color)
                 hide_mouse = False
-            elif draw_type == 5:
+            elif draw_type == 7:
+                draw_char_object(mouseX, mouseY, current_attributes, current_char, current_color)
+                hide_mouse = False
+            elif draw_type == 8:
                 erase_map_object(con, mouseX, mouseY)
                 hide_mouse = False
     else:
@@ -275,19 +304,28 @@ def handle_mouse(con, mouse):
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
+
             if draw_type == 1:
-                draw_line_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
+                draw_wall_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_color, "single")
                 draw_all_map_objects(con)
             elif draw_type == 2:
-                draw_wall_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_color)
+                draw_wall_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_color, "double")
                 draw_all_map_objects(con)
             elif draw_type == 3:
-                draw_box_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
+                draw_hollow_box_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
                 draw_all_map_objects(con)
             elif draw_type == 4:
+                draw_box_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char, current_color)
+                draw_all_map_objects(con)
+            if draw_type == 5:
+                draw_line_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_char,current_color)
+                draw_all_map_objects(con)
+            elif draw_type == 6:
                 draw_char_object(mouseX, mouseY,current_attributes, current_char, current_color)
                 draw_all_map_objects(con)
-            elif draw_type == 5:
+            elif draw_type == 7:
+                draw_all_map_objects(con)
+            elif draw_type == 8:
                 erase_map_object(con, mouseX, mouseY)
                 draw_all_map_objects(con)
 

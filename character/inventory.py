@@ -1,19 +1,28 @@
-from item import Item
+import tcod as libtcod
 
-class Inventory(object):
-    def __init__(self):
-        self.items = {}
+class Inventory:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.items = []
 
     # Adds a new object of the item type to the dict
     def add_item(self, item):
-        self.items[item.name] = item
+        results = []
 
-    # Removes a key from the dict. Param is a string for the name of the item.
-    def remove_item(self, item):
-        if  not self.items[item].key:
-            del self.items[item]
+        if len(self.items) >= self.capacity:
+            results.append({
+                'item_added': None,
+                'message': print('inventory full')
+            })
         else:
-            print("Key item: cannot be dropped")
+            results.append({
+                'item_added': item,
+                'message': print('You picked up {0}!'.format(item.name))
+            })
+
+            self.items.append(item)
+
+        return results
 
     # Rudimentary print function.
     def print_items(self):

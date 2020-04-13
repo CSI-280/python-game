@@ -100,7 +100,6 @@ def remove_duplicate_objects():
     print("Duplicates removed")
 
 
-
 def import_map():
     global able_to_click
 
