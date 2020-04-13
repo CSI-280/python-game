@@ -3,16 +3,16 @@
 
 import tcod as libtcod
 
-from entity import Entity
+from entity import Entity, get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
 from input_handlers import handle_keys
 from render_functions import clear_all, render_all
 from map_objects.game_map import GameMap
 from character.inventory import Inventory
+from render_functions import RenderOrder
 
 
 def main():
-    inventory = Inventory()
 
     # variables for screen size
     screen_width = 80
@@ -40,9 +40,13 @@ def main():
         'light_ground': libtcod.Color(220, 240, 240)
     }
 
-    player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.dark_green)
-    npc = Entity(int(screen_width / 2 - 5), int(screen_height / 2), '@', libtcod.dark_red)
-    entities = [npc, player]
+    # initialize inventory
+    inventory = Inventory(10)
+
+    player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.dark_green, 'Player', blocks=True,
+                    render_order=RenderOrder.ACTOR, inventory=inventory)
+    entities = [player]
+    max_items_per_room = 2
 
     libtcod.console_set_custom_font('font_custom.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
@@ -51,7 +55,8 @@ def main():
     con = libtcod.console.Console(screen_width, screen_height)
 
     game_map = GameMap(map_width, map_height)
-    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player)
+    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
+                      max_items_per_room )
 
     fov_recompute = True
 
@@ -78,15 +83,39 @@ def main():
         action = handle_keys(key)
 
         move = action.get('move')
+        pickup = action.get('pickup')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
         if move:
             dx, dy = move
-            if not game_map.is_blocked(player.x + dx, player.y + dy):
-                player.move(dx, dy)
+            destination_x = player.x +dx
+            destination_y = player.y +dy
 
-                fov_recompute = True
+            # If some the destination is not blocked
+            if not game_map.is_blocked(destination_x, destination_y):
+                # Gets any entity that might be blocking the player
+                target = get_blocking_entities_at_location(entities, destination_x, destination_y)
+
+                # If something is blocking hte player print to console, else moves the player
+                if target:
+                    print("There is a " + target.name + " here")
+                else:
+                    player.move(dx, dy)
+
+                    fov_recompute = True
+            # if player tries to pick something up
+        elif pickup:
+            for entity in entities:
+                # if the entity is on the same tile as the player pick it up and remove it from the entity list
+                if entity.item and entity.x == player.x and entity.y == player.y:
+                    player.inventory.add_item(entity)
+                    entities.remove(entity)
+
+                    break
+            # else dont pick it up and print to console
+            else:
+                print('Nothing to pickup')
 
         if exit:
             return True
