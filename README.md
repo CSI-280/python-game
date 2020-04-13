@@ -49,7 +49,7 @@ Louis Vinton
 Wes Beard
 Kai Wilens ^_^
 Ethan Trope   ¯\_(^_^)_/¯
-Michaelangelo Leonardo Raphael Donatello 
+Michaelangelo Leonardo Raphael Donatello
 Noah Anderson
 Steven Pershyn
 Will Gesler
@@ -61,12 +61,6 @@ Map Generator:
 https://azgaar.github.io/Fantasy-Map-Generator/
 Load the .map file from the repo to make edits
 
-## Potentially Useful Python Libraries
-* Pyglet: Cross-platform application framework designed for game development. Compatible with Windows, OS X, and Linux. Relies solely on python to create games.
-https://github.com/pyglet/pyglet/blob/master/README.md
-
-* Pygame: Cross-platform set of python modules made for writing games. Includes computer graphics and sound libraries that were designed to be used in python.
-https://www.pygame.org/
 
 ## Design Guide
 * Should follow classic Rogue style
