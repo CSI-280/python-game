@@ -1,3 +1,9 @@
 #ignore random vs code things
 /.idea
 /.vscode
+
+# pycache
+/Map creator/__pycache__/
+/__pycache__/
+character/__pycache__/
+map_objects/__pycache__/
