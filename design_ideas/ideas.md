@@ -4,6 +4,7 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
 
 # Overview
   * This will be some type of game written in python. It will be a rogue-like game and is highly influenced from the original rogue game. It will have a main character which is controlled by the current player. They will be put in a 2d ASCII designed world were they will have to navigate through different rooms. Throughout the different rooms there will be enemies which they must defeat and puzzle that they must complete in order to win the end of the game. The goal and theme of the game is yet to be decided but this is the basic layout that will make up the game.
+  * This game could star an archeologist, who is searching for a very special treasure or relic. In order to get it, they will need to clear other dungeons with thinking puzzles to get smaller relics that will aid in getting the main goal.  Revisiting older dungeons may be a potential idea to increase exploration. 
 
 ## Core Systems
 
@@ -83,8 +84,16 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
    * Maybe add some simple sprites?
    - We could create some sprites for the player and enemies but we probably do not need many.
 
-Notes:
+## Notes:
  * Potentially use map to have differently located rooms on the map. 
   - Therefore, the rooms are located in those biomes and the themes areas. 
   - There will be some predetermined rooms but some will be random in the areas.
  * Have some goal: There could be an item or try to pass a certain amount of rooms or floors.
+
+## Potential goals:
+ * Have some sort of fighting game where the player must simply battle enemies to get through floors and
+ get trophies or some rewards for passing a certain amount of floors. When you get a certain amount of
+ trophies you win the game. -- Josh
+ * Zombie tower where you must fight through floors in order to get to the bottom of the tower and escape. (Wes's idea)
+ 
+ - We need to keep this game simple at this point.
