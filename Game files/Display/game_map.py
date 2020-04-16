@@ -1,11 +1,10 @@
 
 import tcod as libtcod
 from random import randint
-from map_objects.rectangle import Rect
-from map_objects.tile import Tile
-from entity import Entity
-from item import Item
-from render_functions import RenderOrder
+from Display.tile import Tile
+from Objects.entity import Entity
+from Objects.item import Item
+from Display.render_functions import RenderOrder
 import json
 import os, random
 
@@ -24,9 +23,9 @@ class GameMap:
         player_spawn_x = 0
         player_spawn_y = 0
 
-        file = random.choice(os.listdir("Map Files/"))
+        file = random.choice(os.listdir("../Map Files/"))
         print('Loading {}'.format(file))
-        with open('Map FIles/' + file) as fin:
+        with open('../Map Files/' + file) as fin:
             data = fin.read()
         data = json.loads(data)
 
