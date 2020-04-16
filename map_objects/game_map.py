@@ -21,13 +21,12 @@ class GameMap:
         return tiles
 
     def load_random_map(self, player):
-        player.x = 30
-        player.y = 31
+        player_spawn_x = 0
+        player_spawn_y = 0
 
         with open("Map Files/mappymapmap.json") as fin:
             data = fin.read()
         data = json.loads(data)
-        # print(data[0])
 
         for element in data:
             for coords, attr in element.items():
@@ -35,12 +34,22 @@ class GameMap:
                 x, y = int(x), int(y)
                 color = attr[2]
                 if len(attr[0]) > 0:
+                    # collidable
                     if attr[0] == 'c':
                         self.tiles[x][y].set_blocked(True)
                         self.tiles[x][y].set_block_sight(True)
+                    # player spawns next to the 'd'own stairs
+                    if attr[0] == 'd':
+                        player_spawn_x = x + 1
+                        player_spawn_y = y
+
                 char_code = attr[1]
                 self.tiles[x][y].set_char_code(char_code)
                 self.tiles[x][y].set_color(color)
+
+        player.x = player_spawn_x
+        player.y = player_spawn_y
+
 
     def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
                  max_items_per_room):
