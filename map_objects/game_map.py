@@ -37,6 +37,7 @@ class GameMap:
                 if len(attr[0]) > 0:
                     if attr[0] == 'c':
                         self.tiles[x][y].set_blocked(True)
+                        self.tiles[x][y].set_block_sight(True)
                 char_code = attr[1]
                 self.tiles[x][y].set_char_code(char_code)
                 self.tiles[x][y].set_color(color)
@@ -123,7 +124,7 @@ class GameMap:
             y = randint(room.y1 + 1, room.y2 - 1)
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
-                #this if statement makes it an 50% chance to be "I" or "i"
+                # this if statement makes it an 50% chance to be "I" or "i"
                 if randint(0, 100) < 50:
                     item_component = Item()
                     item = Entity(x, y, 'I', libtcod.pink, 'Potion of good vibes',

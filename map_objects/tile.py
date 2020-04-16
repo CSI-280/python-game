@@ -15,6 +15,9 @@ class Tile:
 
         self.color = color
 
+    def set_block_sight(self, new_sight):
+        self.block_sight = new_sight
+
     def set_char_code(self, new_code):
         self.char_code = new_code
 
