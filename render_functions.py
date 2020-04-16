@@ -22,9 +22,9 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width,
                     game_map.tiles[x][y].color[2]
                 )
                 dimmer_color = libtcod.Color(
-                    80,
-                    80,
-                    80
+                    int(game_map.tiles[x][y].color[0] * 0.3),
+                    int(game_map.tiles[x][y].color[1] * 0.3),
+                    int(game_map.tiles[x][y].color[2] * 0.3)
                 )
                 if visible:
                     libtcod.console_set_default_foreground(con, char_color)

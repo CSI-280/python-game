@@ -15,8 +15,8 @@ from render_functions import RenderOrder
 def main():
 
     # variables for screen size
-    screen_width = 80
-    screen_height = 50
+    screen_width = 96 # 80
+    screen_height = 54 # 50
 
     # variables to determine map generation within the screen
     map_width = 80
@@ -90,8 +90,8 @@ def main():
 
         if move:
             dx, dy = move
-            destination_x = player.x +dx
-            destination_y = player.y +dy
+            destination_x = player.x + dx
+            destination_y = player.y + dy
 
             # If some the destination is not blocked
             if not game_map.is_blocked(destination_x, destination_y):

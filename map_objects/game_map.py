@@ -7,7 +7,7 @@ from entity import Entity
 from item import Item
 from render_functions import RenderOrder
 import json
-
+import os, random
 
 class GameMap:
     def __init__(self, width, height):
@@ -24,7 +24,9 @@ class GameMap:
         player_spawn_x = 0
         player_spawn_y = 0
 
-        with open("Map Files/mappymapmap.json") as fin:
+        file = random.choice(os.listdir("Map Files/"))
+        print('Loading {}'.format(file))
+        with open('Map FIles/' + file) as fin:
             data = fin.read()
         data = json.loads(data)
 
