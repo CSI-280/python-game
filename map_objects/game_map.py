@@ -24,22 +24,22 @@ class GameMap:
         player.x = 30
         player.y = 31
 
-        with open('C:\\Users\\Michael\\Desktop\\python-game\\Map Files\\2020-04-13 17-42-27-230860.json', 'r') as fin:
+        with open("Map Files/mappymapmap.json") as fin:
             data = fin.read()
         data = json.loads(data)
-        print(data[0])
+        # print(data[0])
 
         for element in data:
-            for key, value in element.items():
-                x, y = key.split(' ')
+            for coords, attr in element.items():
+                x, y = coords.split(' ')
                 x, y = int(x), int(y)
-                if len(value[0]) > 0:
-                    if value[0] == 'c':
+                color = attr[2]
+                if len(attr[0]) > 0:
+                    if attr[0] == 'c':
                         self.tiles[x][y].set_blocked(True)
-                char_code = value[1]
+                char_code = attr[1]
                 self.tiles[x][y].set_char_code(char_code)
-                print(value)
-
+                self.tiles[x][y].set_color(color)
 
     def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
                  max_items_per_room):
