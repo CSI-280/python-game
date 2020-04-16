@@ -8,7 +8,6 @@ class RenderOrder(Enum):
     ACTOR = 3
 
 
-
 def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width,
                screen_height, colors):
     if fov_recompute:
@@ -16,29 +15,33 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width,
             for x in range(game_map.width):
                 visible = libtcod.map_is_in_fov(fov_map, x, y)
                 wall = game_map.tiles[x][y].block_sight
-
+                char_color = libtcod.Color(
+                    game_map.tiles[x][y].color[0],
+                    game_map.tiles[x][y].color[1],
+                    game_map.tiles[x][y].color[2]
+                )
+                dimmer_color = libtcod.Color(
+                    80,
+                    80,
+                    80
+                )
                 if visible:
-                    if wall:
-                        libtcod.console_set_char_background(con, x, y,
-                                                            colors.get(
-                                                                'light_wall'),
-                                                            libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_ground'),libtcod.BKGND_SET)
+                    libtcod.console_set_default_foreground(con, char_color)
+                    libtcod.console_put_char(con,
+                                             x,
+                                             y,
+                                             game_map.tiles[x][y].char_code,
+                                             libtcod.BKGND_NONE)
 
                     game_map.tiles[x][y].explored = True
 
                 elif game_map.tiles[x][y].explored:
-                    if wall:
-                        libtcod.console_set_char_background(con, x, y,
-                                                            colors.get(
-                                                                'dark_wall'),
-                                                            libtcod.BKGND_SET)
-                    else:
-                        libtcod.console_set_char_background(con, x, y,
-                                                            colors.get(
-                                                                'dark_ground'),
-                                                            libtcod.BKGND_SET)
+                    libtcod.console_set_default_foreground(con, dimmer_color)
+                    libtcod.console_put_char(con,
+                                             x,
+                                             y,
+                                             game_map.tiles[x][y].char_code,
+                                             libtcod.BKGND_NONE)
 
     # Draw all entities in the list
     entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)

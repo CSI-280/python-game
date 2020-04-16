@@ -6,6 +6,7 @@ from map_objects.tile import Tile
 from entity import Entity
 from item import Item
 from render_functions import RenderOrder
+import json
 
 
 class GameMap:
@@ -15,9 +16,30 @@ class GameMap:
         self.tiles = self.initialize_tiles()
 
     def initialize_tiles(self):
-        tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
+        tiles = [[Tile(False) for y in range(self.height)] for x in range(self.width)]
 
         return tiles
+
+    def load_random_map(self, player):
+        player.x = 30
+        player.y = 31
+
+        with open('C:\\Users\\Michael\\Desktop\\python-game\\Map Files\\2020-04-13 17-42-27-230860.json', 'r') as fin:
+            data = fin.read()
+        data = json.loads(data)
+        print(data[0])
+
+        for element in data:
+            for key, value in element.items():
+                x, y = key.split(' ')
+                x, y = int(x), int(y)
+                if len(value[0]) > 0:
+                    if value[0] == 'c':
+                        self.tiles[x][y].set_blocked(True)
+                char_code = value[1]
+                self.tiles[x][y].set_char_code(char_code)
+                print(value)
+
 
     def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
                  max_items_per_room):

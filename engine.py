@@ -55,8 +55,9 @@ def main():
     con = libtcod.console.Console(screen_width, screen_height)
 
     game_map = GameMap(map_width, map_height)
-    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
-                      max_items_per_room )
+    game_map.load_random_map(player)
+    # game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
+    #                  max_items_per_room)
 
     fov_recompute = True
 
