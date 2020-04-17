@@ -1,9 +1,15 @@
 #ignore random vs code things
 /.idea
 /.vscode
+/venv
+
 
 # pycache
 /Map creator/__pycache__
 /__pycache__
-character/__pycache__
-map_objects/__pycache__
+/Game files/__pycache__
+/Game files/Display/__pycache__
+/Game files/Input/__pycache__
+/Game files/Objects/__pycache__
+/character/__pycache__
+/map_objects/__pycache__
