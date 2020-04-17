@@ -4,18 +4,17 @@ import tcod as libtcod
 
 def handle_keys(key):
     # Movement keys
-    if key.vk == libtcod.KEY_UP:
+    if key.vk == libtcod.KEY_UP or key.c == ord('w'):
         return {'move': (0, -1)}
-    elif key.vk == libtcod.KEY_DOWN:
+    elif key.vk == libtcod.KEY_DOWN or key.c == ord('s'):
         return {'move': (0, 1)}
-    elif key.vk == libtcod.KEY_LEFT:
+    elif key.vk == libtcod.KEY_LEFT or key.c == ord('a'):
         return {'move': (-1, 0)}
-    elif key.vk == libtcod.KEY_RIGHT:
+    elif key.vk == libtcod.KEY_RIGHT or key.c == ord('d'):
         return {'move': (1, 0)}
 
     if key.c == ord('g'):
         return {'pickup': True}
-
 
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         # Alt+Enter: toggle full screen

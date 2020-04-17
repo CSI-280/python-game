@@ -133,7 +133,7 @@ def draw_wall(con, x1, y1, x2, y2, color, char_type):
             corner_chars = [218, 191, 192, 217]
         # bottom left to top right
         if x1 > x2 and y1 < y2:
-            corner_chars = [191, 218, 217, 200]
+            corner_chars = [191, 218, 217, 192]
         # top right to bottom left
         if x1 < x2 and y1 > y2:
             corner_chars = [192, 217, 218, 191]
@@ -188,7 +188,7 @@ def draw_wall_objects(x1, y1, x2, y2, attr, color, char_type):
             corner_chars = [218, 191, 192, 217]
         # bottom left to top right
         if x1 > x2 and y1 < y2:
-            corner_chars = [191, 218, 217, 200]
+            corner_chars = [191, 218, 217, 192]
         # top right to bottom left
         if x1 < x2 and y1 > y2:
             corner_chars = [192, 217, 218, 191]
