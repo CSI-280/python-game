@@ -9,8 +9,8 @@ class RenderOrder(Enum):
     ACTOR = 3
 
 
-def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width,
-               screen_height, colors):
+def render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
+               SCREEN_HEIGHT, colors):
     if fov_recompute:
         for y in range(game_map.height):
             for x in range(game_map.width):
@@ -50,7 +50,7 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width,
     for entity in entities_in_render_order:
         draw_entity(con, entity, fov_map)
 
-    libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
 
 def clear_all(con, entities):

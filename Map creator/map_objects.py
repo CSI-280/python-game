@@ -100,6 +100,15 @@ def remove_duplicate_objects():
     print("Duplicates removed")
 
 
+def update_map():
+    for element in objects:
+        for x, y in chars_menu:
+            char, attr = chars_menu[(x, y)]
+            if element.char == char:
+                element.attr = attr
+    print("Map attributes updated")
+
+
 def import_map():
     global able_to_click
 

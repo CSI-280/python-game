@@ -36,6 +36,7 @@ def handle_keys(con, key):
         return {'exit': True}
     # Tab to print current mouse coords
     elif key.vk == libtcod.KEY_TAB:
+        update_map()
         print("Mouse Position: ", "(", mouseX, ", ", mouseY, ")")
 
     tool_changed = False
@@ -235,8 +236,8 @@ def handle_mouse(con, mouse):
         change_background(con, x, y, x + button_size[0],
                           y + button_size[1], libtcod.black)
         if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-           element[1] == 'CLEAR':
+                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+                element[1] == 'CLEAR':
             change_background(con, x, y, x + button_size[0],
                               y + button_size[1], libtcod.darker_red)
             display_message(con, "Clear Canvas", libtcod.red)
@@ -244,9 +245,9 @@ def handle_mouse(con, mouse):
                 erase_all_map_objects()
                 clear_canvas(con)
                 break
-        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-           element[1] == 'EXPORT':
+        elif element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+                element[1] == 'EXPORT':
             display_message(con, "Export map", libtcod.white)
             change_background(con, x, y, x + button_size[0],
                               y + button_size[1], libtcod.dark_amber)
@@ -255,14 +256,25 @@ def handle_mouse(con, mouse):
                 export_map()
                 display_message(con, "Export Complete", libtcod.dark_green)
                 break
-        if element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
-           element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
-           element[1] == 'IMPORT':
+        elif element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+                element[1] == 'IMPORT':
             change_background(con, x, y, x + button_size[0],
                               y + button_size[1], libtcod.dark_amber)
             display_message(con, "Import map", libtcod.white)
             if mouse.lbutton_pressed:
                 import_map()
+                break
+        elif element[0][0] <= mouseX <= element[0][0] + button_size[0] and \
+                element[0][1] <= mouseY <= element[0][1] + button_size[1] and \
+                element[1] == 'UPDATE':
+            change_background(con, x, y, x + button_size[0],
+                              y + button_size[1], libtcod.dark_amber)
+            display_message(con, "Update Map Attributes", libtcod.white)
+            if mouse.lbutton_pressed:
+                display_message(con, "Updating...", libtcod.white)
+                update_map()
+                display_message(con, "Attributes updated", libtcod.dark_green)
                 break
 
     if mouse.lbutton and able_to_click and is_in_map_range(mouseX, mouseY):

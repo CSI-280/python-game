@@ -2,6 +2,7 @@
   <dictionary name="beard">
     <words>
       <w>coords</w>
+      <w>filepath</w>
       <w>fullscreen</w>
       <w>libtcod</w>
     </words>

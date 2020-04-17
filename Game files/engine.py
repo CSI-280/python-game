@@ -10,22 +10,10 @@ from Display.render_functions import clear_all, render_all
 from Display.game_map import GameMap
 from Objects.inventory import Inventory
 from Display.render_functions import RenderOrder
+from constants import *
 
 
 def main():
-
-    # variables for screen size
-    screen_width = 96 # 80
-    screen_height = 54 # 50
-
-    # variables to determine map generation within the screen
-    map_width = 80
-    map_height = 50
-
-    # variables for number of rooms and the sizes they can be
-    room_max_size = 10
-    room_min_size = 6
-    max_rooms = 30
 
     # variables for character visibility
     fov_algorithm = 0   # default algorithm for visibility range
@@ -35,20 +23,20 @@ def main():
     # initialize inventory
     inventory = Inventory(10)
 
-    player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.dark_green, 'Player', blocks=True,
+    player_char = 1
+    player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
                     render_order=RenderOrder.ACTOR, inventory=inventory)
     entities = [player]
-    max_items_per_room = 2
 
-    libtcod.console_set_custom_font('../font_custom.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
+    libtcod.console_set_custom_font(FONT_FILE, libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
-    libtcod.console_init_root(screen_width, screen_height, 'python game', False, vsync=False)
+    libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'python game', False, vsync=False)
 
-    con = libtcod.console.Console(screen_width, screen_height)
+    con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    game_map = GameMap(map_width, map_height)
+    game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.load_random_map(player)
-    # game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
+    # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
     #                  max_items_per_room)
 
     fov_recompute = True
@@ -65,7 +53,7 @@ def main():
             recompute_fov(fov_map, player.x, player.y, fov_radius,
                           fov_light_walls, fov_algorithm)
 
-        render_all(con, entities, game_map, fov_map, fov_recompute, screen_width, screen_height, libtcod.white)
+        render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH, SCREEN_HEIGHT, libtcod.white)
 
         fov_recompute = False
 
