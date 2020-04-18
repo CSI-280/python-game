@@ -262,18 +262,22 @@ def draw_button(con, x, y, word):
 
 
 def draw_ui(con, hl_tool, hl_char, hl_color):
+    # X alignment for UI elements, Y is changed on element
+    left_coord = 102
+    right_coord = 126
+    word_start = 112
     # Headers
-    draw_word(con, 96, 3, "TOOLS", libtcod.white, 5)
-    draw_line(con, 86, 4, 110, 4, 205, libtcod.white)
+    draw_word(con, word_start, 3, "TOOLS", libtcod.white, 5)
+    draw_line(con, left_coord, 4, right_coord, 4, 205, libtcod.white)
 
-    draw_word(con, 96, 9, "CHARS", libtcod.white, 5)
-    draw_line(con, 86, 10, 110, 10, 205, libtcod.white)
+    draw_word(con, word_start, 9, "CHARS", libtcod.white, 5)
+    draw_line(con, left_coord, 10, right_coord, 10, 205, libtcod.white)
 
-    draw_word(con, 96, 27, "COLORS", libtcod.white, 6)
-    draw_line(con, 86, 28, 110, 28, 205, libtcod.white)
+    draw_word(con, word_start - 1, 27, "COLORS", libtcod.white, 6)
+    draw_line(con, left_coord, 28, right_coord, 28, 205, libtcod.white)
 
-    draw_word(con, 95, 37, "ACTIONS", libtcod.white, 7)
-    draw_line(con, 86, 38, 110, 38, 205, libtcod.white)
+    draw_word(con, word_start - 1, 41, "ACTIONS", libtcod.white, 7)
+    draw_line(con, left_coord, 42, right_coord, 42, 205, libtcod.white)
 
     # Tool menu
     for x, y in tools_menu:
@@ -297,8 +301,8 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     if hl_color:
         highlight_ui(con, hl_color[0], hl_color[1], 249, libtcod.white)
 
-    draw_line(con, 85, 48, 111, 48, 219, libtcod.dark_amber)
-    draw_char(con, 86, 50, '>', libtcod.white)
+    draw_line(con, left_coord - 1, 52, right_coord + 1, 52, 219, libtcod.dark_amber)
+    draw_char(con, 102, 54, '>', libtcod.white)
 
     # Action menu
     for x, y in button_menu:
@@ -369,8 +373,8 @@ def draw_mouse(con, x, y, mouse_char, color):
 
 
 def display_message(con, message, color):
-    draw_word(con, 87, 50, " " * 24, libtcod.white, 24)
-    draw_word(con, 87, 50, message, color, 24)
+    draw_word(con, 104, 54, " " * 24, libtcod.white, 24)
+    draw_word(con, 104, 54, message, color, 24)
 
 
 def clear_screen(con):
@@ -386,9 +390,8 @@ def clear_canvas(con):
 
 
 def refresh_tools(con, hl_tool, hl_char, hl_color):
-    # (85,2) to (111,47)
-    for y in range(2, 47):
-        for x in range(85, 111):
+    for y in range(OUTLINE_SIZE, MAP_HEIGHT):
+        for x in range(MAP_WIDTH + 6, SCREEN_WIDTH - 2):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
             libtcod.console_set_char_background(con, x, y, libtcod.black)
     draw_ui(con, hl_tool, hl_char, hl_color)
