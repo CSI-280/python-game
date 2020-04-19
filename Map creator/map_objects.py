@@ -65,12 +65,14 @@ def display_map_objects():
 
 
 def erase_map_object(con, x, y):
-    for element in objects:
-        temp_x = element.x + OUTLINE_SIZE
-        temp_y = element.y + OUTLINE_SIZE
-        if temp_x == x and temp_y == y:
-            objects.remove(element)
-            draw_functions.draw_all_map_objects(con)
+    for i in range(0, 1):
+        for element in objects:
+            temp_x = element.x + OUTLINE_SIZE
+            temp_y = element.y + OUTLINE_SIZE
+            if temp_x == x and temp_y == y:
+                objects.remove(element)
+
+    draw_functions.draw_all_map_objects(con)
 
 
 def erase_all_map_objects():

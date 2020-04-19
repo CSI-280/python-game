@@ -16,13 +16,12 @@ def handle_keys(key):
     if key.c == ord('g'):
         return {'pickup': True}
 
-    if key.vk == libtcod.KEY_ENTER and key.lalt:
+    if key.vk == libtcod.KEY_ENTER and (key.lalt or key.ralt):
         # Alt+Enter: toggle full screen
         return {'fullscreen': True}
     elif key.vk == libtcod.KEY_ESCAPE:
         # Exit the game
         return {'exit': True}
-
 
     # No key was pressed
     return {}
