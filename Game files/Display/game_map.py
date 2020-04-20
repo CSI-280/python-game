@@ -31,6 +31,8 @@ class GameMap:
             data = fin.read()
         data = json.loads(data)
 
+        enemy_list = []
+
         for element in data:
             for coords, attr in element.items():
                 x, y = coords.split(' ')
@@ -49,6 +51,10 @@ class GameMap:
                     if 'd' in attr[0]:
                         player_spawn_x = x + 1
                         player_spawn_y = y
+                    # Add (e)nemies to List
+                    if 'e' in attr[0]:
+                        enemy_list += element
+                        print("Entity List: " + enemy_list)
 
                 char_code = attr[1]
                 self.tiles[x][y].set_char_code(char_code)

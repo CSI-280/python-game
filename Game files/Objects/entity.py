@@ -3,7 +3,7 @@ from Display.render_functions import RenderOrder
 class Entity:
 
     def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
-                 item=None, inventory=None):
+                 item=None, inventory=None, fighter=None, ai=None):
         self.x = x
         self.y = y
         self.char = char
@@ -13,12 +13,19 @@ class Entity:
         self.render_order = render_order
         self.item = item
         self.inventory = inventory
+        self.fighter = fighter
+        self.ai = ai
 
+        if self.fighter:
+            self.fighter.owner = self
 
-       # if self.item:
+        if self.ai:
+            self.ai.owner = self
+
+        # if self.item:
             # self.item.owner = self
 
-       # if self.inventory:
+        # if self.inventory:
             # self.item.owner = self
 
     def move(self, dx, dy):
