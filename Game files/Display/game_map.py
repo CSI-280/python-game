@@ -1,5 +1,7 @@
 
 import tcod as libtcod
+from GamePlay.ai import BasicMonster
+from GamePlay.fighter import Fighter
 from random import randint
 from Display.tile import Tile
 from Objects.entity import Entity
@@ -31,12 +33,14 @@ class GameMap:
             data = fin.read()
         data = json.loads(data)
 
-        enemy_list = []
-
+        enemy_dict = {}
+        print(data)
         for element in data:
+            print(element)
             for coords, attr in element.items():
                 x, y = coords.split(' ')
                 x, y = int(x), int(y)
+                char_code = attr[1]
                 color = attr[2]
                 if len(attr[0]) > 0:
                     # Check for (c)ollision
@@ -53,16 +57,32 @@ class GameMap:
                         player_spawn_y = y
                     # Add (e)nemies to List
                     if 'e' in attr[0]:
-                        enemy_list += element
-                        print("Entity List: " + enemy_list)
+                        fighter_component = Fighter(hp=10, defense=0, power=3)
+                        ai_component = BasicMonster()
+                        zombie = Entity(x, y, char_code, color, 'zombie',
+                                        blocks=True,
+                                        fighter=fighter_component,
+                                        ai=ai_component)
 
-                char_code = attr[1]
+
                 self.tiles[x][y].set_char_code(char_code)
                 self.tiles[x][y].set_color(color)
 
         player.x = player_spawn_x
         player.y = player_spawn_y
 
+        """
+        for enemy in enemy_dict:
+            print(enemy)
+            
+            for coords, attr in enemy.items():
+                x, y = coords.split(' ')
+                x, y = int(x), int(y)
+                char_code = attr[1]
+                color = attr[2]
+                zombie = Entity(x, y, char_code, color, 'zombie', blocks=True,
+                                fighter=fighter_component, ai=ai_component)
+"""
     def is_blocked(self, x, y):
         if self.tiles[x][y].blocked:
             return True

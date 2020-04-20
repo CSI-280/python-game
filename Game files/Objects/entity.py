@@ -1,5 +1,6 @@
 from Display.render_functions import RenderOrder
 
+
 class Entity:
 
     def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
