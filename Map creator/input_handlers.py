@@ -17,7 +17,7 @@ current_char = 219
 current_attributes = "c"
 current_color = libtcod.white
 highlighted_tool = (list(tools_menu.keys())[0][0], list(tools_menu.keys())[0][1])
-highlighted_char = (86, 18)
+highlighted_char = (102, 12)  # Coords of default highlighted char
 highlighted_color = (list(color_menu.keys())[0][0], list(color_menu.keys())[0][1])
 hide_mouse = False
 
@@ -37,53 +37,57 @@ def handle_keys(con, key):
     # Tab to print current mouse coords
     elif key.vk == libtcod.KEY_TAB:
         update_map()
-        print("Mouse Position: ", "(", mouseX, ", ", mouseY, ")")
+        print("Mouse Position: ({}, {})".format(mouseX, mouseY))
+    # Insert to edit a chars attributes
+    elif key.vk == libtcod.KEY_INSERT:
+        display_message(con, "Continue in console...", libtcod.red)
+        edit_element_attributes(con, mouseX, mouseY)
 
     tool_changed = False
     # Binds numbers to tools based on coords in constants.py
     if key.vk == libtcod.KEY_1:
         # Pointer tool
-        x = 90
+        x = 4
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_2:
         # Single wall draw
-        x = 92
+        x = 7
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_3:
         # Double wall draw
-        x = 94
+        x = 10
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_4:
         # Hollow box draw
-        x = 96
+        x = 13
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_5:
         # Box draw
-        x = 98
+        x = 16
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_6:
         # Line draw
-        x = 100
+        x = 19
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_7:
         # Char draw
-        x = 102
+        x = 22
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_8:
         # Free draw
-        x = 104
+        x = 25
         y = 6
         tool_changed = True
     elif key.vk == libtcod.KEY_9:
         # Erase
-        x = 106
+        x = 28
         y = 6
         tool_changed = True
 
@@ -98,13 +102,17 @@ def handle_keys(con, key):
 
 
 def is_in_map_range(x, y):
-    return MAP_BOX_SIZE[0][0] < x < MAP_BOX_SIZE[1][0] and \
-           MAP_BOX_SIZE[0][1] < y < MAP_BOX_SIZE[1][1]
+    map_start_x, map_start_y = MAP_BOX[0]
+    map_end_x, map_end_y = MAP_BOX[1]
+    return map_start_x < x < map_end_x and \
+        map_start_y < y < map_end_y
 
 
 def is_in_picker_range(x, y):
-    return PICKER_BOX_SIZE[0][0] < x < PICKER_BOX_SIZE[1][0] and \
-           PICKER_BOX_SIZE[0][1] < y < PICKER_BOX_SIZE[1][1]
+    char_start_x, char_start_y = CHAR_MENU_BOX[0]
+    char_end_x, char_end_y = CHAR_MENU_BOX[1]
+    return char_start_x < x < char_end_x and \
+        char_start_y < y < char_end_y
 
 
 def change_draw_type(con, icon_char):
@@ -175,6 +183,8 @@ def handle_mouse(con, mouse):
     if init:
         refresh_tools(con, highlighted_tool, highlighted_char,
                       highlighted_color)
+        refresh_chars(con, highlighted_tool, highlighted_char,
+                      highlighted_color)
         display_message(con, "Welcome", libtcod.white)
         init = False
 
@@ -208,7 +218,7 @@ def handle_mouse(con, mouse):
                 if (char_x, char_y) is not highlighted_char:
                     highlight_ui(con, char_x, char_y, 249, libtcod.white)
                     highlighted_char = (char_x, char_y)
-                    refresh_tools(con, highlighted_tool,
+                    refresh_chars(con, highlighted_tool,
                                   highlighted_char,
                                   highlighted_color)
                 if draw_type == 6 or draw_type == 7:
@@ -227,7 +237,7 @@ def handle_mouse(con, mouse):
                 if (x, y) is not highlighted_color:
                     highlight_ui(con, x, y, 249, libtcod.white)
                     highlighted_color = (x, y)
-                    refresh_tools(con, highlighted_tool, highlighted_char,
+                    refresh_chars(con, highlighted_tool, highlighted_char,
                                   highlighted_color)
 
     # Big Buttons
@@ -317,8 +327,9 @@ def handle_mouse(con, mouse):
     if mouse.lbutton_pressed:
         able_to_click = True
         if is_in_map_range(mouseX, mouseY):
-
-            if draw_type == 1:
+            if draw_type == 0:
+                display_map_object_properties(con, mouseX, mouseY)
+            elif draw_type == 1:
                 draw_wall_objects(mouseX, mouseY, drawX, drawY, current_attributes, current_color, "single")
                 draw_all_map_objects(con)
             elif draw_type == 2:
