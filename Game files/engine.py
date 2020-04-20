@@ -12,6 +12,7 @@ from Display.game_map import GameMap
 from Objects.inventory import Inventory
 from Display.render_functions import RenderOrder
 from constants import *
+from Objects.fighter import Fighter
 
 
 def main():
@@ -23,17 +24,24 @@ def main():
 
     # initialize inventory
     inventory = Inventory(10)
-
+    fighter_player = Fighter(hp=30, defense=2, power=5)
     player_char = 1
     player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
-                    render_order=RenderOrder.ACTOR, inventory=inventory)
+                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_player)
     entities = [player]
 
     libtcod.console_set_custom_font(FONT_FILE, libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
     libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'python game', False, vsync=False)
 
+    bar_width = 20
+    panel_height = 7
+    panel_y = SCREEN_HEIGHT - panel_height
+
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
+    panel = libtcod.console_new(SCREEN_WIDTH, panel_height)
+
+
 
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.load_random_map(player)
@@ -54,7 +62,7 @@ def main():
             recompute_fov(fov_map, player.x, player.y, fov_radius,
                           fov_light_walls, fov_algorithm)
 
-        render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH, SCREEN_HEIGHT, libtcod.white)
+        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, SCREEN_WIDTH, SCREEN_HEIGHT, bar_width, panel_height, panel_y, libtcod.white)
 
         fov_recompute = False
 
