@@ -1,4 +1,3 @@
-
 # from tutorial @
 # http://rogueliketutorials.com/tutorials/tcod/part-1/ (parts 1-4)
 
@@ -11,6 +10,7 @@ from Display.render_functions import clear_all, render_all
 from Display.game_map import GameMap
 from Objects.inventory import Inventory
 from Display.render_functions import RenderOrder
+from game_states import GameStates
 from constants import *
 
 
@@ -46,6 +46,8 @@ def main():
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+    game_state = GameStates.PLAYERS_TURN
+    prev_game_state = game_state
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
@@ -54,7 +56,8 @@ def main():
             recompute_fov(fov_map, player.x, player.y, fov_radius,
                           fov_light_walls, fov_algorithm)
 
-        render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH, SCREEN_HEIGHT, libtcod.white)
+        render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH, SCREEN_HEIGHT, libtcod.white,
+                   game_state)
 
         fov_recompute = False
 
@@ -68,8 +71,9 @@ def main():
         pickup = action.get('pickup')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
+        inventory = action.get('inventory')
 
-        if move:
+        if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
             destination_x = player.x + dx
             destination_y = player.y + dy
@@ -86,7 +90,7 @@ def main():
                     player.move(dx, dy)
 
                     fov_recompute = True
-            # if player tries to pick something up
+        # if player tries to pick something up
         elif pickup:
             for entity in entities:
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
@@ -98,9 +102,16 @@ def main():
             # else dont pick it up and print to console
             else:
                 print('Nothing to pickup')
+        # if player presses the inventory key
+        if inventory:
+                prev_game_state = game_state
+                game_state = GameStates.SHOW_INVENTORY
 
         if exit:
-            return True
+                if game_state == GameStates.SHOW_INVENTORY:
+                    game_state = prev_game_state
+                else:
+                    return True
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())

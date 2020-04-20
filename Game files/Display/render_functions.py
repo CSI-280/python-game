@@ -2,6 +2,9 @@ import tcod as libtcod
 
 from enum import Enum
 
+from game_states import GameStates
+from Display.menus import inventory_menu
+
 
 class RenderOrder(Enum):
     CORPSE = 1
@@ -10,7 +13,7 @@ class RenderOrder(Enum):
 
 
 def render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
-               SCREEN_HEIGHT, colors):
+               SCREEN_HEIGHT, colors, game_state):
     if fov_recompute:
         for y in range(game_map.height):
             for x in range(game_map.width):
@@ -52,6 +55,9 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
 
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
+    if game_state == GameStates.SHOW_INVENTORY:
+        inventory_menu(con, 'Press key next to item to use it, ESC to exit.\n',
+                       entity.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 def clear_all(con, entities):
     for entity in entities:
