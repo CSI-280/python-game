@@ -1,11 +1,14 @@
 from Display.render_functions import RenderOrder
 
+
 class Entity:
 
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
+    def __init__(self, x, y, hp, max_hp, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
                  item=None, inventory=None):
         self.x = x
         self.y = y
+        self.hp = hp
+        self.max_hp = max_hp
         self.char = char
         self.color = color
         self.name = name
@@ -14,16 +17,21 @@ class Entity:
         self.item = item
         self.inventory = inventory
 
+    # if self.item:
+    # self.item.owner = self
 
-       # if self.item:
-            # self.item.owner = self
-
-       # if self.inventory:
-            # self.item.owner = self
+    # if self.inventory:
+    # self.item.owner = self
 
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
+
+    def heal(self, amount):
+        self.hp += amount
+
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
 
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
