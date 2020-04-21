@@ -3,13 +3,13 @@
 
 import tcod as libtcod
 
+from Objects.entity import *
 from GamePlay.fighter import Fighter
 from GamePlay.death_functions import kill_monster, kill_player
-from Objects.entity import Entity, get_blocking_entities_at_location
 from Display.fov_functions import initialize_fov, recompute_fov
 from Input.input_handlers import handle_keys
 from Display.render_functions import clear_all, render_all, RenderOrder
-from Display.game_map import GameMap
+from Display.game_map import *
 from Objects.inventory import Inventory
 from GamePlay.game_states import GameStates
 from constants import *
@@ -27,9 +27,12 @@ def main():
 
     player_char = 1
     fighter_component = Fighter(hp=30, defense=2, power=5)
+    player_hp = 10
+    player_max_hp = 10
     player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
-                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_component)
-    entities = [player]
+                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_component, hp=player_hp, max_hp=player_max_hp)
+    entities = Entity.entities
+    entities.append(player)
 
     libtcod.console_set_custom_font(FONT_FILE, libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
@@ -37,6 +40,7 @@ def main():
 
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+    tiles = []
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.load_random_map(player, entities)
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
@@ -106,6 +110,7 @@ def main():
                 if entity.item and entity.x == player.x and entity.y == player.y:
                     player.inventory.add_item(entity)
                     entities.remove(entity)
+                    game_map.reset_tile(entity.x, entity.y)
 
                     break
             # else dont pick it up and print to console

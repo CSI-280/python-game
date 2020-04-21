@@ -6,7 +6,7 @@ import tcod as libtcod
 class Entity:
 
     def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
-                 item=None, inventory=None, fighter=None, ai=None):
+                 item=None, inventory=None, fighter=False, ai=False,hp=None, max_hp=None,):
         self.x = x
         self.y = y
         # self.hp = hp
@@ -20,7 +20,6 @@ class Entity:
         self.inventory = inventory
         self.fighter = fighter
         self.ai = ai
-
         if self.fighter:
             self.fighter.owner = self
 
@@ -33,9 +32,13 @@ class Entity:
         # if self.inventory:
             # self.item.owner = self
 
+    entities = []
+
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
+
+
 
     def move_towards(self, target_x, target_y, game_map, entities):
         dx = target_x - self.x
@@ -109,8 +112,8 @@ class Entity:
 """
 
 
-def get_blocking_entities_at_location(entities, destination_x, destination_y):
-    for entity in entities:
+def get_blocking_entities_at_location(entities_list, destination_x, destination_y):
+    for entity in entities_list:
         if entity.blocks and entity.x == destination_x and entity.y == destination_y:
             return entity
 

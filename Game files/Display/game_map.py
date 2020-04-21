@@ -2,17 +2,18 @@
 import tcod as libtcod
 from GamePlay.ai import BasicMonster
 from GamePlay.fighter import Fighter
-from random import randint
 from Display.tile import Tile
-from Objects.entity import Entity
+from Objects.entity import *
 from Objects.item import Item
 from Display.render_functions import RenderOrder
+import constants
 import json
 import os
 import random
 
 
 class GameMap:
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -20,7 +21,6 @@ class GameMap:
 
     def initialize_tiles(self):
         tiles = [[Tile(False) for y in range(self.height)] for x in range(self.width)]
-
         return tiles
 
     def load_random_map(self, player, entities):
@@ -54,6 +54,15 @@ class GameMap:
                     if 'd' in attr[0]:
                         player_spawn_x = x + 1
                         player_spawn_y = y
+                    # Add (i)tems
+                    if 'i' in attr[0]:
+                        item_component = Item()
+                        item_name = constants.items_dict[char_code]
+                        item = Entity(x, y, char_code, color, item_name,
+                                      render_order=RenderOrder.ITEM,
+                                      item=item_component)
+                        entities.append(item)
+
                     # Add (e)nemies to List
                     if 'e' in attr[0]:
                         # reset that spot on map to be blank with no attributes
@@ -77,3 +86,10 @@ class GameMap:
             return True
         else:
             return False
+
+    def reset_tile(self, x, y):
+        tile = self.tiles[x][y]
+        tile.char_code = 0
+        tile.color = libtcod.black
+        tile.block_sight = False
+        tile.blocked = False
