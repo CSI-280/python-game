@@ -3,7 +3,7 @@
 
 import tcod as libtcod
 
-from Objects.entity import Entity, get_blocking_entities_at_location
+from Objects.entity import *
 from Display.fov_functions import initialize_fov, recompute_fov
 from Input.input_handlers import handle_keys
 from Display.render_functions import clear_all, render_all
@@ -27,7 +27,7 @@ def main():
     player_char = 1
     player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
                     render_order=RenderOrder.ACTOR, inventory=inventory)
-    entities = [player]
+    entities.append(player)
 
     libtcod.console_set_custom_font(FONT_FILE, libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
 
@@ -93,11 +93,11 @@ def main():
         # if player tries to pick something up
         elif pickup:
             for entity in entities:
+                print(entity.x, entity.y, player.x, player.y)
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
                 if entity.item and entity.x == player.x and entity.y == player.y:
                     player.inventory.add_item(entity)
                     entities.remove(entity)
-
                     break
             # else dont pick it up and print to console
             else:

@@ -14,20 +14,14 @@ class Entity:
         self.item = item
         self.inventory = inventory
 
-
-       # if self.item:
-            # self.item.owner = self
-
-       # if self.inventory:
-            # self.item.owner = self
-
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
 
+entities = []
 
-def get_blocking_entities_at_location(entities, destination_x, destination_y):
-    for entity in entities:
+def get_blocking_entities_at_location(entities_list, destination_x, destination_y):
+    for entity in entities_list:
         if entity.blocks and entity.x == destination_x and entity.y == destination_y:
             return entity
 

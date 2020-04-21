@@ -1,8 +1,7 @@
 
 import tcod as libtcod
-from random import randint
 from Display.tile import Tile
-from Objects.entity import Entity
+from Objects.entity import *
 from Objects.item import Item
 from Display.render_functions import RenderOrder
 import json
@@ -18,7 +17,6 @@ class GameMap:
 
     def initialize_tiles(self):
         tiles = [[Tile(False) for y in range(self.height)] for x in range(self.width)]
-
         return tiles
 
     def load_random_map(self, player):
@@ -36,6 +34,7 @@ class GameMap:
                 x, y = coords.split(' ')
                 x, y = int(x), int(y)
                 color = attr[2]
+                char_code = attr[1]
                 if len(attr[0]) > 0:
                     # Check for (c)ollision
                     if 'c' in attr[0]:
@@ -49,8 +48,14 @@ class GameMap:
                     if 'd' in attr[0]:
                         player_spawn_x = x + 1
                         player_spawn_y = y
+                    if 'i' in attr[0]:
+                        item_component = Item()
+                        item = Entity(x, y, char_code, color, 'temp item',
+                                      render_order=RenderOrder.ITEM,
+                                      item=item_component)
+                        entities.append(item)
 
-                char_code = attr[1]
+
                 self.tiles[x][y].set_char_code(char_code)
                 self.tiles[x][y].set_color(color)
 
