@@ -38,7 +38,7 @@ def main():
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
-    game_map.load_random_map(player)
+    game_map.load_random_map(player, entities)
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
     #                  max_items_per_room)
 
@@ -92,6 +92,10 @@ def main():
                     player.move(dx, dy)
 
                     fov_recompute = True
+
+                # set game state to enemies turn
+                game_state = GameStates.ENEMY_TURN
+
         # if player tries to pick something up
         elif pickup:
             for entity in entities:
@@ -117,6 +121,13 @@ def main():
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if game_state == GameStates.ENEMY_TURN:
+            for entity in entities:
+                if entity.ai:
+                    entity.ai.take_turn(player, fov_map, game_map, entities)
+            # set game state to players turn
+            game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':
