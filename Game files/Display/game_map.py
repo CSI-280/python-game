@@ -65,8 +65,8 @@ class GameMap:
                         fighter_component = Fighter(hp=10, defense=0, power=3)
                         ai_component = BasicMonster()
                         zombie = Entity(x, y, char_code, color, 'zombie',
-                                        blocks=True, fighter=fighter_component,
-                                        ai=ai_component)
+                                        blocks=True, render_order=RenderOrder.ACTOR,
+                                        fighter=fighter_component, ai=ai_component)
                         entities.append(zombie)
 
         player.x = player_spawn_x
