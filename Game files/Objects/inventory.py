@@ -19,7 +19,7 @@ class Inventory:
         else:
             results.append({
                 'item_added': item,
-                'message': print('You picked up {0}!'.format(item.name))
+                'message': print('Acquired {0}!'.format(item.name))
             })
 
             self.items.append(item)
