@@ -4,12 +4,14 @@ from Display.tile import Tile
 from Objects.entity import *
 from Objects.item import Item
 from Display.render_functions import RenderOrder
+import constants
 import json
 import os
 import random
 
-
 class GameMap:
+
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -50,11 +52,11 @@ class GameMap:
                         player_spawn_y = y
                     if 'i' in attr[0]:
                         item_component = Item()
-                        item = Entity(x, y, char_code, color, 'temp item',
+                        item_name = constants.items_dict[char_code]
+                        item = Entity(x, y, char_code, color, item_name,
                                       render_order=RenderOrder.ITEM,
                                       item=item_component)
                         entities.append(item)
-
 
                 self.tiles[x][y].set_char_code(char_code)
                 self.tiles[x][y].set_color(color)
@@ -67,3 +69,10 @@ class GameMap:
             return True
         else:
             return False
+
+    def reset_tile(self, x, y):
+        tile = self.tiles[x][y]
+        tile.char_code = 0
+        tile.color = libtcod.black
+        tile.block_sight = False
+        tile.blocked = False

@@ -7,7 +7,7 @@ from Objects.entity import *
 from Display.fov_functions import initialize_fov, recompute_fov
 from Input.input_handlers import handle_keys
 from Display.render_functions import clear_all, render_all
-from Display.game_map import GameMap
+from Display.game_map import *
 from Objects.inventory import Inventory
 from Display.render_functions import RenderOrder
 from game_states import GameStates
@@ -35,6 +35,7 @@ def main():
 
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
+    tiles = []
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.load_random_map(player)
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
@@ -93,11 +94,12 @@ def main():
         # if player tries to pick something up
         elif pickup:
             for entity in entities:
-                print(entity.x, entity.y, player.x, player.y)
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
                 if entity.item and entity.x == player.x and entity.y == player.y:
                     player.inventory.add_item(entity)
                     entities.remove(entity)
+                    game_map.reset_tile(entity.x, entity.y)
+
                     break
             # else dont pick it up and print to console
             else:
