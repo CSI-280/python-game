@@ -3,15 +3,14 @@ import math
 import tcod as libtcod
 
 
-
 class Entity:
 
-    def __init__(self, x, y, hp, max_hp, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
-                 item=None, inventory=None):
+    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE,
+                 item=None, inventory=None, fighter=None, ai=None):
         self.x = x
         self.y = y
-        self.hp = hp
-        self.max_hp = max_hp
+        # self.hp = hp
+        # self.max_hp = max_hp
         self.char = char
         self.color = color
         self.name = name
@@ -102,11 +101,13 @@ class Entity:
         dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
 
-    def heal(self, amount):
+    """def heal(self, amount):
         self.hp += amount
 
         if self.hp > self.max_hp:
             self.hp = self.max_hp
+"""
+
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
     for entity in entities:
