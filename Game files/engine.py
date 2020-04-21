@@ -3,6 +3,7 @@
 
 import tcod as libtcod
 
+from GamePlay.fighter import Fighter
 from Objects.entity import Entity, get_blocking_entities_at_location
 from Display.fov_functions import initialize_fov, recompute_fov
 from Input.input_handlers import handle_keys
@@ -10,7 +11,7 @@ from Display.render_functions import clear_all, render_all
 from Display.game_map import GameMap
 from Objects.inventory import Inventory
 from Display.render_functions import RenderOrder
-from game_states import GameStates
+from GamePlay.game_states import GameStates
 from constants import *
 
 
@@ -25,8 +26,9 @@ def main():
     inventory = Inventory(10)
 
     player_char = 1
+    fighter_component = Fighter(hp=30, defense=2, power=5)
     player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
-                    render_order=RenderOrder.ACTOR, inventory=inventory)
+                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_component)
     entities = [player]
 
     libtcod.console_set_custom_font(FONT_FILE, libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_ASCII_INROW)
@@ -36,7 +38,7 @@ def main():
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
-    game_map.load_random_map(player)
+    game_map.load_random_map(player, entities)
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
     #                  max_items_per_room)
 
@@ -90,6 +92,10 @@ def main():
                     player.move(dx, dy)
 
                     fov_recompute = True
+
+                # set game state to enemies turn
+                game_state = GameStates.ENEMY_TURN
+
         # if player tries to pick something up
         elif pickup:
             for entity in entities:
@@ -115,6 +121,13 @@ def main():
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
+        if game_state == GameStates.ENEMY_TURN:
+            for entity in entities:
+                if entity.ai:
+                    entity.ai.take_turn(player, fov_map, game_map, entities)
+            # set game state to players turn
+            game_state = GameStates.PLAYERS_TURN
 
 
 if __name__ == '__main__':
