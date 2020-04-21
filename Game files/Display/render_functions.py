@@ -12,7 +12,7 @@ class RenderOrder(Enum):
     ACTOR = 3
 
 
-def render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
+def render_all(con, entities, player, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
                SCREEN_HEIGHT, colors, game_state):
     if fov_recompute:
         for y in range(game_map.height):
@@ -52,6 +52,12 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
 
     for entity in entities_in_render_order:
         draw_entity(con, entity, fov_map)
+
+    libtcod.console_set_default_foreground(con, libtcod.white)
+    libtcod.console_print_ex(con, 1, SCREEN_HEIGHT - 2, libtcod.BKGND_NONE,
+                             libtcod.LEFT,
+                             'HP: {0:02}/{1:02}'.format(player.fighter.hp,
+                                                        player.fighter.max_hp))
 
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 
