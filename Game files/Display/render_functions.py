@@ -2,7 +2,7 @@ import tcod as libtcod
 
 from enum import Enum
 
-from game_states import GameStates
+from GamePlay.game_states import GameStates
 from Display.menus import inventory_menu
 
 
