@@ -1,4 +1,5 @@
 # Start for the item class. So far holds name, description,
 class Item(object):
-    def __init__(self):
-        pass
+    def __init__(self, use_function=None, **kwargs):
+        self.use_function = use_function
+        self.function_kwargs = kwargs
