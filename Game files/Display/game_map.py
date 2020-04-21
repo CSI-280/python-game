@@ -33,10 +33,7 @@ class GameMap:
             data = fin.read()
         data = json.loads(data)
 
-        enemy_dict = {}
-        print(data)
         for element in data:
-            print(element)
             for coords, attr in element.items():
                 x, y = coords.split(' ')
                 x, y = int(x), int(y)
@@ -59,8 +56,12 @@ class GameMap:
                         player_spawn_y = y
                     # Add (e)nemies to List
                     if 'e' in attr[0]:
+                        # reset that spot on map to be blank with no attributes
                         self.tiles[x][y].set_char_code(0)
                         self.tiles[x][y].set_color((0, 0, 0))
+                        attr.clear()
+
+                        # create zombie where specified
                         fighter_component = Fighter(hp=10, defense=0, power=3)
                         ai_component = BasicMonster()
                         zombie = Entity(x, y, char_code, color, 'zombie',

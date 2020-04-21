@@ -19,7 +19,7 @@ def handle_keys(key):
         return {'move': (1, -1)}
     elif key_char == 'z':
         return {'move': (-1, 1)}
-    elif key_char == 'x':
+    elif key_char == 'c':
         return {'move': (1, 1)}
 
     # Pickup item
