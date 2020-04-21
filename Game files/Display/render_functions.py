@@ -63,7 +63,8 @@ def render_all(con, entities, player, game_map, fov_map, fov_recompute, SCREEN_W
 
     if game_state == GameStates.SHOW_INVENTORY:
         inventory_menu(con, 'Press key next to item to use it, ESC to exit.\n',
-                       entity.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
+                       player.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
+
 
 def clear_all(con, entities):
     for entity in entities:
