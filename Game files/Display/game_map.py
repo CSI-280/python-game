@@ -29,9 +29,9 @@ class GameMap:
         player_spawn_x = 0
         player_spawn_y = 0
 
-        file = random.choice(os.listdir("../Map Files/"))
+        file = random.choice(os.listdir("./Map Files/"))
         print('Loading {}'.format(file))
-        with open('../Map Files/' + file) as fin:
+        with open('./Map Files/' + file) as fin:
             data = fin.read()
         data = json.loads(data)
 
