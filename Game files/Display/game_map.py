@@ -24,6 +24,8 @@ class GameMap:
         return tiles
 
     def load_random_map(self, player, entities):
+        self.tiles = self.initialize_tiles()
+
         player_spawn_x = 0
         player_spawn_y = 0
 
@@ -33,6 +35,10 @@ class GameMap:
             data = fin.read()
         data = json.loads(data)
 
+
+        # mark initial exit stairs (in case map creator didn't put any)
+        self.exit_stairs = (0, 0)
+        # loop through each element in our json
         for element in data:
             for coords, attr in element.items():
                 x, y = coords.split(' ')
@@ -54,6 +60,9 @@ class GameMap:
                     if 'd' in attr[0]:
                         player_spawn_x = x + 1
                         player_spawn_y = y
+                    # Mark (u)p stairs
+                    if 'u' in attr[0]:
+                        self.exit_stairs = (x, y)
                     # Add (i)tems
                     if 'i' in attr[0]:
                         item_component = Item()
@@ -80,6 +89,9 @@ class GameMap:
 
         player.x = player_spawn_x
         player.y = player_spawn_y
+
+    def get_exit_stairs(self):
+        return self.exit_stairs
 
     def is_blocked(self, x, y):
         if self.tiles[x][y].blocked:
