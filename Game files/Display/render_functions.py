@@ -63,7 +63,19 @@ def render_all(con, entities, player, game_map, fov_map, fov_recompute, SCREEN_W
 
     if game_state == GameStates.SHOW_INVENTORY:
         inventory_menu(con, 'Press key next to item to use it, ESC to exit.\n',
-                       entity.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
+                       player.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+
+def refresh_screen(con, game_map):
+    libtcod.console_set_default_foreground(con, libtcod.black)
+    for y in range(game_map.height):
+        for x in range(game_map.width):
+            libtcod.console_put_char(con,
+                                     x,
+                                     y,
+                                     game_map.tiles[x][y].char_code,
+                                     libtcod.BKGND_NONE)
+
 
 def clear_all(con, entities):
     for entity in entities:

@@ -8,7 +8,7 @@ from GamePlay.fighter import Fighter
 from GamePlay.death_functions import kill_monster, kill_player
 from Display.fov_functions import initialize_fov, recompute_fov
 from Input.input_handlers import handle_keys
-from Display.render_functions import clear_all, render_all, RenderOrder
+from Display.render_functions import clear_all, render_all, RenderOrder, refresh_screen
 from Display.game_map import *
 from Objects.inventory import Inventory
 from GamePlay.game_states import GameStates
@@ -40,9 +40,9 @@ def main():
 
     con = libtcod.console.Console(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    tiles = []
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.load_random_map(player, entities)
+    exit_stairs = game_map.get_exit_stairs()
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
     #                  max_items_per_room)
 
@@ -105,13 +105,29 @@ def main():
 
         # if player tries to pick something up
         elif pickup:
+            # look for stairs
+            if player.x == exit_stairs[0] and player.y == exit_stairs[1]:
+                # TODO: Random gen
+                #  rather than picking a random map, this should remove
+                #  from a pregenerated list of random maps, so you don't get the
+                #  same map twice
+                # remove all entities from prior map
+                entities = [player]
+                # pulls a random json file
+                game_map.load_random_map(player, entities)
+                fov_recompute = True
+                fov_map = initialize_fov(game_map)
+                # get new pos of exit_stairs
+                exit_stairs = game_map.get_exit_stairs()
+                # refresh the screen to delete leftover characters
+                refresh_screen(con, game_map)
+
             for entity in entities:
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
                 if entity.item and entity.x == player.x and entity.y == player.y:
                     player.inventory.add_item(entity)
                     entities.remove(entity)
                     game_map.reset_tile(entity.x, entity.y)
-
                     break
             # else dont pick it up and print to console
             else:
