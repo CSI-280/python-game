@@ -2,6 +2,9 @@ import tcod as libtcod
 
 from enum import Enum
 
+from GamePlay.game_states import GameStates
+from Display.menus import inventory_menu
+
 
 class RenderOrder(Enum):
     CORPSE = 1
@@ -24,9 +27,8 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
 
 
 def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, SCREEN_WIDTH,
-               SCREEN_HEIGHT, bar_width, panel_height, panel_y, colors):
+               SCREEN_HEIGHT, bar_width, panel_height, panel_y, colors, game_state):
 
-  
     if fov_recompute:
         for y in range(game_map.height):
             for x in range(game_map.width):
@@ -66,6 +68,12 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, S
     for entity in entities_in_render_order:
         draw_entity(con, entity, fov_map)
 
+    libtcod.console_set_default_foreground(con, libtcod.white)
+    libtcod.console_print_ex(con, 1, SCREEN_HEIGHT - 2, libtcod.BKGND_NONE,
+                             libtcod.LEFT,
+                             'HP: {0:02}/{1:02}'.format(player.fighter.hp,
+                                                        player.fighter.max_hp))
+
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
     libtcod.console_set_default_background(panel, libtcod.black)
     libtcod.console_clear(panel)
@@ -76,6 +84,9 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, S
     libtcod.console_blit(panel, 0, 0, SCREEN_WIDTH, panel_height, 0, 0, panel_y)
 
 
+    if game_state == GameStates.SHOW_INVENTORY:
+        inventory_menu(con, 'Press key next to item to use it, ESC to exit.\n',
+                       entity.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 def clear_all(con, entities):
     for entity in entities:

@@ -58,8 +58,8 @@ def draw_line_objects(x1, y1, x2, y2, attr, char_number, color):
 
     for point in point_list:
         new_object = map_objects.Object(attr, char_number, color)
-        new_object.x = point[0] - OUTLINE_SIZE
-        new_object.y = point[1] - OUTLINE_SIZE
+        new_object.x = point[0] - CANVAS_OFFSET_X
+        new_object.y = point[1] - CANVAS_OFFSET_Y
         map_objects.objects.append(new_object)
 
 
@@ -229,8 +229,8 @@ def draw_char(con, x, y, char, color):
 
 def draw_char_object(x, y, attr, char, color):
     new_object = map_objects.Object(attr, char, color)
-    new_object.x = x - OUTLINE_SIZE
-    new_object.y = y - OUTLINE_SIZE
+    new_object.x = x - CANVAS_OFFSET_X
+    new_object.y = y - CANVAS_OFFSET_Y
     map_objects.objects.append(new_object)
 
 
@@ -249,10 +249,22 @@ def draw_word(con, x, y, word, color, max_len):
 
 
 def draw_borders(con):
-    draw_hollow_box(con, MAP_BOX_SIZE[0][0], MAP_BOX_SIZE[0][1],
-              MAP_BOX_SIZE[1][0], MAP_BOX_SIZE[1][1], 219, libtcod.dark_amber)
-    draw_hollow_box(con, PICKER_BOX_SIZE[0][0], PICKER_BOX_SIZE[0][1],
-              PICKER_BOX_SIZE[1][0], PICKER_BOX_SIZE[1][1], 219, libtcod.dark_amber)
+
+    # Draws the bos for the tools menu box
+    tools_start_x, tools_start_y = TOOLS_BOX[0]
+    tools_end_x, tools_end_y = TOOLS_BOX[1]
+    draw_hollow_box(con, tools_start_x, tools_start_y, tools_end_x, tools_end_y, 219, libtcod.dark_amber)
+
+    # Draws the box for the map canvas
+    map_start_x, map_start_y = MAP_BOX[0]
+    map_end_x, map_end_y = MAP_BOX[1]
+    draw_hollow_box(con, map_start_x, map_start_y, map_end_x, map_end_y, 219, libtcod.dark_amber)
+
+    # Draws the box for the char menu
+    char_start_x, char_start_y = CHAR_MENU_BOX[0]
+    char_end_x, char_end_y = CHAR_MENU_BOX[1]
+    draw_hollow_box(con, char_start_x, char_start_y, char_end_x, char_end_y, 219, libtcod.dark_amber)
+    # Calls draw ui to print all of the ui elements
     draw_ui(con, None, None, None)
 
 
@@ -262,22 +274,26 @@ def draw_button(con, x, y, word):
 
 
 def draw_ui(con, hl_tool, hl_char, hl_color):
+
+    # Tools box
+
+    draw_word(con, 13, 3, "TOOLS", libtcod.white, 5)
+    draw_line(con, 3, 4, 28, 4, 205, libtcod.white)
+
+    # Chars box
     # X alignment for UI elements, Y is changed on element
     left_coord = 102
     right_coord = 126
     word_start = 112
-    # Headers
-    draw_word(con, word_start, 3, "TOOLS", libtcod.white, 5)
+
+    draw_word(con, word_start, 3, "CHARS", libtcod.white, 5)
     draw_line(con, left_coord, 4, right_coord, 4, 205, libtcod.white)
 
-    draw_word(con, word_start, 9, "CHARS", libtcod.white, 5)
-    draw_line(con, left_coord, 10, right_coord, 10, 205, libtcod.white)
+    draw_word(con, word_start - 1, 39, "COLORS", libtcod.white, 6)
+    draw_line(con, left_coord, 40, right_coord, 40, 205, libtcod.white)
 
-    draw_word(con, word_start - 1, 27, "COLORS", libtcod.white, 6)
-    draw_line(con, left_coord, 28, right_coord, 28, 205, libtcod.white)
-
-    draw_word(con, word_start - 1, 41, "ACTIONS", libtcod.white, 7)
-    draw_line(con, left_coord, 42, right_coord, 42, 205, libtcod.white)
+    draw_word(con, word_start - 1, 48, "ACTIONS", libtcod.white, 7)
+    draw_line(con, left_coord, 49, right_coord, 49, 205, libtcod.white)
 
     # Tool menu
     for x, y in tools_menu:
@@ -301,8 +317,8 @@ def draw_ui(con, hl_tool, hl_char, hl_color):
     if hl_color:
         highlight_ui(con, hl_color[0], hl_color[1], 249, libtcod.white)
 
-    draw_line(con, left_coord - 1, 52, right_coord + 1, 52, 219, libtcod.dark_amber)
-    draw_char(con, 102, 54, '>', libtcod.white)
+    draw_line(con, left_coord - 1, 59, right_coord + 1, 59, 219, libtcod.dark_amber)
+    draw_char(con, 102, 61, '>', libtcod.white)
 
     # Action menu
     for x, y in button_menu:
@@ -337,8 +353,8 @@ def draw_all_map_objects(con):
     for obj in map_objects.objects:
         libtcod.console_set_default_foreground(con, obj.get_color())
         libtcod.console_put_char(con,
-                                 obj.x + OUTLINE_SIZE,
-                                 obj.y + OUTLINE_SIZE,
+                                 obj.x + CANVAS_OFFSET_X,
+                                 obj.y + CANVAS_OFFSET_Y,
                                  obj.get_char(),
                                  libtcod.BKGND_NONE)
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
@@ -373,8 +389,8 @@ def draw_mouse(con, x, y, mouse_char, color):
 
 
 def display_message(con, message, color):
-    draw_word(con, 104, 54, " " * 24, libtcod.white, 24)
-    draw_word(con, 104, 54, message, color, 24)
+    draw_word(con, 104, 61, " " * 24, libtcod.white, 24)
+    draw_word(con, 104, 61, message, color, 24)
 
 
 def clear_screen(con):
@@ -384,14 +400,28 @@ def clear_screen(con):
 
 
 def clear_canvas(con):
-    for y in range(OUTLINE_SIZE, MAP_HEIGHT + OUTLINE_SIZE):
-        for x in range(OUTLINE_SIZE, MAP_WIDTH + OUTLINE_SIZE):
+    map_start_x, map_start_y = MAP_BOX[0]
+    map_end_x, map_end_y = MAP_BOX[1]
+    for y in range(map_start_y + 1, map_end_y - 1):
+        for x in range(map_start_x + 1, map_end_x - 1):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
 
 
+def refresh_chars(con, hl_tool, hl_char, hl_color):
+    char_start_x, char_start_y = CHAR_MENU_BOX[0]
+    char_end_x, char_end_y = CHAR_MENU_BOX[1]
+    for y in range(char_start_y + 1, char_end_y):
+        for x in range(char_start_x + 1, char_end_x):
+            libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
+            libtcod.console_set_char_background(con, x, y, libtcod.black)
+    draw_ui(con, hl_tool, hl_char, hl_color)
+
+
 def refresh_tools(con, hl_tool, hl_char, hl_color):
-    for y in range(OUTLINE_SIZE, MAP_HEIGHT):
-        for x in range(MAP_WIDTH + 6, SCREEN_WIDTH - 2):
+    tools_start_x, tools_start_y = TOOLS_BOX[0]
+    tools_end_x, tools_end_y = TOOLS_BOX[1]
+    for y in range(tools_start_y + 1, tools_end_y):
+        for x in range(tools_start_x + 1, tools_end_x):
             libtcod.console_put_char(con, x, y, ' ', libtcod.BKGND_NONE)
             libtcod.console_set_char_background(con, x, y, libtcod.black)
     draw_ui(con, hl_tool, hl_char, hl_color)
