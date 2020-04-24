@@ -13,7 +13,6 @@ from Display.game_map import *
 from Objects.inventory import Inventory
 from GamePlay.game_states import GameStates
 from constants import *
-from Objects.fighter import Fighter
 
 
 def main():
