@@ -20,13 +20,13 @@ If tcod fails to install you may need to download and install visual c++ from <h
 
 ### PyCharm (virtual environment)
 
-1. Upgrade pip using the command
+#### Upgrade pip using the command
 
 ```bash
 python -m pip install --upgrade pip
 ```
 
-1. Install tcod using the command
+#### Install tcod using the command
 
 ```bash
 pip install tcod
@@ -92,6 +92,7 @@ Here you can put any of your ascii characters and what they correspond to
 
 | Character     | Description |
 |:-------------:|-------------|
+|       ☺       | Player      |
 |       ║       | A wall      |
 |       ╬       | A door      |
 
@@ -105,3 +106,12 @@ All controls can be put here for reference
 |       A       | Move left   |
 |       S       | Move down   |
 |       D       | Move right  |
+|       Q       | Move up left|
+|       E       | Move up right|
+|       Z       | Move down left|
+|       C       | Move down right|
+|       I       | Inventory   |
+|       G       | Grab item   |
+|       T       | Drop item   |
+|       Alt     | Toggle fullscreen|
+|       Esc     | Exit game   |
