@@ -42,7 +42,7 @@ If you need help, this tutorial from the library's page is very helpful and wher
 
 ## Running the game
 
-Once all the steps above have been completed all you need to do is run the file titled python-game.
+Once all the steps above have been completed all you need to do is run the file titled Rogue_Apocalypse.
 
 ## Keybindings
 
