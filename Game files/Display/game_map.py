@@ -6,6 +6,7 @@ from Display.tile import Tile
 from Objects.entity import *
 from Objects.item import Item
 from Display.render_functions import RenderOrder
+from Objects.item_functions import heal
 import constants
 import json
 import os
@@ -64,14 +65,27 @@ class GameMap:
                     if 'u' in attr[0]:
                         self.exit_stairs = (x, y)
                     # Add (i)tems
-                    if 'i' in attr[0]:
-                        item_component = Item()
-                        item_name = constants.items_dict[char_code]
+                    if 'w' in attr[0]:
+                        item_component = Item(damage=constants.weapons_dict[char_code][1])
+                        item_name = constants.weapons_dict[char_code][0]
                         item = Entity(x, y, char_code, color, item_name,
                                       render_order=RenderOrder.ITEM,
                                       item=item_component)
                         entities.append(item)
-
+                    if 'h' in attr[0]:
+                        item_component = Item(healing=True, use_function=heal, amount=10)
+                        item_name = "Health"
+                        item = Entity(x, y, char_code, color, item_name,
+                                      render_order=RenderOrder.ITEM,
+                                      item=item_component)
+                        entities.append(item)
+                    if 'a' in attr[0]:
+                        item_component = Item(ammo=True)
+                        item_name = "Ammo"
+                        item = Entity(x, y, char_code, color, item_name,
+                                      render_order=RenderOrder.ITEM,
+                                      item=item_component)
+                        entities.append(item)
                     # Add (e)nemies to List
                     if 'e' in attr[0]:
                         # reset that spot on map to be blank with no attributes

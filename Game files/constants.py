@@ -10,15 +10,13 @@ MAP_HEIGHT = 50
 FONT_FILE = "../font_custom.png"
 
 # Relates item char number to item name
-items_dict = {
-    4: "Kitchen Knife",
-    5: "Handgun",
-    6: "Ammunition",
-    7: "Medical Supplies",
-    8: "Club",
-    9: "Shovel",
-    10: "Crossbow",
-    11: "Pistol",
-    12: "Shotgun",
-    13: "Assault Rifle"
+weapons_dict = {
+    4: ("Kitchen Knife", 4),
+    5: ("Handgun", 8),
+    8: ("Club", 3),
+    9: ("Shovel", 4),
+    10: ("Crossbow", 12),
+    11: ("Pistol", 8),
+    12: ("Shotgun", 10),
+    13: ("Assault Rifle", 6)
 }

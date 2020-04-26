@@ -13,6 +13,7 @@ from Display.game_map import *
 from Objects.inventory import Inventory
 from GamePlay.game_states import GameStates
 from constants import *
+from Display.menus import *
 
 
 def main():
@@ -27,10 +28,9 @@ def main():
     fighter_player = Fighter(hp=30, defense=2, power=5)
     player_char = 1
     fighter_component = Fighter(hp=30, defense=2, power=5)
-    player_hp = 10
-    player_max_hp = 10
+
     player = Entity(int(SCREEN_WIDTH / 2), int(SCREEN_HEIGHT / 2), player_char, libtcod.white, 'Player', blocks=True,
-                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_component, hp=player_hp, max_hp=player_max_hp)
+                    render_order=RenderOrder.ACTOR, inventory=inventory, fighter=fighter_component)
     entities = Entity.entities
     entities.append(player)
 
@@ -77,13 +77,15 @@ def main():
 
         clear_all(con, entities)
 
-        action = handle_keys(key)
+        action = handle_keys(key, game_state)
 
         move = action.get('move')
         pickup = action.get('pickup')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
         inventory = action.get('inventory')
+        inventory_index = action.get('inventory_index')
+        drop_inventory = action.get('drop_inventory')
 
         player_turn_results = []
 
@@ -143,11 +145,24 @@ def main():
                 prev_game_state = game_state
                 game_state = GameStates.SHOW_INVENTORY
 
+        if drop_inventory:
+            prev_game_state = game_state
+            game_state = GameStates.DROP_INVENTORY
+
+        if inventory_index is not None and prev_game_state != GameStates.PLAYER_DEAD \
+                and inventory_index < len(player.inventory.items):
+            item = player.inventory.items[inventory_index]
+
+            if game_state == GameStates.SHOW_INVENTORY:
+                player_turn_results.extend(player.inventory.use(item))
+            elif game_state == GameStates.DROP_INVENTORY:
+                player_turn_results.extend(player.inventory.drop_item(item))
+
         if exit:
-                if game_state == GameStates.SHOW_INVENTORY:
-                    game_state = prev_game_state
-                else:
-                    return True
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+                game_state = prev_game_state
+            else:
+                return True
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
@@ -155,9 +170,19 @@ def main():
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
             dead_entity = player_turn_result.get('dead')
+            item_added = player_turn_result.get('item_added')
+            item_consumed = player_turn_result.get('consumed')
+            item_dropped = player_turn_result.get('item_dropped')
 
             if message:
                 print(message)
+
+            if item_consumed:
+                game_state = GameStates.ENEMY_TURN
+
+            if item_dropped:
+                entities.append(item_dropped)
+                game_state = GameStates.ENEMY_TURN
 
             if dead_entity:
                 if dead_entity == player:
@@ -166,6 +191,15 @@ def main():
                     message = kill_monster(dead_entity)
 
                 print(message)
+
+        if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+            if game_state == GameStates.SHOW_INVENTORY:
+                inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
+            else:
+                inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
+
+            inventory_menu(con, inventory_title, player.inventory, 50,
+                           SCREEN_WIDTH, SCREEN_HEIGHT)
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:

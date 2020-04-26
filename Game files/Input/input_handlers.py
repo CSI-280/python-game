@@ -1,8 +1,18 @@
 
 import tcod as libtcod
+from GamePlay.game_states import *
 
 
-def handle_keys(key):
+def handle_keys(key, game_state):
+    if game_state == GameStates.PLAYERS_TURN:
+        return handle_players_turn_keys(key)
+    elif game_state == GameStates.PLAYER_DEAD:
+        return handle_player_dead_keys(key)
+    elif game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+        return handle_inventory_keys(key)
+
+
+def handle_players_turn_keys(key):
     key_char = chr(key.c)
     # Movement keys
     if key.vk == libtcod.KEY_UP or key.c == ord('w'):
@@ -30,6 +40,9 @@ def handle_keys(key):
     if key.c == ord('i'):
         return {'inventory': True}
 
+    elif key_char == 't':
+        return {'drop_inventory': True}
+
     if key.vk == libtcod.KEY_ENTER and (key.lalt or key.ralt):
         # Alt+Enter: toggle full screen
         return {'fullscreen': True}
@@ -38,4 +51,36 @@ def handle_keys(key):
         return {'exit': True}
 
     # No key was pressed
+    return {}
+
+
+def handle_player_dead_keys(key):
+    key_char = chr(key.c)
+
+    if key_char == 'i':
+        return {'show_inventory': True}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
+    return {}
+
+
+def handle_inventory_keys(key):
+    index = key.c - ord('a')
+
+    if index >= 0:
+        return {'inventory_index': index}
+
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        # Alt+Enter: toggle full screen
+        return {'fullscreen': True}
+    elif key.vk == libtcod.KEY_ESCAPE:
+        # Exit the menu
+        return {'exit': True}
+
     return {}

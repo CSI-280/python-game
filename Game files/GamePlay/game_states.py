@@ -6,3 +6,4 @@ class GameStates(Enum):
     ENEMY_TURN = 2
     SHOW_INVENTORY = 3
     PLAYER_DEAD = 4
+    DROP_INVENTORY = 5

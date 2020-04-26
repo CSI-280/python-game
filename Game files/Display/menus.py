@@ -5,12 +5,10 @@ import tcod as libtcod
 
 
 def menu(con, header, options, width, screen_width, screen_height):
-    # keyboards usually have 26 letters that can be pressed so excluding special characters there cannot be more
-    # than 26 options
     if len(options) > 26:
-        raise ValueError('Cannot have menu with more than 26 options')
+        raise ValueError('Cannot have a menu with more than 26 options.')
 
-    # calculate height for header
+    # calculate total height for the header (after auto-wrap) and one line per option
     header_height = libtcod.console_get_height_rect(con, 0, 0, width, screen_height, header)
     height = len(options) + header_height
 
@@ -31,8 +29,8 @@ def menu(con, header, options, width, screen_width, screen_height):
         letter_index += 1
 
     # blit the contents of "window" to the root console
-    x = 0
-    y = 0
+    x = int(3)
+    y = int(3)
     libtcod.console_blit(window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
 
 
@@ -42,4 +40,4 @@ def inventory_menu(con, header, inventory, inventory_width, screen_width, screen
     else:
         options = [item.name for item in inventory.items]
 
-    menu(con, header, options, inventory_width,screen_width, screen_height)
+    menu(con, header, options, inventory_width, screen_width, screen_height)
