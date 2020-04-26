@@ -192,15 +192,6 @@ def main():
 
                 print(message)
 
-        if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
-            if game_state == GameStates.SHOW_INVENTORY:
-                inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
-            else:
-                inventory_title = 'Press the key next to an item to drop it, or Esc to cancel.\n'
-
-            inventory_menu(con, inventory_title, player.inventory, 50,
-                           SCREEN_WIDTH, SCREEN_HEIGHT)
-
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
                 if entity.ai:

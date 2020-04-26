@@ -11,6 +11,7 @@ class RenderOrder(Enum):
     ITEM = 2
     ACTOR = 3
 
+
 def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_color):
     bar_width = int(float(value) / maximum * total_width)
 
@@ -74,6 +75,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, S
                              'HP: {0:02}/{1:02}'.format(player.fighter.hp,
                                                         player.fighter.max_hp))
 
+
     libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
     libtcod.console_set_default_background(panel, libtcod.black)
     libtcod.console_clear(panel)
@@ -86,6 +88,9 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, S
 
     if game_state == GameStates.SHOW_INVENTORY:
         inventory_menu(con, 'Press key next to item to use it, ESC to exit.\n',
+                       player.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
+    elif game_state == GameStates.DROP_INVENTORY:
+        inventory_menu(con, 'Press key next to item to drop it, ESC to exit.\n',
                        player.inventory, 50, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
