@@ -48,8 +48,13 @@ def main():
 
 
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
-    game_map.load_random_map(player, entities)
-    exit_stairs = game_map.get_exit_stairs()
+    # pass in first and last map
+    game_map.generate_map_list("beginning.json", "end.json")
+    game_map.load_next_map(player, entities)
+    # returns a tuple, (entrance, exit)
+    exit_stairs = game_map.get_stairs()[1]
+    entrance_stairs = game_map.get_stairs()[0]
+
     # game_map.make_map(max_rooms, room_min_size, room_max_size, MAP_WIDTH, MAP_HEIGHT, player, entities,
     #                  max_items_per_room)
 
@@ -113,28 +118,43 @@ def main():
 
         # if player tries to pick something up
         elif pickup:
-            # look for stairs
+            # look for exit stairs
             if player.x == exit_stairs[0] and player.y == exit_stairs[1]:
-                # TODO: Random gen
-                #  rather than picking a random map, this should remove
-                #  from a pregenerated list of random maps, so you don't get the
-                #  same map twice
                 # remove all entities from prior map
                 entities = [player]
-                # pulls a random json file
-                game_map.load_random_map(player, entities)
+                # generate next map
+                game_map.load_next_map(player, entities)
+                # refresh fov
                 fov_recompute = True
                 fov_map = initialize_fov(game_map)
-                # get new pos of exit_stairs
-                exit_stairs = game_map.get_exit_stairs()
+                # get new pos of exit_stairs and entrance_stairs
+                exit_stairs = game_map.get_stairs()[1]
+                entrance_stairs = game_map.get_stairs()[0]
                 # refresh the screen to delete leftover characters
                 refresh_screen(con, game_map)
-                player.fighter.hp = 30
+
+            # look for entrance stairs
+            if player.x == entrance_stairs[0] and player.y == entrance_stairs[1]:
+                # remove all entities from prior map
+                entities = [player]
+                # generate next map
+                game_map.load_previous_map(player, entities)
+                # refresh fov
+                fov_recompute = True
+                fov_map = initialize_fov(game_map)
+                # get new pos of exit_stairs and entrance_stairs
+                exit_stairs = game_map.get_stairs()[1]
+                entrance_stairs = game_map.get_stairs()[0]
+                # refresh the screen to delete leftover characters
+                refresh_screen(con, game_map)
 
             for entity in entities:
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
                 if entity.item and entity.x == player.x and entity.y == player.y:
-                    player.inventory.add_item(entity)
+                    if entity.name == "Health":
+                        player.fighter.heal(5)
+                    else:
+                        player.inventory.add_item(entity)
                     entities.remove(entity)
                     game_map.reset_tile(entity.x, entity.y)
                     break
