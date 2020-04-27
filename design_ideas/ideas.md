@@ -97,3 +97,53 @@ Here is a list of a bunch of ideas that I came up with for our game. If anyone h
  * Zombie tower where you must fight through floors in order to get to the bottom of the tower and escape. (Wes's idea)
  
  - We need to keep this game simple at this point.
+ 
+ 
+# Old stuff from readme
+
+Puzzle Info File:
+<https://docs.google.com/document/d/1RTI1KXnnTR8Qo6oZBsA5HZLdGG-oU7rfZ9q67ya60f4/edit?usp=sharing>
+
+Map Generator:
+<https://azgaar.github.io/Fantasy-Map-Generator/>
+Load the .map file from the repo to make edits
+
+## Planned Features
+
+1. Inventory management system
+
+2. Room system, randomly generated as well as scripted for puzzles. Full navigation
+
+3. Combat system
+
+4. Beautiful groundbreaking ASCII art
+
+## Design Guide
+
+* Should follow classic Rogue style
+
+* Only use extended ascii characters
+
+* There will be one location on the screen at a time,  
+but it won't zoom in so rooms can be different sizes
+as long as they fit on the screen.
+
+* Each location can be a single room or made up of many connected rooms
+but they should all be contained on the screen at one time.  
+
+* The character is one char on the screen so the scale will always be the same
+
+* Different screens like a menu or inventory can take up the whole screen  
+and overlay onto the current location
+
+* We could set aside room at the top and bottom for messages and players stats
+
+## Art Key
+
+Here you can put any of your ascii characters and what they correspond to  
+[Extended ascii character list](https://www.redbubble.com/people/barnsis/journal/3570534-complete-ascii-list-of-symbols)
+
+| Character     | Description |
+|:-------------:|-------------|
+|       ║       | A wall      |
+|       ╬       | A door      |
