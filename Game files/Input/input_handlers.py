@@ -33,7 +33,7 @@ def handle_players_turn_keys(key):
         return {'move': (1, 1)}
 
     # Pickup item
-    if key.c == ord('g'):
+    if key.c == ord('f'):
         return {'pickup': True}
 
     # Open inventory

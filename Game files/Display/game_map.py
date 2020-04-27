@@ -19,26 +19,70 @@ class GameMap:
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
+        self.entrance_stairs = (0, 0)
+        self.exit_stairs = (0, 0)
+        self.all_maps = []
+        self.current_map = -1
 
     def initialize_tiles(self):
         tiles = [[Tile(False) for y in range(self.height)] for x in range(self.width)]
         return tiles
 
-    def load_random_map(self, player, entities):
+    def get_map_data(self):
+        # get correct file
+        file = self.all_maps[self.current_map]
+        # display message to console
+        print('Loading {}'.format(file))
+        # read json data from map file
+        with open(file) as fin:
+            data = fin.read()
+        data = json.loads(data)
+        # return json data from map file as a python list
+        return data
+
+    def generate_map_list(self, first_map, last_map):
+        directory = "../Map files/"
+        all_files = os.listdir(directory)
+        # remove first and last map from directory list
+        for map_string in all_files:
+            if map_string == first_map or map_string == last_map:
+                all_files.remove(map_string)
+        # randomize all_files list
+        random.shuffle(all_files)
+        # prepend directory to each map
+        all_files = [directory + map_string for map_string in all_files]
+        # set first and last map accordingly
+        all_files.insert(0, directory + first_map)
+        all_files.append(directory + last_map)
+        self.all_maps = all_files
+
+    def load_next_map(self, player, entities):
+        if self.current_map < len(self.all_maps):
+            self.current_map += 1
+
+            # get all map data from the file
+            data = self.get_map_data()
+            # generate next map
+            self.generate_map(data, True, player, entities)
+
+    def load_previous_map(self, player, entities):
+        if self.current_map > 0:
+            self.current_map -= 1
+
+            # get all map data from the file
+            data = self.get_map_data()
+            # generate next map
+            self.generate_map(data, False, player, entities)
+
+    def generate_map(self, data, spawn_at_entrance, player, entities):
         self.tiles = self.initialize_tiles()
 
         player_spawn_x = 0
         player_spawn_y = 0
 
-        file = "../Map files/beginning.json"
-        print('Loading {}'.format(file))
-        with open('../Map Files/' + file) as fin:
-            data = fin.read()
-        data = json.loads(data)
-
-
         # mark initial exit stairs (in case map creator didn't put any)
         self.exit_stairs = (0, 0)
+        self.entrance_stairs = (0, 0)
         # loop through each element in our json
         for element in data:
             for coords, attr in element.items():
@@ -59,10 +103,15 @@ class GameMap:
                         self.tiles[x][y].set_block_sight(False)
                     # Spawn player next to (d)own stairs
                     if 'd' in attr[0]:
-                        player_spawn_x = x + 1
-                        player_spawn_y = y
+                        if spawn_at_entrance:
+                            player_spawn_x = x + 1
+                            player_spawn_y = y
+                        self.entrance_stairs = (x, y)
                     # Mark (u)p stairs
                     if 'u' in attr[0]:
+                        if not spawn_at_entrance:
+                            player_spawn_x = x + 1
+                            player_spawn_y = y
                         self.exit_stairs = (x, y)
                     # Add (i)tems
                     if 'w' in attr[0]:
@@ -86,7 +135,7 @@ class GameMap:
                                       render_order=RenderOrder.ITEM,
                                       item=item_component)
                         entities.append(item)
-                    # Add (e)nemies to List
+                    # Add (e)nemies to list
                     if 'e' in attr[0]:
                         # reset that spot on map to be blank with no attributes
                         self.tiles[x][y].set_char_code(0)
@@ -104,8 +153,12 @@ class GameMap:
         player.x = player_spawn_x
         player.y = player_spawn_y
 
-    def get_exit_stairs(self):
-        return self.exit_stairs
+    def get_stairs(self):
+        """returns both positions of stairs in the map"""
+        both_stairs = (self.entrance_stairs, self.exit_stairs)
+        # for some reason pycharm likes it when I return a single variable
+        # rather than a tuple
+        return both_stairs
 
     def is_blocked(self, x, y):
         if self.tiles[x][y].blocked:
