@@ -129,6 +129,7 @@ def main():
                 exit_stairs = game_map.get_exit_stairs()
                 # refresh the screen to delete leftover characters
                 refresh_screen(con, game_map)
+                player.fighter.hp = 30
 
             for entity in entities:
                 # if the entity is on the same tile as the player pick it up and remove it from the entity list
