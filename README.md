@@ -2,7 +2,7 @@
 
 ## Overview
 
-Info about the game, maybe add story context if we have any
+Apocalypse is a rouge-like game where you can explore dungeons. In these dungeons you will be fighting many kinds of monsters and collecting items as you search for the stairs to get to the next floor of the dungeon to try and clear the dungeon.
 
 ## Installation
 
@@ -70,7 +70,7 @@ Josh Bogin
 Louis Vinton
 Wes Beard
 Kai Wilens ^_^
-Ethan Trope   ¯\_(^_^)_/¯
+Ethan Trope   
 Michaelangelo Leonardo Raphael Donatello
 Noah Anderson
 Steven Pershyn
