@@ -42,7 +42,7 @@ If you need help, this tutorial from the library's page is very helpful and wher
 
 ## Running the game
 
-Once all the steps above have been completed all you need to do is run the file titled Rogue_Apocalypse.
+Once all the steps above have been completed all you need to do is run the file "Game Files/engine.py".
 
 ## Keybindings
 
@@ -59,7 +59,8 @@ All controls can be put here for reference
 |       Z       | Move down left|
 |       C       | Move down right|
 |       I       | Inventory   |
-|       G       | Grab item   |
+|       F       | Grab item   |
+|       F       | Use stairs  |
 |       T       | Drop item   |
 |       Alt     | Toggle fullscreen|
 |       Esc     | Exit game   |
