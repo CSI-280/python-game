@@ -59,16 +59,22 @@ class ObjectEncoder(JSONEncoder):
 objects = []
 
 
-def display_map_objects():
+def display_map_object_properties(con, x, y):
+    remove_duplicate_objects()
     for element in objects:
-        print(element.x, element.y, element.char)
+        temp_x = element.x + CANVAS_OFFSET_X
+        temp_y = element.y + CANVAS_OFFSET_Y
+        if temp_x == x and temp_y == y:
+            message = "Char #: {} Attr: {}".format(element.char, element.attr)
+            draw_functions.display_message(con, message, libtcod.white)
+            break
 
 
 def erase_map_object(con, x, y):
     for i in range(0, 1):
         for element in objects:
-            temp_x = element.x + OUTLINE_SIZE
-            temp_y = element.y + OUTLINE_SIZE
+            temp_x = element.x + CANVAS_OFFSET_X
+            temp_y = element.y + CANVAS_OFFSET_Y
             if temp_x == x and temp_y == y:
                 objects.remove(element)
 
@@ -78,6 +84,20 @@ def erase_map_object(con, x, y):
 def erase_all_map_objects():
     objects.clear()
     print("Canvas cleared")
+
+
+def edit_element_attributes(con, x, y):
+    new_attr = input("Enter new attribute string below or '!' to esc:\n")
+    if new_attr is not "!":
+        for element in objects:
+            temp_x = element.x + CANVAS_OFFSET_X
+            temp_y = element.y + CANVAS_OFFSET_Y
+            if temp_x == x and temp_y == y:
+                element.attr = new_attr
+                print("Character attributes changed successfully")
+                break
+    else:
+        print("Character unchanged")
 
 
 def remove_duplicate_objects():
